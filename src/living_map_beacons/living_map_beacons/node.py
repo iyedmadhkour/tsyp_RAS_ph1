@@ -217,18 +217,21 @@ class BeaconManager(Node):
         return response
 
     def _deploy_event(self, event: DetectedEvent) -> int | None:
+        target = (event.pose.pose.position.x, event.pose.pose.position.y)
+        reliable_pose = self.writer_pose is not None and self.writer_state != "FAILED"
+        if reliable_pose:
+            if self._duplicate(event.event_type, *target):
+                return None
+            # Rewriting a deployed beacon does not consume magazine stock.
+            reused = self._reuse_navigation_beacon(event, target)
+            if reused is not None:
+                return reused
         if not self.policy.can_deploy_event(len(self.items)):
             self.get_logger().error(f"Dispenser empty: cannot record {event.event_id}")
             return None
-        target = (event.pose.pose.position.x, event.pose.pose.position.y)
-        if self.writer_pose is None or self.writer_state == "FAILED":
+        if not reliable_pose:
             # No reliable Writer pose: record the event where it was sensed.
             return self._deploy(*target, event.event_type, event.severity, event.confidence, event.event_id or "EVENT")
-        if self._duplicate(event.event_type, *target):
-            return None
-        reused = self._reuse_navigation_beacon(event, target)
-        if reused is not None:
-            return reused
         return self._deploy(*self.writer_pose, event.event_type, event.severity, event.confidence,
                             event.event_id or "EVENT", target=target, reason="safe standoff")
 
