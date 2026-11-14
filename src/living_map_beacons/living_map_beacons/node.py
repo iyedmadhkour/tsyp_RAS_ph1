@@ -90,9 +90,11 @@ class BeaconManager(Node):
         )
 
     def _store_and_send(self, packet: BeaconPacket) -> None:
-        self.items[packet.beacon_id] = packet
-        self.store.save(self.items)
-        self._publish_frame(encode(packet))
+        frame = encode(packet)
+        updated = {**self.items, packet.beacon_id: packet}
+        self.store.save(updated)
+        self.items = updated
+        self._publish_frame(frame)
 
     def _link_predecessor(self, previous_id: int, new_packet: BeaconPacket) -> None:
         """The previous beacon hears its successor and records the way on."""
@@ -103,8 +105,9 @@ class BeaconManager(Node):
         if not previous.flags & FLAG_STANDOFF:
             bearing, distance = guidance((previous.x_m, previous.y_m), (new_packet.x_m, new_packet.y_m))
             update.update(bearing_rad=bearing, range_m=distance)
-        self.seq += 1
-        self._store_and_send(replace(previous, sequence=self.seq, **update))
+        sequence = self.seq + 1
+        self._store_and_send(replace(previous, sequence=sequence, **update))
+        self.seq = sequence
 
     def _deploy(
         self,
@@ -130,13 +133,13 @@ class BeaconManager(Node):
 
         # Record the kind of place the beacon sits in (junction / corridor / dead end).
         flags |= place_flags(self._openings((x, y)))
-        self.seq += 1
+        sequence = self.seq + 1
         beacon_id = max(self.items.keys(), default=0) + 1
         packet = BeaconPacket(
             flags=flags,
             mission_id=1,
             beacon_id=beacon_id,
-            sequence=self.seq,
+            sequence=sequence,
             timestamp_sec=int(time.time()),
             x_m=x,
             y_m=y,
@@ -152,9 +155,16 @@ class BeaconManager(Node):
             ),
         )
         previous_id = self.prev
-        self.prev = beacon_id
         self._store_and_send(packet)
-        self._link_predecessor(previous_id, packet)
+        self.seq = sequence
+        self.prev = beacon_id
+        try:
+            self._link_predecessor(previous_id, packet)
+        except (OSError, ValueError) as exc:
+            # The new beacon is already durable: retrying the drop would spend
+            # another puck. Preserve it and report the incomplete forward link.
+            self.get_logger().error(
+                f"B{beacon_id:03d} recorded, but predecessor link update failed: {exc}")
         self._publish_memory(packet, label)
         role = "/".join(roles(packet.flags)) or "NAV"
         where = f" -> {label} {distance:.1f} m at {math.degrees(bearing):.0f} deg" if packet.flags & FLAG_STANDOFF else ""
@@ -201,7 +211,8 @@ class BeaconManager(Node):
         beacon_id = self._deploy_event(event)
         response.success = beacon_id is not None
         response.beacon_id = int(beacon_id or 0)
-        response.message = "deployed" if beacon_id is not None else "duplicate suppressed or dispenser empty"
+        response.message = ("deployed" if beacon_id is not None else
+                            "not deployed: duplicate, empty dispenser or memory write failure")
         return response
 
     def on_reset_service(self, request: ResetSystem.Request, response: ResetSystem.Response) -> ResetSystem.Response:
@@ -217,6 +228,13 @@ class BeaconManager(Node):
         return response
 
     def _deploy_event(self, event: DetectedEvent) -> int | None:
+        try:
+            return self._record_event(event)
+        except (OSError, ValueError) as exc:
+            self.get_logger().error(f"Event deployment could not be recorded: {exc}")
+            return None
+
+    def _record_event(self, event: DetectedEvent) -> int | None:
         target = (event.pose.pose.position.x, event.pose.pose.position.y)
         reliable_pose = self.writer_pose is not None and self.writer_state != "FAILED"
         if reliable_pose:
@@ -248,11 +266,11 @@ class BeaconManager(Node):
             return None
         beacon = min(nearby, key=lambda p: math.dist((p.x_m, p.y_m), self.writer_pose))
         bearing, distance = guidance((beacon.x_m, beacon.y_m), target)
-        self.seq += 1
+        sequence = self.seq + 1
         updated = replace(
             beacon,
             flags=beacon.flags | FLAG_STANDOFF,
-            sequence=self.seq,
+            sequence=sequence,
             timestamp_sec=int(time.time()),
             bearing_rad=bearing,
             range_m=distance,
@@ -262,6 +280,7 @@ class BeaconManager(Node):
             ttl_sec=ttl_for(event.event_type),
         )
         self._store_and_send(updated)
+        self.seq = sequence
         label = event.event_id or "EVENT"
         self._publish_memory(updated, label)
         self.get_logger().info(
@@ -297,6 +316,7 @@ class BeaconManager(Node):
             return
         if self.writer_pose[0] < float(self.get_parameter("entrance_x").value):
             return
+        previous_relay_at = self.policy.last_relay_at
         decision = self.policy.decide(
             self.writer_pose,
             [(p.x_m, p.y_m) for p in self.items.values()],
@@ -306,7 +326,13 @@ class BeaconManager(Node):
             time.monotonic(),
         )
         if decision is not None:
-            self._deploy(*self.writer_pose, flags=decision.flags, reason=decision.reason)
+            try:
+                beacon_id = self._deploy(*self.writer_pose, flags=decision.flags, reason=decision.reason)
+            except (OSError, ValueError) as exc:
+                self.get_logger().error(f"Navigation beacon deployment could not be recorded: {exc}")
+                beacon_id = None
+            if beacon_id is None:
+                self.policy.last_relay_at = previous_relay_at
 
     def on_beacon_write(self, msg: ByteMultiArray) -> None:
         """A robot marks an event resolved: the beacon updates its own memory."""
