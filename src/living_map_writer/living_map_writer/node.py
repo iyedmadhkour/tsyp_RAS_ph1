@@ -113,6 +113,8 @@ class Writer(Node):
             self._become_stuck("could not drive back to the entrance")
 
     def _go_down(self, reason: str) -> None:
+        if self.failed:
+            return  # Repeated faults cannot restart the dying-gasp clock.
         self.failed = True
         self.failure_reason = reason
         self.failed_at = self._now_s()
@@ -127,6 +129,8 @@ class Writer(Node):
         return response
 
     def _become_stuck(self, reason: str) -> None:
+        if self.failed or self.stuck:
+            return
         self.stuck = True
         self.stuck_reason = reason
         self.cmd.publish(Twist())

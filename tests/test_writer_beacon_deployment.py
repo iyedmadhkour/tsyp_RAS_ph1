@@ -16,7 +16,7 @@ def manager(capacity=1, items=None):
     e = SimpleNamespace(
         policy=PlacementPolicy(PlacementConfig(capacity=capacity)),
         items=items if items is not None else {}, seq=1, writer_pose=(0., 0.),
-        writer_state="ONLINE", get_logger=lambda: Mock(),
+        writer_state="ONLINE", writer_failed=False, get_logger=lambda: Mock(),
         get_parameter=lambda name: SimpleNamespace(value=1.),
         _publish_memory=Mock(), _publish_frame=Mock(), _deploy=Mock(return_value=2))
     def store(packet):

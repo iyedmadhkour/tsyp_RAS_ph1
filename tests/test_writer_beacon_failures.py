@@ -18,7 +18,7 @@ def manager(existing=False):
     items = {1: BeaconPacket(beacon_id=1, sequence=1, flags=FLAG_ENTRANCE)} if existing else {}
     params = {"ttl_sec": 1800, "standoff_min_m": .3, "reuse_radius_m": 1., "entrance_x": -1.}
     e = SimpleNamespace(items=items, seq=int(existing), prev=int(existing),
-                        writer_pose=(0., 0.), writer_state="ONLINE", uplink=None,
+                        writer_pose=(0., 0.), writer_state="ONLINE", writer_failed=False, uplink=None,
                         store=SimpleNamespace(save=Mock()), policy=PlacementPolicy(),
                         _publish_frame=Mock(), _publish_memory=Mock(),
                         _openings=lambda point: 0, get_logger=Mock(return_value=Mock()),

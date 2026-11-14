@@ -8,7 +8,7 @@ import rclpy
 from nav_msgs.msg import OccupancyGrid
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
-from std_msgs.msg import ByteMultiArray, Float32
+from std_msgs.msg import Bool, ByteMultiArray, Float32
 
 from living_map_interfaces.msg import BeaconMemory, DetectedEvent, RobotStatus
 from living_map_interfaces.srv import DeployBeacon, ResetSystem
@@ -57,6 +57,7 @@ class BeaconManager(Node):
         ))
         self.writer_pose: tuple[float, float] | None = None
         self.writer_state = "UNKNOWN"
+        self.writer_failed = False
         self.uplink: float | None = None
         self.map: OccupancyGrid | None = None
 
@@ -73,6 +74,7 @@ class BeaconManager(Node):
         self.create_subscription(ByteMultiArray, "inside/beacon_write_rx", self.on_beacon_write, 20)
         map_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                              reliability=ReliabilityPolicy.RELIABLE)
+        self.create_subscription(Bool, "writer_failed", self.on_writer_failed, map_qos)
         self.create_subscription(OccupancyGrid, "/map", self.on_map, map_qos)
         self.create_timer(3.0, self.rebroadcast_all)
 
@@ -213,6 +215,8 @@ class BeaconManager(Node):
         response.beacon_id = int(beacon_id or 0)
         response.message = ("deployed" if beacon_id is not None else
                             "not deployed: duplicate, empty dispenser or memory write failure")
+        if beacon_id is None and (self.writer_failed or self.writer_state == "FAILED"):
+            response.message = "not deployed: Writer destroyed"
         return response
 
     def on_reset_service(self, request: ResetSystem.Request, response: ResetSystem.Response) -> ResetSystem.Response:
@@ -235,8 +239,11 @@ class BeaconManager(Node):
             return None
 
     def _record_event(self, event: DetectedEvent) -> int | None:
+        if self.writer_failed or self.writer_state == "FAILED":
+            self.get_logger().warning("Event deployment rejected: Writer destroyed")
+            return None
         target = (event.pose.pose.position.x, event.pose.pose.position.y)
-        reliable_pose = self.writer_pose is not None and self.writer_state != "FAILED"
+        reliable_pose = self.writer_pose is not None
         if reliable_pose:
             if self._duplicate(event.event_type, *target):
                 return None
@@ -299,6 +306,17 @@ class BeaconManager(Node):
     def on_map(self, msg: OccupancyGrid) -> None:
         self.map = msg
 
+    def on_writer_failed(self, msg: Bool) -> None:
+        if msg.data:
+            self.writer_failed = True
+            self.writer_state = "FAILED"
+        elif self.writer_failed:
+            # A freshly initialized Writer publishes False. Keep deployed
+            # beacons, but do not reuse the destroyed Writer's stale pose.
+            self.writer_failed = False
+            self.writer_state = "UNKNOWN"
+            self.writer_pose = None
+
     def _openings(self, pose: tuple[float, float]) -> int:
         if self.map is None:
             return 0
@@ -309,8 +327,12 @@ class BeaconManager(Node):
     def on_writer_status(self, status: RobotStatus) -> None:
         if status.robot_id != "writer" or status.pose.header.frame_id != "map":
             return
+        if self.writer_failed:
+            return
         self.writer_state = status.state
         self.writer_pose = (status.pose.pose.position.x, status.pose.pose.position.y)
+        if status.state == "FAILED":
+            self.writer_failed = True
         # Only a moving, exploring Writer inside the mine drops navigation beacons.
         if status.state not in {"ONLINE", "RETURNING"}:
             return
