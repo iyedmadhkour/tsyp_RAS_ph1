@@ -11,6 +11,7 @@ from std_msgs.msg import Bool, String
 from tf2_ros import Buffer, TransformException, TransformListener
 
 from .frontier import choose_frontier
+from .entrance import padded_footprint, rotation_safe_center_x
 from .sortie import Sortie
 
 
@@ -44,6 +45,14 @@ class FrontierExplorer(Node):
         self.declare_parameter("max_return_attempts", 3)
         # Map-frame x of the mine entrance; the Writer explores only beyond it.
         self.declare_parameter("entrance_x", -1.0)
+        self.declare_parameter("footprint", "[[0.35,0.32],[0.35,-0.32],[-0.35,-0.32],[-0.35,0.32]]")
+        self.declare_parameter("footprint_padding", 0.01)
+        self.declare_parameter("goal_tolerance_xy", 0.25)
+        footprint = padded_footprint(self.get_parameter("footprint").value,
+                                     float(self.get_parameter("footprint_padding").value))
+        self.minimum_goal_x = rotation_safe_center_x(
+            float(self.get_parameter("entrance_x").value), footprint,
+            float(self.get_parameter("goal_tolerance_xy").value))
         self.sortie = Sortie(
             float(self.get_parameter("exploration_budget_s").value),
             int(self.get_parameter("empty_ticks_to_complete").value),
@@ -160,6 +169,7 @@ class FrontierExplorer(Node):
             blacklist=self.blacklist,
             visited=self.visited,
             min_x=float(self.get_parameter("entrance_x").value),
+            boundary_clearance=self.minimum_goal_x - float(self.get_parameter("entrance_x").value),
         )
         if candidate is None:
             if self.sortie.no_frontier():
@@ -172,6 +182,10 @@ class FrontierExplorer(Node):
         self._send_goal(x, y, "frontier")
 
     def _send_goal(self, x: float, y: float, kind: str) -> None:
+        if x < self.minimum_goal_x:
+            self.get_logger().error(f"Rejected {kind} goal: footprint/tolerance crosses entrance")
+            self._goal_failed(x, y, kind)
+            return
         goal = NavigateToPose.Goal()
         goal.pose.header.frame_id = "map"
         goal.pose.header.stamp = self.get_clock().now().to_msg()

@@ -240,10 +240,12 @@ def generate_launch_description() -> LaunchDescription:
         OpaqueFunction(function=speed_dependent_nodes, args=[writer_params, executor_params, firebot_params]),
         Node(package="living_map_writer", executable="writer", parameters=[{"use_sim_time": True, "auto_explore": auto_explore}], output="screen"),
         Node(package="living_map_writer", executable="scan_frames", parameters=[{"use_sim_time": True}], output="screen"),
+        Node(package="living_map_writer", executable="entrance_boundary",
+             parameters=[writer_params, {"use_sim_time": True}], output="screen"),
         Node(
             package="living_map_writer",
             executable="frontier_explorer",
-            parameters=[{"use_sim_time": True}],
+            parameters=[writer_params, {"use_sim_time": True}],
             condition=UnlessCondition(demo_fallback),
             output="screen",
         ),

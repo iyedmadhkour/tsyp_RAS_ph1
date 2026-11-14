@@ -12,5 +12,5 @@ setup(
     maintainer_email="team@example.com",
     description="LivingMap Phase 1 package",
     license="Apache-2.0",
-    entry_points={"console_scripts": {"writer = living_map_writer.node:main", "frontier_explorer = living_map_writer.frontier_node:main", "scan_frames = living_map_writer.scan_frames:main", "demo_fallback = living_map_writer.demo_fallback:main"}},
+    entry_points={"console_scripts": {"writer = living_map_writer.node:main", "frontier_explorer = living_map_writer.frontier_node:main", "entrance_boundary = living_map_writer.entrance_boundary:main", "scan_frames = living_map_writer.scan_frames:main", "demo_fallback = living_map_writer.demo_fallback:main"}},
 )

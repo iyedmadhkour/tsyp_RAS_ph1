@@ -38,14 +38,15 @@ def clusters(cells):
 
 def choose_frontier(data, width, height, resolution, origin_x, origin_y,
                     robot_x, robot_y, min_cluster=5, blacklist=(), clearance=0.35,
-                    visited=(), visited_radius=1.0, min_x=None):
+                    visited=(), visited_radius=1.0, min_x=None, boundary_clearance=0.0):
     """Choose an actual frontier cell reachable through free, robot-sized space.
 
     ``visited`` holds frontier goals the robot already reached. Only cells
     within ``visited_radius`` of these goals are excluded. Cluster the remaining
     cells so a visited section cannot hide a connected, unexplored boundary.
-    ``min_x`` bounds exploration to the mine side of the entrance: the area
-    behind it is the Outside Network Area, not the disconnected zone.
+    ``min_x + boundary_clearance`` bounds both candidate goals and the reachable
+    free-cell search. Callers supply the padded footprint's rotation radius and
+    goal-position tolerance; outside space must not connect two inside regions.
     """
     radius = math.ceil(clearance / resolution)
     offsets = [(dx, dy) for dy in range(-radius, radius + 1)
@@ -57,7 +58,9 @@ def choose_frontier(data, width, height, resolution, origin_x, origin_y,
             x, y = index % width, index // width
             blocked.update((x + dx, y + dy) for dx, dy in offsets)
     free = {(i % width, i // width) for i, value in enumerate(data)
-            if 0 <= value <= 20 and (i % width, i // width) not in blocked}
+            if 0 <= value <= 20 and (i % width, i // width) not in blocked
+            and (min_x is None or origin_x + (i % width + 0.5) * resolution
+                 >= min_x + boundary_clearance)}
     start = (math.floor((robot_x - origin_x) / resolution),
              math.floor((robot_y - origin_y) / resolution))
     if start not in free:
@@ -80,7 +83,7 @@ def choose_frontier(data, width, height, resolution, origin_x, origin_y,
 
     unvisited_cells = [
         (x, y) for x, y in frontier_cells(data, width, height)
-        if (min_x is None or origin_x + (x + 0.5) * resolution >= min_x)
+        if (min_x is None or origin_x + (x + 0.5) * resolution >= min_x + boundary_clearance)
         and not any(
             (origin_x + (x + 0.5) * resolution - vx)**2
             + (origin_y + (y + 0.5) * resolution - vy)**2 <= visited_radius**2
