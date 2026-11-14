@@ -182,7 +182,12 @@ class Writer(Node):
         if self.failed or not self.sortie_started:
             return
         point = None if pose is None else (pose.position.x, pose.position.y)
-        self.battery.update(dt, point)
+        # Motor travel is measured in odometry, not the SLAM map frame: a map
+        # correction is not physical movement. With no odometry, charge only
+        # powered time rather than mixing map/odom coordinates on first receipt.
+        odom = self.last_odom_pose
+        travel_point = None if odom is None else (odom.position.x, odom.position.y)
+        self.battery.update(dt, travel_point)
         if self.battery.depleted:
             self._go_down("battery depleted")
             return
