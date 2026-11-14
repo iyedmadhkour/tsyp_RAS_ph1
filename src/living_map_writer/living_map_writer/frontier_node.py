@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 import rclpy
 from nav2_msgs.action import NavigateToPose
 from nav_msgs.msg import OccupancyGrid, Odometry
@@ -50,6 +52,7 @@ class FrontierExplorer(Node):
         self.declare_parameter("goal_tolerance_xy", 0.25)
         footprint = padded_footprint(self.get_parameter("footprint").value,
                                      float(self.get_parameter("footprint_padding").value))
+        self.frontier_clearance = max(math.hypot(x, y) for x, y in footprint)
         self.minimum_goal_x = rotation_safe_center_x(
             float(self.get_parameter("entrance_x").value), footprint,
             float(self.get_parameter("goal_tolerance_xy").value))
@@ -166,6 +169,9 @@ class FrontierExplorer(Node):
             robot_x,
             robot_y,
             int(self.get_parameter("min_cluster_cells").value),
+            # Leave room to turn the padded polygon, including occupied-cell
+            # area beyond its center. Nav2 remains the live collision authority.
+            goal_clearance=self.frontier_clearance + info.resolution / math.sqrt(2.0),
             blacklist=self.blacklist,
             visited=self.visited,
             min_x=float(self.get_parameter("entrance_x").value),
@@ -211,7 +217,10 @@ class FrontierExplorer(Node):
             self.busy = False
             self._goal_failed(x, y, kind)
             return
-        if self.failed or self.stuck or not self.enabled:
+        # A battery-return request may arrive while send_goal_async is pending,
+        # before _cancel has a handle. Cancel that frontier once it is accepted.
+        if (self.failed or self.stuck or not self.enabled
+                or (kind == "frontier" and self.sortie.phase != "EXPLORING")):
             handle.cancel_goal_async()
         handle.get_result_async().add_done_callback(
             lambda result_future: self._done(result_future, x, y, kind)

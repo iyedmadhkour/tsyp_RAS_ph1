@@ -38,7 +38,8 @@ def clusters(cells):
 
 def choose_frontier(data, width, height, resolution, origin_x, origin_y,
                     robot_x, robot_y, min_cluster=5, blacklist=(), clearance=0.35,
-                    visited=(), visited_radius=1.0, min_x=None, boundary_clearance=0.0):
+                    visited=(), visited_radius=1.0, min_x=None, boundary_clearance=0.0,
+                    goal_clearance=None):
     """Choose an actual frontier cell reachable through free, robot-sized space.
 
     ``visited`` holds frontier goals the robot already reached. Only cells
@@ -47,6 +48,9 @@ def choose_frontier(data, width, height, resolution, origin_x, origin_y,
     ``min_x + boundary_clearance`` bounds both candidate goals and the reachable
     free-cell search. Callers supply the padded footprint's rotation radius and
     goal-position tolerance; outside space must not connect two inside regions.
+    ``goal_clearance`` can require extra turning room at goals without assuming
+    the robot must be able to rotate in place at every transit cell. Nav2 checks
+    the actual footprint along the resulting navigation path.
     """
     radius = math.ceil(clearance / resolution)
     offsets = [(dx, dy) for dy in range(-radius, radius + 1)
@@ -57,6 +61,17 @@ def choose_frontier(data, width, height, resolution, origin_x, origin_y,
         if value > 20:
             x, y = index % width, index // width
             blocked.update((x + dx, y + dy) for dx, dy in offsets)
+    goal_blocked = blocked
+    if goal_clearance is not None:
+        goal_radius = math.ceil(goal_clearance / resolution)
+        goal_offsets = [(dx, dy) for dy in range(-goal_radius, goal_radius + 1)
+                        for dx in range(-goal_radius, goal_radius + 1)
+                        if math.hypot(dx, dy) * resolution <= goal_clearance]
+        goal_blocked = set()
+        for index, value in enumerate(data):
+            if value > 20:
+                x, y = index % width, index // width
+                goal_blocked.update((x + dx, y + dy) for dx, dy in goal_offsets)
     free = {(i % width, i // width) for i, value in enumerate(data)
             if 0 <= value <= 20 and (i % width, i // width) not in blocked
             and (min_x is None or origin_x + (i % width + 0.5) * resolution
@@ -100,7 +115,7 @@ def choose_frontier(data, width, height, resolution, origin_x, origin_y,
         for x, y in cluster:
             wx = origin_x + (x + 0.5) * resolution
             wy = origin_y + (y + 0.5) * resolution
-            if (x, y) in reachable and not any(
+            if (x, y) in reachable and (x, y) not in goal_blocked and not any(
                 (wx - bx)**2 + (wy - by)**2 < 0.6**2 for bx, by in blacklist
             ) and math.hypot(wx - robot_x, wy - robot_y) >= 0.5:
                 eligible.append((x, y))
