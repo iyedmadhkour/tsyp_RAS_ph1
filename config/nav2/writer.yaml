@@ -54,11 +54,16 @@
     use_sim_time: true
     expected_planner_frequency: 10.0
     costmap_update_timeout: 1.0
-    planner_plugins: [GridBased]
+    planner_plugins: [GridBased, GridBasedDijkstra]
     GridBased:
       plugin: nav2_navfn_planner::NavfnPlanner
       tolerance: 0.5
       use_astar: true
+      allow_unknown: true
+    GridBasedDijkstra:
+      plugin: nav2_navfn_planner::NavfnPlanner
+      tolerance: 0.5
+      use_astar: false
       allow_unknown: true
 
 "/writer/behavior_server":

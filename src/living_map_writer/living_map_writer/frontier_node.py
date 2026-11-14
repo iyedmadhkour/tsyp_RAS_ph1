@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import math
+from pathlib import Path
+
+from ament_index_python.packages import get_package_share_directory
 
 import rclpy
 from nav2_msgs.action import NavigateToPose
@@ -38,6 +41,10 @@ class FrontierExplorer(Node):
         self.stuck = False
         self.enabled = False
         self.goal_handle = None
+        self.behavior_tree = str(Path(get_package_share_directory("living_map_writer"))
+                                 / "behavior_trees" / "navigate_with_planner_fallback.xml")
+        if not Path(self.behavior_tree).is_file():
+            raise RuntimeError("Writer planner behavior tree is missing; build living_map_writer")
 
         self.declare_parameter("min_cluster_cells", 5)
         self.declare_parameter("home_x", 0.0)
@@ -193,6 +200,7 @@ class FrontierExplorer(Node):
             self._goal_failed(x, y, kind)
             return
         goal = NavigateToPose.Goal()
+        goal.behavior_tree = self.behavior_tree
         goal.pose.header.frame_id = "map"
         goal.pose.header.stamp = self.get_clock().now().to_msg()
         goal.pose.pose.position.x = x

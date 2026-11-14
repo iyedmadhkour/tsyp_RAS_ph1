@@ -6,6 +6,7 @@
   <maintainer email="team@example.com">LivingMap Team</maintainer>
   <license>Apache-2.0</license>
   <exec_depend>rclpy</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
   <exec_depend>living_map_interfaces</exec_depend>
   <exec_depend>std_srvs</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
