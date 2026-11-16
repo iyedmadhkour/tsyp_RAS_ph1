@@ -24,3 +24,9 @@ Changed files in579eaac: config/nav2/writer.yaml; src/living_map_writer/living_m
 Limitations: external ComputePathToPose clients must explicitly specify planner_id now that two plugins exist. Selecting Dijkstra itself as primary can redundantly retry it; documented default is GridBased A*. Neither NavFn variant reasons about orientation. Unreachable goals and unseen surfaces remain separate investigation targets. Startup no-map and idle rescue-robot warnings remain recorded; no unsafe suppression was introduced.
 
 Evidence: /home/iyed/livingmap-setup/writer-five-xtouqie6/task4, including baseline/, after-1/, after-2/, native-baseline-final/, resumed-review.md and resumed-metrics/. Raw logs/maps stay outside Git.
+
+## Final validation addendum — 2026-11-16
+
+After-2 coverage was 99.4991%. That mission logged two transient collision-ahead warnings, with no controller-patience failures, nonzero FollowPath errors or outer goal aborts; this is active collision checking, not evidence of physical contact. The original table's zero controller-patience count remains correct.
+
+The final combined mission reached HOME in 190.333 seconds with seven successes, no outer aborts and zero sampled entrance violations. Sixteen primary NO_VALID_PATH failures were followed by successful plans, consistent with the fallback; no secondary failure, controller-patience, collision-ahead or halt-result warning occurred. The full project suite passed 281 tests and all three affected packages built. General navigation reliability remains PARTIAL; varying routes and remaining unreachable-goal cases prevent a universal improvement claim.
