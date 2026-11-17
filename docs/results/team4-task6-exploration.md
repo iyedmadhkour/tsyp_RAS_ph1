@@ -310,3 +310,36 @@ in the checkpoint. The r4 helper is external evidence tooling, not production
 code. No production change was made for the cooldown policy. This documentation
 records partial validation; do not treat Task 6 as complete until the r4
 cooldown/retry scenario is run and reviewed.
+
+## Extended cooldown validation checkpoint — 2026-11-17
+
+The r4 harness was reviewed but **not run** in the Codex execution sandbox.
+The runner uses ROS domain 184, D3D12 environment variables, a separate runtime
+and log directory, a 560 s wall limit, and only signals the process group it
+starts. The injector applies zero velocity only while the Writer is navigating
+within the initial 1.5 m failure zone. It aborts on 0.25 m movement, no watchdog
+cancel within 42 simulated seconds, a 75 s wall-time clock stall, an unexpected
+fourth goal, or selection outside that zone. The temporary
+`min_cluster_cells=1000` parameter is runtime-only. This gives a guarded way to
+exercise repeated failures, but the map-dependent filter does not guarantee an
+initial candidate; the harness stops if it cannot isolate one. The runner also
+refuses to start if prior output exists in r4 or if a service is already
+listening on the dashboard's fixed `localhost:8081` port, preventing evidence
+overwrite and accidental control of an unrelated dashboard.
+
+The verified r3 result remains unchanged: one injected failure, attempt 1/3,
+15 s cooldown, safe selection of five other frontiers, and HOME return at 70.5%
+battery. It did **not** wait for the cooldown or retry the failed region. The
+Writer had no STUCK/FAILED state and recorded zero entrance-footprint crossings
+in 669 published samples (minimum footprint x -0.360003 m against boundary
+-1.0 m). The helper cleanup defect was corrected in the separate r4 injector;
+that correction has only passed Python syntax compilation, not runtime
+shutdown validation.
+
+Cooldown 15 s/30 s timing, three-attempt exhaustion, terminal reason, and
+120 s/time or 2.0 m²/map-growth re-arm remain deterministic-test evidence only.
+The broad regression run recorded 321 passed and three known hanging async API
+tests deselected. `colcon test` discovered zero tests in eight ament_python
+packages (exit code 5 per package); it is not evidence of package test success.
+An earlier isolated build finished all 12 packages. Full r4 and expiry behavior
+in Gazebo remain outstanding; overall Task 6 stays **PARTIAL**.
