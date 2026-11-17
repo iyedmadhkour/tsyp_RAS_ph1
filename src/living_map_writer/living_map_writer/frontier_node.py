@@ -81,7 +81,7 @@ class FrontierExplorer(Node):
         self.declare_parameter("nav_watchdog_progress_window_s", 20.0)
         self.declare_parameter("nav_watchdog_min_progress_m", 0.25)
         self.declare_parameter("nav_watchdog_rotation_grace_s", 10.0)
-        self.declare_parameter("nav_watchdog_stall_s", 45.0)
+        self.declare_parameter("nav_watchdog_stall_s", 25.0)
         self.declare_parameter("nav_watchdog_goal_timeout_s", 150.0)
         self.declare_parameter("nav_watchdog_home_stall_s", 90.0)
         self.declare_parameter("nav_watchdog_home_timeout_s", 300.0)

@@ -1,7 +1,11 @@
 """Deterministic tests for the navigation-progress watchdog (not STUCK)."""
+from pathlib import Path
+
 import pytest
+import yaml
 
 from living_map_writer.goal_watchdog import GoalWatchdog, WatchdogConfig
+from living_map_writer.progress import StuckDetector
 
 
 def watchdog(**overrides):
@@ -48,6 +52,41 @@ def test_genuinely_stalled_goal_is_reported():
     w = watchdog()
     w.start("frontier", 10.0, 0.0, now=0.0, distance_remaining=10.0)
     assert w.update(11.0, 10.0, 0, 0.0, 0.0, False) == "stalled"
+
+
+def test_default_navigation_watchdog_cancels_before_physical_stuck_detector():
+    config = yaml.safe_load((Path(__file__).resolve().parents[1]
+                             / "config/nav2/writer.yaml").read_text())
+    stall_s = config["/writer/frontier_explorer"]["ros__parameters"][
+        "nav_watchdog_stall_s"]
+    watchdog = GoalWatchdog(WatchdogConfig(stall_timeout_s=stall_s))
+    physical_stuck = StuckDetector()
+    watchdog.start("frontier", 5.0, 0.0, now=0.0, distance_remaining=5.0)
+
+    verdict = None
+    for rotating in (False, True):
+        watchdog.start("frontier", 5.0, 0.0, now=0.0, distance_remaining=5.0)
+        physical_stuck.reset()
+        for second in range(0, 46):
+            verdict = watchdog.update(second, 5.0, 0, 0.0, 0.0, rotating)
+            # The action is no longer active once the navigation watchdog cancels.
+            stuck = physical_stuck.update(second, 0.0, 0.0, driving=verdict is None)
+            if verdict is not None:
+                assert verdict == "stalled"
+                assert second < physical_stuck.window_s
+                assert not stuck
+                break
+            assert not stuck
+        else:
+            pytest.fail("navigation watchdog did not preempt the physical STUCK detector")
+
+
+def test_subthreshold_progress_does_not_accumulate_across_observation_windows():
+    w = GoalWatchdog()
+    w.start("frontier", 10.0, 0.0, now=0.0, distance_remaining=10.0)
+    verdicts = [w.update(t, 10.0 - 0.01 * t, 0, 0.01 * t, 0.0, False)
+                for t in range(0, 26)]
+    assert verdicts[-1] == "stalled"
 
 
 def test_repeated_recoveries_without_progress_cancel_the_goal():

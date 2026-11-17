@@ -214,3 +214,99 @@ Team 4 next steps:
    modified-2 failure region.
 4. Integrate and review the teammate STUCK detector separately when it is
    available; do not conflate the two detectors.
+
+
+## r3 watchdog and cooldown validation — 2026-11-17
+
+**Overall Task 6 status: PARTIAL.** The watchdog now has a controlled Gazebo
+stall result. Cooldown suppression also appeared during that mission, but the
+wait-and-retry branch, attempt exhaustion, and expiry/re-arm were not triggered
+in Gazebo. These remaining paths are covered by deterministic tests only.
+
+### Controlled r3 result
+
+Evidence is preserved at
+/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-17/controlled-watchdog-cooldown-r3/.
+The run used the isolated final ROS overlay and D3D12 settings. Independent
+checks of runner-result.json, fault-injector-result.json, summary.json,
+writer-status.json, published-footprints.json, git-before.json, git-after.json,
+and launch.log show:
+
+- The first frontier was (0.94, 0.13). The simulated zero-velocity fault began
+  at simulation time 6.002 s. Maximum measured displacement during injection
+  was 0.01734 m.
+- At simulation time 30.002 s, the watchdog cancelled the goal, 24.0 simulated
+  seconds after injection. The reason was recovery_limit after 26.0 s since
+  progress, with Nav2 feedback reporting three recoveries and 0.366 m remaining.
+  The cancellation happened before the independent 45 s physical STUCK window.
+- At 30.022 s the frontier was recorded as failure attempt 1/3 with a 15 s
+  cooldown. Five later frontier goals were selected outside that failure zone;
+  the first was selected at 32.072 s while the cooldown was still active.
+  No second attempt or cooldown-wait log occurred. After the cooldown expired,
+  the failed region was no longer an eligible frontier. At 164.842 s the
+  explorer reported NO_REACHABLE_FRONTIER and returned to the entrance.
+- The Writer reached HOME with 70.5% battery. writer-status.json contains no
+  STUCK or FAILED state. There were zero entrance-boundary violations across
+  669 published footprint samples; the minimum sampled footprint x was
+  -0.360003 m against the -1.0 m boundary.
+- Git before/after snapshots match at HEAD 601b657 with the same four local
+  modifications. The Gazebo launch and monitor exited 0. The injector exited 1
+  only during cleanup: SIGINT raised KeyboardInterrupt after rclpy had already
+  shut down, then an unconditional second shutdown raised RCLError.
+
+### Injector cleanup and follow-up scenario
+
+The original r3 files and logs are unchanged. A separate r4 helper is prepared
+at
+/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-17/controlled-cooldown-retry-r4/.
+Its injector catches KeyboardInterrupt and calls rclpy.shutdown only while
+rclpy.ok() is true. The runner applies min_cluster_cells=1000 as a temporary
+runtime parameter, based on the archived r3 initial map where one frontier
+cluster exceeded 1000 cells. It then repeats the velocity fault only for goals
+within the same 1.5 m failure zone. The run is bounded and stops if another
+zone is selected or if the watchdog fails to cancel by 42 simulated seconds.
+The helper scripts compile successfully but were not run here because this
+Codex environment lacks WSLg/GPU access and Gazebo Transport interface access.
+
+Run from a normal Ubuntu-24.04 WSL terminal after sourcing the existing overlay:
+
+    cd /home/iyed/LivingMap-Team4
+    source /opt/ros/jazzy/setup.bash
+    source scripts/_env.sh
+    source /home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-17/install-final/local_setup.bash
+    export GALLIUM_DRIVER=d3d12
+    export MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA
+    python3 /home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-17/controlled-cooldown-retry-r4/run_once.py
+
+The temporary threshold is valid only for this isolated diagnostic. Confirm
+runtime-parameter-result.json says applied, each selected goal stays within the
+same failure zone, failure attempts are 1/3, 2/3, and 3/3, cooldown waits report
+about 15 s and 30 s, and the terminal reason is FRONTIERS_EXHAUSTED before
+accepting the scenario. Confirm HOME, footprint samples, and clean injector
+exit in the saved results.
+
+### Remaining lifecycle coverage
+
+- **Cooldown wait/retry in Gazebo:** not yet validated. r3 proves the first
+  failure is suppressed while other reachable goals continue, but it did not
+  wait or retry this zone.
+- **Bounded attempts in Gazebo:** not yet validated. r4 targets the three
+  attempts; its outcome remains NOT TESTED until run in the normal WSL session.
+- **Cooldown values:** deterministic tests verify 15 s after attempt 1 and 30 s
+  after attempt 2. Attempt 3 exhausts the zone, so the configured 60 s maximum
+  is not reached under the three-attempt policy.
+- **Exhaustion expiry/re-arm in Gazebo:** not tested. Existing policy tests
+  verify the 120 s expiry, two re-arms, and re-arm after 2.0 m² known-map growth.
+  After exhaustion with no alternative candidate, the current mission reports
+  FRONTIERS_EXHAUSTED and returns HOME, so observing expiry in a mission requires
+  another reachable frontier to keep exploration active for more than 120 s.
+- The broad suite passes 321 tests with three known async ASGI tests deselected;
+  the focused Writer navigation/safety suite passes 170 tests. The isolated
+  source build previously finished all 12 packages. Full-suite hang details and
+  logs are recorded in the checkpoint summary.
+
+The only source/config/test edits remain the four watchdog-related files listed
+in the checkpoint. The r4 helper is external evidence tooling, not production
+code. No production change was made for the cooldown policy. This documentation
+records partial validation; do not treat Task 6 as complete until the r4
+cooldown/retry scenario is run and reviewed.

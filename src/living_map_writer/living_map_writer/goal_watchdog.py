@@ -30,7 +30,9 @@ class WatchdogConfig:
     progress_window_s: float = 20.0
     min_progress_m: float = 0.25
     rotation_grace_s: float = 10.0
-    stall_timeout_s: float = 45.0
+    # Cancel a stalled Nav2 goal before the independent 45 s physical STUCK
+    # detector can label a navigation stall as robot immobilisation.
+    stall_timeout_s: float = 25.0
     goal_timeout_s: float = 150.0
     home_stall_timeout_s: float = 90.0
     home_timeout_s: float = 300.0
@@ -63,6 +65,8 @@ class GoalWatchdog:
         self.goal_y = 0.0
         self.start_at: float | None = None
         self.reference_distance: float | None = None
+        self.window_distance: float | None = None
+        self.window_started_at: float | None = None
         self.last_progress_at: float | None = None
         self.last_rotation_at: float | None = None
         self.rotation_started_at: float | None = None
@@ -83,6 +87,8 @@ class GoalWatchdog:
         if _finite_positive(distance_remaining):
             self.reference_distance = float(distance_remaining)
             self.last_distance = self.reference_distance
+            self.window_distance = self.reference_distance
+            self.window_started_at = float(now)
             self.source = "feedback"
 
     def _limits(self) -> tuple[float, float]:
@@ -109,15 +115,30 @@ class GoalWatchdog:
         if self.reference_distance is None:
             self.reference_distance = distance
             self.last_distance = distance
+            self.window_distance = distance
+            self.window_started_at = now
             self.last_progress_at = now
         elif distance > self.last_distance + self.cfg.reset_jump_m:
             # A large worsening is a map correction/replan, not robot failure.
             self.reference_distance = distance
+            self.window_distance = distance
+            self.window_started_at = now
             self.last_progress_at = now
             self.jumps += 1
-        elif distance <= self.reference_distance - self.cfg.min_progress_m:
-            self.reference_distance = distance
-            self.last_progress_at = now
+        elif self.window_distance is None or self.window_started_at is None:
+            self.window_distance = distance
+            self.window_started_at = now
+        elif now - self.window_started_at <= self.cfg.progress_window_s:
+            if distance <= self.window_distance - self.cfg.min_progress_m:
+                self.reference_distance = distance
+                self.last_progress_at = now
+                self.window_distance = distance
+                self.window_started_at = now
+        else:
+            # Sub-threshold movement from a previous window cannot accumulate
+            # forever and keep a goal alive. Start a fresh observation window.
+            self.window_distance = distance
+            self.window_started_at = now
         self.last_distance = distance
 
         if rotating:
