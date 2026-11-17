@@ -177,6 +177,32 @@
     footprint: "[[0.35, 0.32], [0.35, -0.32], [-0.35, -0.32], [-0.35, 0.32]]"
     footprint_padding: 0.01
     goal_tolerance_xy: 0.25
+    # Task 6 frontier lifecycle. A failed goal gets a bounded number of
+    # attempts, an exponential cooldown, then an expiry. Time or substantial
+    # map growth re-arms the zone a bounded number of times; a region is never
+    # banned forever on the strength of one transient failure.
+    frontier_zone_radius_m: 1.5
+    frontier_max_attempts: 3
+    frontier_cooldown_base_s: 15.0
+    frontier_cooldown_max_s: 60.0
+    frontier_exhausted_expiry_s: 120.0
+    frontier_max_rearms: 2
+    frontier_visited_radius_m: 1.0
+    frontier_visited_min_age_s: 30.0
+    frontier_visited_expiry_s: 120.0
+    frontier_max_visits: 2
+    frontier_map_growth_threshold_m2: 2.0
+    # Navigation-progress watchdog for the current Nav2 goal. This is separate
+    # from progress.py's STUCK detector: it never declares STUCK/DESTROYED.
+    nav_watchdog_progress_window_s: 20.0
+    nav_watchdog_min_progress_m: 0.25
+    nav_watchdog_rotation_grace_s: 10.0
+    nav_watchdog_stall_s: 45.0
+    nav_watchdog_goal_timeout_s: 150.0
+    nav_watchdog_home_stall_s: 90.0
+    nav_watchdog_home_timeout_s: 300.0
+    nav_watchdog_max_recoveries: 3
+    nav_watchdog_reset_jump_m: 1.0
 
 "/writer/entrance_boundary":
   ros__parameters:

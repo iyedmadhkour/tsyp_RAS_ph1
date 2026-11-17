@@ -1,4 +1,5 @@
 from concurrent.futures import Future
+from collections import Counter
 import math
 from types import SimpleNamespace
 from unittest.mock import Mock
@@ -8,6 +9,7 @@ import pytest
 pytest.importorskip("rclpy")
 pytest.importorskip("nav2_msgs.action")
 from living_map_writer.frontier_node import FrontierExplorer
+from living_map_writer.frontier_policy import FrontierPolicy
 from living_map_writer.sortie import Sortie
 from living_map_writer.entrance import padded_footprint
 
@@ -25,15 +27,30 @@ def test_frontier_selection_leaves_room_for_the_padded_robot_to_turn(wall_gap):
     strip_rows = round(wall_gap / grid.info.resolution)
     grid.data = [100 if y == 0 else (0 if y <= strip_rows else -1)
                  for y in range(40) for x in range(80)]
-    e = SimpleNamespace(
-        _now_s=lambda: 0., last_tick_s=None, enabled=True, failed=False,
-        stuck=False, busy=False, map=grid, sortie=Sortie(budget_s=0),
-        _publish_state=Mock(), nav=Mock(), map_pose=lambda: (2., wall_gap),
-        minimum_goal_x=-1 + radius + .25, frontier_clearance=radius,
-        blacklist=[], visited=[],
-        get_parameter=lambda key: SimpleNamespace(value={
-            "min_cluster_cells": 5, "entrance_x": -1.}[key]),
-        _send_goal=Mock(), get_logger=lambda: Mock())
+    e = object.__new__(FrontierExplorer)
+    e._now_s = lambda: 0.
+    e.last_tick_s = None
+    e.enabled = True
+    e.failed = False
+    e.stuck = False
+    e.busy = False
+    e.map = grid
+    e.sortie = Sortie(budget_s=0)
+    e.policy = FrontierPolicy()
+    e.watchdog = Mock()
+    e.counts = Counter()
+    e.known_area_m2 = 0.0
+    e.published_state = ""
+    e.state_pub = Mock()
+    e._publish_state = Mock()
+    e.nav = Mock()
+    e.map_pose = lambda: (2., wall_gap)
+    e.minimum_goal_x = -1 + radius + .25
+    e.frontier_clearance = radius
+    e.get_parameter = lambda key: SimpleNamespace(value={
+        "min_cluster_cells": 5, "entrance_x": -1.}[key])
+    e._send_goal = Mock()
+    e.get_logger = lambda: Mock()
     FrontierExplorer.tick(e)
     assert e._send_goal.called is (wall_gap > radius)
     if e._send_goal.called:
@@ -95,3 +112,78 @@ def test_pending_goal_acceptance_respects_emergency_and_pause(flag):
     FrontierExplorer._goal_sent(e, accepted, 2.0, 0.0, "frontier")
     handle.cancel_goal_async.assert_called_once()
     handle.get_result_async.assert_called_once()
+
+
+def _completed(status):
+    future = Future()
+    future.set_result(SimpleNamespace(status=status))
+    return future
+
+
+def _explorer_for_result(policy, sortie=None):
+    explorer = SimpleNamespace(
+        busy=True, goal_handle=Mock(), failed=False, stuck=False, enabled=True,
+        active_goal=None, sortie=sortie or Sortie(budget_s=0), policy=policy,
+        counts=Counter(), watchdog=Mock(), known_area_m2=50.0,
+        _now_s=lambda: 100.0, _publish_state=Mock(), _publish_summary=Mock(),
+        get_logger=lambda: Mock(),
+    )
+    explorer._goal_failed = lambda x, y, kind, reason="aborted": (
+        FrontierExplorer._goal_failed(explorer, x, y, kind, reason))
+    return explorer
+
+
+def test_external_cancellation_is_not_recorded_as_a_frontier_failure():
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.active_goal = {"x": 3.0, "y": 4.0, "kind": "frontier",
+                     "watchdog_reason": None,
+                     "cancel_reason": "battery reserve reached; heading home"}
+
+    FrontierExplorer._done(e, _completed(5), 3.0, 4.0, "frontier")
+
+    assert policy.zones == []
+    assert e.counts["frontier_cancelled"] == 1
+    assert e.sortie.phase == "EXPLORING"
+
+
+def test_watchdog_cancellation_is_recorded_as_a_frontier_failure():
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.active_goal = {"x": 3.0, "y": 4.0, "kind": "frontier",
+                     "watchdog_reason": "stalled",
+                     "cancel_reason": "navigation watchdog: stalled"}
+
+    FrontierExplorer._done(e, _completed(5), 3.0, 4.0, "frontier")
+
+    assert len(policy.zones) == 1
+    assert policy.zones[0].attempts == 1
+    assert e.counts["frontier_failed"] == 1
+    assert e.sortie.phase == "EXPLORING"
+
+
+def test_successful_frontier_goal_records_a_visit_not_a_failure():
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.active_goal = {"x": 3.0, "y": 4.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": None}
+
+    FrontierExplorer._done(e, _completed(4), 3.0, 4.0, "frontier")
+
+    assert policy.zones == []
+    assert len(policy.visits) == 1
+    assert policy.visits[0].count == 1
+    assert e.counts["frontier_succeeded"] == 1
+
+
+def test_aborted_frontier_goal_records_a_bounded_failure():
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.active_goal = {"x": 3.0, "y": 4.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": None}
+
+    FrontierExplorer._done(e, _completed(6), 3.0, 4.0, "frontier")
+
+    assert len(policy.zones) == 1
+    assert policy.zones[0].attempts == 1
+    assert e.counts["frontier_failed"] == 1

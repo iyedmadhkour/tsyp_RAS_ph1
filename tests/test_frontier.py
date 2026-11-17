@@ -119,3 +119,46 @@ def test_frontiers_behind_the_entrance_are_not_explored():
     assert west is not None and west[1] < 1.0
     bounded = choose_frontier(data, width, height, 0.1, 0.0, 0.0, 1.5, 1.0, min_cluster=2, min_x=1.0)
     assert bounded is not None and bounded[1] > 3.0
+
+
+def test_blacklist_radius_is_configurable():
+    """Task 6 failure zones suppress a neighbourhood, not just one 0.6 m cell."""
+    width = height = 9
+    data = [-1] * (width * height)
+    for y in range(2, 7):
+        for x in range(2, 7):
+            data[y * width + x] = 0
+    first = choose_frontier(data, width, height, 1, 0, 0, 4.5, 4.5,
+                            min_cluster=2, clearance=0.1)
+    assert first is not None
+    # The old 0.6 m radius leaves neighbouring cells of the same cluster.
+    near = choose_frontier(data, width, height, 1, 0, 0, 4.5, 4.5,
+                           min_cluster=2, clearance=0.1,
+                           blacklist=[first[1:3]], blacklist_radius=0.6)
+    assert near is not None
+    # A zone wider than the whole cluster suppresses every candidate.
+    assert choose_frontier(data, width, height, 1, 0, 0, 4.5, 4.5,
+                           min_cluster=2, clearance=0.1,
+                           blacklist=[first[1:3]], blacklist_radius=10.0) is None
+
+
+def test_frontier_search_reports_selection_and_rejection_counts():
+    width = height = 9
+    data = [-1] * (width * height)
+    for y in range(2, 7):
+        for x in range(2, 7):
+            data[y * width + x] = 0
+    stats = {}
+    assert choose_frontier(data, width, height, 1, 0, 0, 4.5, 4.5,
+                           min_cluster=2, clearance=0.1, stats=stats) is not None
+    assert stats["raw_frontier_cells"] == 16
+    assert stats["clusters"] == 1 and stats["selected"] is True
+    assert stats["clusters_too_small"] == 0
+    assert stats["clusters_without_eligible_goal"] == 0
+
+    visited = [(x + 0.5, y + 0.5) for x, y in frontier_cells(data, width, height)]
+    stats = {}
+    assert choose_frontier(data, width, height, 1, 0, 0, 4.5, 4.5,
+                           visited=visited, stats=stats) is None
+    assert stats["filtered_frontier_cells"] == 0
+    assert stats["selected"] is False

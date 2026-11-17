@@ -41,3 +41,34 @@ def test_stuck_detector_ignores_progress_pauses_and_rotation():
         detector.update(t * 0.5, 0.0, 0.0, True)
     assert not detector.update(8.0, 0.0, 0.0, False)  # paused: window restarts
     assert not detector.update(9.0, 0.0, 0.0, True)
+
+
+def test_no_frontier_reports_an_explicit_reason_code():
+    sortie = Sortie(budget_s=0, empty_ticks_to_complete=2)
+    assert not sortie.no_frontier("NO_REACHABLE_FRONTIER")
+    assert sortie.no_frontier("NO_REACHABLE_FRONTIER")
+    assert sortie.phase == "RETURNING"
+    assert sortie.reason_code == "NO_REACHABLE_FRONTIER"
+    assert "no safe reachable goal" in sortie.reason
+
+
+def test_cooling_frontier_wait_does_not_count_towards_completion():
+    sortie = Sortie(budget_s=0, empty_ticks_to_complete=2)
+    assert not sortie.no_frontier("FRONTIERS_EXHAUSTED")
+    sortie.wait_for_retry()
+    assert sortie.empty_ticks == 0
+    assert not sortie.no_frontier("FRONTIERS_EXHAUSTED")
+    assert sortie.phase == "EXPLORING"
+    assert sortie.no_frontier("FRONTIERS_EXHAUSTED")
+    assert sortie.phase == "RETURNING"
+
+
+def test_battery_return_and_failed_return_have_explicit_codes():
+    sortie = Sortie(budget_s=0, max_return_attempts=2)
+    sortie.start_return("battery reserve reached", "BATTERY_RESERVE")
+    assert sortie.reason_code == "BATTERY_RESERVE"
+    assert not sortie.return_failed()
+    assert sortie.return_failed()
+    assert sortie.phase == "RETURN_FAILED"
+    assert sortie.reason_code == "RETURN_FAILED"
+    assert "failed repeatedly" in sortie.reason

@@ -62,6 +62,7 @@ def test_safe_writer_goals_use_packaged_tree_and_unsafe_goals_are_still_rejected
     from living_map_writer.frontier_node import FrontierExplorer
     e = SimpleNamespace(minimum_goal_x=-.2616, behavior_tree=str(TREE), nav=Mock(),
                         _goal_sent=Mock(), _goal_failed=Mock(), get_logger=Mock(return_value=Mock()),
+                        watchdog=Mock(), _now_s=lambda: 0., _on_feedback=Mock(),
                         get_clock=lambda: SimpleNamespace(now=lambda: SimpleNamespace(to_msg=Time)))
     FrontierExplorer._send_goal(e, 2., 1., kind)
     goal = e.nav.send_goal_async.call_args.args[0]
@@ -71,7 +72,7 @@ def test_safe_writer_goals_use_packaged_tree_and_unsafe_goals_are_still_rejected
     e.nav.send_goal_async.reset_mock()
     FrontierExplorer._send_goal(e, -.724, 0., kind)
     e.nav.send_goal_async.assert_not_called()
-    e._goal_failed.assert_called_once_with(-.724, 0., kind)
+    e._goal_failed.assert_called_once_with(-.724, 0., kind, "entrance_rejected")
 
 
 def test_actual_production_fallback_with_native_behavior_tree_cpp(tmp_path):

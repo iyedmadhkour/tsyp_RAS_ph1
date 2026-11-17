@@ -112,7 +112,7 @@ def test_unsafe_home_and_frontier_goals_never_reach_nav2():
                         get_logger=lambda: Mock(), _goal_failed=Mock(), nav=Mock())
     for kind in ("home", "frontier"):
         FrontierExplorer._send_goal(e, -0.724, 0, kind)
-        e._goal_failed.assert_called_with(-0.724, 0, kind)
+        e._goal_failed.assert_called_with(-0.724, 0, kind, "entrance_rejected")
     e.nav.send_goal_async.assert_not_called()
 
 
