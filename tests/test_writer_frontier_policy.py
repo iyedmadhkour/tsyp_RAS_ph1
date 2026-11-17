@@ -110,6 +110,11 @@ def test_map_growth_releases_a_visited_goal_before_its_expiry():
 @pytest.mark.parametrize("kwargs", [
     dict(zone_radius_m=0), dict(visited_radius_m=0), dict(max_attempts=0),
     dict(max_rearms=-1), dict(base_cooldown_s=-1), dict(map_growth_threshold_m2=0),
+    dict(zone_radius_m=float("nan")), dict(zone_radius_m=float("inf")),
+    dict(base_cooldown_s=float("nan")), dict(exhausted_expiry_s=float("inf")),
+    dict(map_growth_threshold_m2=float("-inf")),
+    dict(max_attempts=float("nan")), dict(max_rearms=float("inf")),
+    dict(max_visits=float("-inf")),
 ])
 def test_invalid_configuration_is_rejected(kwargs):
     with pytest.raises(ValueError):

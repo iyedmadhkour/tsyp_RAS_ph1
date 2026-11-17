@@ -133,6 +133,9 @@ def test_home_uses_longer_stall_and_timeout_limits():
     dict(progress_window_s=0), dict(min_progress_m=0),
     dict(stall_timeout_s=1, progress_window_s=5),
     dict(max_recoveries=0), dict(reset_jump_m=0),
+    dict(stall_timeout_s=float("nan")), dict(goal_timeout_s=float("inf")),
+    dict(home_stall_timeout_s=float("-inf")), dict(min_progress_m=float("nan")),
+    dict(max_recoveries=float("nan")),
 ])
 def test_invalid_configuration_is_rejected(kwargs):
     with pytest.raises(ValueError):

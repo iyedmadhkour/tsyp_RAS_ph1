@@ -147,6 +147,20 @@ def test_external_cancellation_is_not_recorded_as_a_frontier_failure():
     assert e.sortie.phase == "EXPLORING"
 
 
+def test_unexplained_frontier_cancellation_is_counted_but_not_blacklisted():
+    """Policy intentionally keeps cancellation distinct; it may retry next tick."""
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.active_goal = {"x": 3.0, "y": 4.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": None}
+
+    FrontierExplorer._done(e, _completed(5), 3.0, 4.0, "frontier")
+
+    assert policy.zones == []
+    assert e.counts["frontier_cancelled"] == 1
+    assert policy.counts["cancel_cancelled"] == 1
+
+
 def test_watchdog_cancellation_is_recorded_as_a_frontier_failure():
     policy = FrontierPolicy()
     e = _explorer_for_result(policy)
@@ -187,3 +201,61 @@ def test_aborted_frontier_goal_records_a_bounded_failure():
     assert len(policy.zones) == 1
     assert policy.zones[0].attempts == 1
     assert e.counts["frontier_failed"] == 1
+
+
+def test_nav2_server_unavailable_does_not_send_a_goal_or_move_the_sortie():
+    e = object.__new__(FrontierExplorer)
+    e.enabled, e.failed, e.stuck, e.busy = True, False, False, False
+    e.sortie = Sortie(budget_s=0)
+    e.last_tick_s = None
+    e.known_area_m2 = 0.0
+    e._now_s = lambda: 1.0
+    e._publish_state = Mock()
+    e.policy = Mock()
+    e.nav = Mock()
+    e.nav.server_is_ready.return_value = False
+    e.map = object()
+
+    FrontierExplorer.tick(e)
+
+    e.nav.send_goal_async.assert_not_called()
+    assert e.sortie.phase == "EXPLORING"
+    e.policy.refresh.assert_called_once()
+
+
+def test_home_navigation_failures_are_bounded_and_set_return_failed():
+    sortie = Sortie(budget_s=0, max_return_attempts=2)
+    sortie.start_return("battery reserve reached", "BATTERY_RESERVE")
+    e = SimpleNamespace(sortie=sortie, counts=Counter(), watchdog=Mock(),
+                        active_goal=None, _now_s=lambda: 10.0,
+                        get_logger=lambda: Mock(), _publish_summary=Mock())
+    e._goal_failed = lambda x, y, kind, reason="aborted": (
+        FrontierExplorer._goal_failed(e, x, y, kind, reason))
+
+    FrontierExplorer._goal_failed(e, 0.0, 0.0, "home", "aborted")
+    assert sortie.phase == "RETURNING"
+    FrontierExplorer._goal_failed(e, 0.0, 0.0, "home", "aborted")
+
+    assert sortie.phase == "RETURN_FAILED"
+    assert sortie.reason_code == "RETURN_FAILED"
+    assert e.counts["home_failed"] == 2
+
+
+def test_unexplained_home_cancellation_consumes_bounded_return_attempts():
+    sortie = Sortie(budget_s=0, max_return_attempts=2)
+    sortie.start_return("battery reserve reached", "BATTERY_RESERVE")
+    e = _explorer_for_result(FrontierPolicy(), sortie)
+    e.active_goal = {"x": 0.0, "y": 0.0, "kind": "home",
+                     "watchdog_reason": None, "cancel_reason": None}
+
+    FrontierExplorer._done(e, _completed(5), 0.0, 0.0, "home")
+    assert sortie.phase == "RETURNING"
+    assert sortie.return_attempts_failed == 1
+    assert e.counts["home_failed"] == 1
+    assert e.counts["home_cancelled"] == 0
+
+    e.active_goal = {"x": 0.0, "y": 0.0, "kind": "home",
+                     "watchdog_reason": None, "cancel_reason": None}
+    FrontierExplorer._done(e, _completed(5), 0.0, 0.0, "home")
+    assert sortie.phase == "RETURN_FAILED"
+    assert sortie.reason_code == "RETURN_FAILED"

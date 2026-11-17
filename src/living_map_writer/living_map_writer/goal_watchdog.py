@@ -40,6 +40,17 @@ class WatchdogConfig:
     reset_jump_m: float = 1.0
 
     def __post_init__(self) -> None:
+        numeric = (self.progress_window_s, self.min_progress_m,
+                   self.rotation_grace_s, self.stall_timeout_s,
+                   self.goal_timeout_s, self.home_stall_timeout_s,
+                   self.home_timeout_s, self.max_recoveries,
+                   self.reset_jump_m)
+        try:
+            finite = all(math.isfinite(float(value)) for value in numeric)
+        except (TypeError, ValueError, OverflowError):
+            finite = False
+        if not finite:
+            raise ValueError("Watchdog distances, limits and timings must be finite")
         if self.progress_window_s <= 0 or self.min_progress_m <= 0:
             raise ValueError("Watchdog progress window and distance must be positive")
         if self.rotation_grace_s < 0 or self.reset_jump_m <= 0:

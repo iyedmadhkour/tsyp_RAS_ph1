@@ -19,6 +19,8 @@ failure is not reported as a fully mapped mine:
 """
 from __future__ import annotations
 
+import math
+
 REASON_TEXT = {
     "EXPLORED": "no reachable frontier left - mine mapped",
     "NO_REACHABLE_FRONTIER": "frontier cells remain but no safe reachable goal",
@@ -33,6 +35,8 @@ class Sortie:
     def __init__(self, budget_s: float = 420.0, empty_ticks_to_complete: int = 4,
                  max_return_attempts: int = 3) -> None:
         self.budget_s = float(budget_s)
+        if not math.isfinite(self.budget_s):
+            raise ValueError("Sortie budget must be finite")
         self.empty_ticks_to_complete = max(1, int(empty_ticks_to_complete))
         self.max_return_attempts = max(1, int(max_return_attempts))
         self.phase = "EXPLORING"

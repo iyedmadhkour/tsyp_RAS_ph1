@@ -48,6 +48,17 @@ class FrontierPolicyConfig:
     map_growth_threshold_m2: float = 2.0
 
     def __post_init__(self) -> None:
+        numeric = (self.zone_radius_m, self.max_attempts, self.max_rearms,
+                   self.max_visits, self.base_cooldown_s,
+                   self.max_cooldown_s, self.exhausted_expiry_s,
+                   self.visited_radius_m, self.visited_min_age_s,
+                   self.visited_expiry_s, self.map_growth_threshold_m2)
+        try:
+            finite = all(math.isfinite(float(value)) for value in numeric)
+        except (TypeError, ValueError, OverflowError):
+            finite = False
+        if not finite:
+            raise ValueError("Frontier policy distances and timings must be finite")
         if self.zone_radius_m <= 0 or self.visited_radius_m <= 0:
             raise ValueError("Frontier memory radii must be positive")
         if self.max_attempts < 1 or self.max_rearms < 0 or self.max_visits < 1:

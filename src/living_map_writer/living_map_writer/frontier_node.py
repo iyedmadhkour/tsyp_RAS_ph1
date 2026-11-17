@@ -478,6 +478,12 @@ class FrontierExplorer(Node):
         elif status == 5:
             if watchdog_reason is not None:
                 self._goal_failed(x, y, kind, f"watchdog_{watchdog_reason}")
+            elif (kind == "home" and cancel_reason is None and self.enabled
+                  and not self.failed and not self.stuck):
+                # A HOME goal canceled without a recorded intentional reason
+                # did not complete the safety-critical return. Count it toward
+                # the bounded return-failure policy instead of retrying forever.
+                self._goal_failed(x, y, kind, "unexpected_cancel")
             else:
                 if kind == "home":
                     self.counts["home_cancelled"] += 1

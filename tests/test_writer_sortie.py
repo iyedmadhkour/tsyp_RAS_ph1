@@ -1,3 +1,5 @@
+import pytest
+
 from living_map_writer.progress import StuckDetector
 from living_map_writer.sortie import Sortie
 
@@ -25,6 +27,12 @@ def test_budget_forces_return_and_repeated_failure_gives_up():
     assert sortie.phase == "RETURN_FAILED"
     sortie.arrived_home()
     assert sortie.phase == "RETURN_FAILED"
+
+
+@pytest.mark.parametrize("budget_s", [float("nan"), float("inf"), float("-inf")])
+def test_non_finite_sortie_budget_is_rejected_instead_of_silently_disabling_return(budget_s):
+    with pytest.raises(ValueError, match="finite"):
+        Sortie(budget_s=budget_s)
 
 
 def test_stuck_detector_needs_a_full_window_without_progress():

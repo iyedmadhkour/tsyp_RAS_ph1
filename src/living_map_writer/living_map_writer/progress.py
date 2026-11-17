@@ -16,6 +16,10 @@ class StuckDetector:
     def __init__(self, window_s: float = 45.0, min_progress_m: float = 0.3) -> None:
         self.window_s = float(window_s)
         self.min_progress_m = float(min_progress_m)
+        if not math.isfinite(self.window_s) or not math.isfinite(self.min_progress_m):
+            raise ValueError("Stuck detector window and progress threshold must be finite")
+        if self.min_progress_m <= 0:
+            raise ValueError("Stuck detector progress threshold must be positive")
         self.samples: deque[tuple[float, float, float]] = deque()
 
     def reset(self) -> None:
