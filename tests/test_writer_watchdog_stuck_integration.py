@@ -47,7 +47,8 @@ def test_intentional_pause_resets_stuck_window():
         assert not detector.update(float(t), 0.0, 0.0, driving=True)
     for t in range(4, 20):
         assert not detector.update(float(t), 0.0, 0.0, driving=False)
-    assert len(detector.samples) == 0
+    assert detector.evidence_s == 0.0
+    assert not detector.active
 
 
 def test_long_rotation_is_tolerated_then_watchdog_cancels_before_stuck():
@@ -60,7 +61,7 @@ def test_short_nav2_recovery_followed_by_progress_is_not_stuck():
     verdict, stuck_at, _, physical = _run_goal(recoveries=2, progress_every_s=5)
     assert verdict is None
     assert stuck_at is None
-    assert physical.samples
+    assert physical.evidence_s < physical.window_s
 
 
 def test_home_progress_does_not_trigger_either_detector():
@@ -85,8 +86,9 @@ def test_watchdog_falls_back_to_pose_when_nav_feedback_is_missing():
     assert watchdog.source == "pose"
 
 
-def test_delayed_odometry_and_command_expiry_remain_pr_integration_requirements():
-    """The current detector exposes neither command timestamps nor odom age."""
+def test_delayed_odometry_and_command_expiry_are_exposed_by_integrated_detector():
     detector = StuckDetector()
-    assert not hasattr(detector, "command")
-    assert not hasattr(detector, "odom_stale")
+    detector.set_active(True)
+    detector.command(0.0, 0.5, 0.0)
+    assert detector.command_state(2.0) == "stale"
+    assert detector.odom_stale(2.0)

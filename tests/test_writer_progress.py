@@ -19,4 +19,4 @@ def test_non_finite_or_non_positive_progress_threshold_is_rejected(min_progress_
 def test_finite_non_positive_window_keeps_the_existing_explicit_disable_behavior():
     detector = StuckDetector(window_s=0.0)
     assert not detector.update(1.0, 0.0, 0.0, driving=True)
-    assert len(detector.samples) == 0
+    assert not detector._is_stuck()

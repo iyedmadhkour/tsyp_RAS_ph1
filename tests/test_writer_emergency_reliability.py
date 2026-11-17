@@ -27,6 +27,7 @@ def writer():
         get_clock=lambda: SimpleNamespace(now=lambda: SimpleNamespace(to_msg=stamp)))
     for name in ["_state", "_go_down", "_become_stuck"]:
         setattr(w, name, MethodType(getattr(Writer, name), w))
+    w._sync_detector = lambda: False
     return w, now
 
 
