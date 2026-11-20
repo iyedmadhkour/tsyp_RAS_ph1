@@ -147,8 +147,8 @@ def test_external_cancellation_is_not_recorded_as_a_frontier_failure():
     assert e.sortie.phase == "EXPLORING"
 
 
-def test_unexplained_frontier_cancellation_is_counted_but_not_blacklisted():
-    """Policy intentionally keeps cancellation distinct; it may retry next tick."""
+def test_unexplained_frontier_cancellation_is_paced_without_becoming_failure():
+    """External cancellation cannot immediately resubmit the same frontier."""
     policy = FrontierPolicy()
     e = _explorer_for_result(policy)
     e.active_goal = {"x": 3.0, "y": 4.0, "kind": "frontier",
@@ -156,9 +156,14 @@ def test_unexplained_frontier_cancellation_is_counted_but_not_blacklisted():
 
     FrontierExplorer._done(e, _completed(5), 3.0, 4.0, "frontier")
 
-    assert policy.zones == []
+    assert len(policy.zones) == 1
+    assert policy.zones[0].attempts == 0
+    assert policy.zones[0].cooldown_until == 115.0
     assert e.counts["frontier_cancelled"] == 1
     assert policy.counts["cancel_cancelled"] == 1
+    assert policy.earliest_retry_s(100.0) == 115.0
+    assert policy.summary()["failure_zones"] == 0
+    assert policy.summary()["cancellation_only_zones"] == 1
 
 
 def test_watchdog_cancellation_is_recorded_as_a_frontier_failure():

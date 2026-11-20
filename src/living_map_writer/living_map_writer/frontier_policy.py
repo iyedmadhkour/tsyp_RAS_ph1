@@ -157,10 +157,14 @@ class FrontierPolicy:
         return zone
 
     def note_cancel(self, x: float, y: float, now: float,
-                    reason: str = "cancelled") -> None:
-        """A policy/external cancellation is not evidence of unreachability."""
+                    reason: str = "cancelled", retry_after_s: float = 0.0) -> None:
+        """Record cancellation separately from failure, optionally pacing retries."""
         self.counts["cancels"] += 1
         self.counts[f"cancel_{reason}"] += 1
+        if retry_after_s > 0:
+            zone = self.zone_for(x, y)
+            if not zone.exhausted:
+                zone.cooldown_until = max(zone.cooldown_until, now + retry_after_s)
 
     def note_success(self, x: float, y: float, now: float,
                      known_area_m2: float) -> VisitRecord:
@@ -230,7 +234,9 @@ class FrontierPolicy:
 
     def summary(self, now: float | None = None) -> dict:
         data = {
-            "failure_zones": len(self.zones),
+            "failure_zones": sum(zone.total_attempts > 0 for zone in self.zones),
+            "cancellation_only_zones": sum(zone.total_attempts == 0
+                                            for zone in self.zones),
             "visited_goals": len(self.visits),
             "counts": dict(self.counts),
         }

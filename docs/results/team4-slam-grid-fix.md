@@ -39,7 +39,8 @@ The completed workspace on this PC is `/home/iyed/livingmap-setup/writer-slam-5b
 ./scripts/test_slam_grid_extents.sh "$overlay/install"  # expected exit 0: eight passes
 ```
 
-For simulation, set `overlay` to the workspace actually built, then source environments in this order in a dedicated terminal:
+For simulation, set `overlay` to the workspace actually built, then either
+source environments in this order in a dedicated terminal:
 
 ```bash
 source scripts/_env.sh
@@ -53,7 +54,20 @@ ros2 pkg prefix slam_toolbox
 ros2 launch living_map_bringup demo.launch.py rviz:=false auto_explore:=false demo_fallback:=false speed:=normal
 ```
 
-Confirm the printed package prefix is the overlay's `install`, wait for readiness, then use the documented dashboard autonomous full-demo/return control. The validation observer used `/api/demo` with `{"action":"full_demo","outcome":"return"}` only after lifecycle, map, LiDAR and entrance-mask readiness. Stop with Ctrl-C and allow shutdown to complete. These settings apply only to that shell. A fresh shell sourced with just the normal project environment uses stock ROS again. Do not use `scripts/run_demo.sh` for this overlay validation: it sources the base environment again. Do not automatically enable this experimental dependency overlay for physical hardware.
+Confirm the printed package prefix is the overlay's `install`, wait for readiness, then use the documented dashboard autonomous full-demo/return control. The validation observer used `/api/demo` with `{"action":"full_demo","outcome":"return"}` only after lifecycle, map, LiDAR and entrance-mask readiness. Stop with Ctrl-C and allow shutdown to complete. These settings apply only to that shell. A fresh shell sourced with just the normal project environment uses stock ROS again.
+
+The standard demo entry point now accepts the overlay explicitly without
+changing the default runtime:
+
+```bash
+export LIVING_MAP_SLAM_OVERLAY="$overlay/install"
+./scripts/run_demo.sh --check-slam-overlay # verifies prefix, does not start Gazebo
+./scripts/run_demo.sh --speed normal
+```
+
+The first command was verified against the existing validated overlay. The
+second starts the ordinary bounded demo and can be used after readiness checks.
+Do not set this variable automatically for physical hardware.
 
 During both fresh missions, `/proc/<slam-pid>/exe` and `/proc/<slam-pid>/maps` confirmed that `async_slam_toolbox_node`, `libasync_slam_toolbox.so`, `libtoolbox_common.so` and `libkartoSlamToolbox.so` all came from the isolated install. Package-prefix selection alone was not treated as proof. The renderer check reports **D3D12 (NVIDIA GeForce RTX 4060 Laptop GPU), Accelerated: yes**, OpenGL 4.6.
 

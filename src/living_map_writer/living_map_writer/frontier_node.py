@@ -504,7 +504,15 @@ class FrontierExplorer(Node):
                     self.counts["home_cancelled"] += 1
                 else:
                     self.counts["frontier_cancelled"] += 1
-                    self.policy.note_cancel(x, y, now, cancel_reason or "cancelled")
+                    # An unexplained external cancel is not evidence that the
+                    # frontier is unreachable, but immediate reselection can
+                    # churn on the same Nav2 action. Apply one base cooldown;
+                    # explicit policy cancels keep their existing semantics.
+                    retry_after = (self.policy.cfg.base_cooldown_s
+                                   if cancel_reason is None else 0.0)
+                    self.policy.note_cancel(x, y, now,
+                                            cancel_reason or "cancelled",
+                                            retry_after_s=retry_after)
                 self.get_logger().info(
                     f"{kind} goal at ({x:.2f},{y:.2f}) cancelled externally "
                     f"({cancel_reason or 'no reason'}); not counted as failure")
