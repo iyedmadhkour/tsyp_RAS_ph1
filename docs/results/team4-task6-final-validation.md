@@ -4,19 +4,13 @@ Date: 2026-11-17
 Branch: `feature/team4-writer-dependencies-and-footprint-boundary`
 Local HEAD: `2bbc665752917c3d394aaf1953754f80f8ada872`
 
-## Latest status: COMPLETE for Task 6 software retry lifecycle; hardware acceptance remains open
+## Original checkpoint status (2026-11-17): PARTIAL
 
 Task 6 production changes are built and covered by deterministic tests. The
 controlled r3 Gazebo run exercised the navigation watchdog and a first frontier
 failure. The follow-up r4 scenario for repeated same-zone failures and cooldown
 waiting was prepared and safety-reviewed, but could not be launched in this
 execution environment. No result is inferred for unrun behavior.
-
-## Original checkpoint status (2026-11-17): PARTIAL
-
-The checkpoint below records the original r3 evidence and the r4 scenario that
-was prepared but not yet run at that time. Later local continuations supersede
-its status; the historical measurements remain valid for their scenarios.
 
 ## Verified controlled Gazebo run
 
@@ -136,6 +130,8 @@ the 120 s expiry and bounded reactivation by time/map growth. The full offline
 suite passed **460 tests** with the same three known async API tests deselected;
 the isolated Jazzy build completed 12 packages. This status was superseded by
 the bounded Gazebo run below.
+
+## Latest status: COMPLETE for Task 6 software retry lifecycle; hardware acceptance remains open
 
 ## Final software validation — 2026-11-20
 
