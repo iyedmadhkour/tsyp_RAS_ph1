@@ -1,6 +1,6 @@
 # Task 6 — Writer exploration robustness (2026-11-17)
 
-Status: **PARTIAL**. Bounded failure memory, truthful termination codes and a
+Initial status: **PARTIAL**. Bounded failure memory, truthful termination codes and a
 navigation-progress watchdog are implemented, tested and exercised in three
 Gazebo missions without a safety regression. The watchdog and the
 cooldown-wait branch were not triggered by those missions; they are covered
@@ -374,3 +374,47 @@ and map-growth reactivation. The full offline suite now reports **460 passed,
 3 known hanging async API tests deselected**; the isolated ROS build completed
 12 packages. Task 6 remains **PARTIAL** until a controlled Gazebo scenario
 observes expiry/re-activation or a safe test harness for that path is prepared.
+
+## Expiry and reactivation Gazebo follow-up — 2026-11-20
+
+The 120 s behavior was reachable in unit tests but not in the explorer
+lifecycle: after the last eligible frontier was exhausted,
+`_no_candidate()` completed the sortie after four empty checks and sent the
+Writer HOME before the exhausted memory could expire. The node now waits while
+the candidate is covered by an exhausted zone with a re-arm still available.
+Battery return, the configured sortie budget, and terminal behavior after the
+two-rearm limit are unchanged. Regression tests cover waiting through expiry,
+the post-rearm cooldown, candidate re-selection, and final exhaustion.
+
+A bounded Gazebo rerun used the isolated Jazzy overlay built on 2026-11-20 and
+temporary diagnostic values only: 10 m failure-zone radius, 1,000 m² map-growth
+threshold, production `min_cluster_cells=5`, three attempts, 15/30 s cooldowns,
+120 s expiry and two re-arms. Production defaults remain 1.5 m / 2.0 m².
+
+- Watchdog cancellations caused failures 1/3, 2/3 and 3/3 at simulation times
+  50.072, 92.032 and 152.012 s. The first two waits reported 13 s and 28 s
+  remaining from the configured 15 s and 30 s cooldowns.
+- The exhausted zone remained pending instead of ending the sortie. A frontier
+  in that zone was selected after expiry and re-arm cooldown, 139.99 simulated
+  seconds after exhaustion; a fourth fault was recorded as a fresh attempt 1/3
+  at simulation time 316.112 s.
+- Four watchdog cancellations were observed. Maximum injected-fault
+  displacement was 0.0433 m, below the 0.25 m safety bound. The runner stopped
+  after the fourth failure to avoid another retry. This run did not claim HOME;
+  prior HOME and battery-return evidence remains unchanged.
+- Launch and injector exited 0; the monitor was intentionally interrupted by
+  the safety stop; before/after Git state matched.
+
+The first post-fix diagnostic attempt used `min_cluster_cells=1000`; it
+filtered the remaining candidates and ended with `NO_REACHABLE_FRONTIER` before
+expiry. That run is preserved separately and is not counted as a pass. The
+successful run used the production cluster threshold.
+
+Evidence, separate from r3 and prior r4 runs:
+
+- `/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/r4-expiry-fix-attempt-1/`
+- `/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/r4-expiry-reactivation-pass/`
+
+**Task 6 retry/cooldown/exhaustion/time-expiry/reactivation software scenario:
+COMPLETE in deterministic tests and bounded Gazebo.** Hardware command leases
+and sensor freshness remain outside this simulation result.

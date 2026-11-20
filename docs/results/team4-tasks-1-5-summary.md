@@ -4,7 +4,7 @@ Validated on Ubuntu 24.04.5 WSL2 with ROS 2 Jazzy, Nav2 1.3.13 and SLAM Toolbox 
 
 | Task | Status | Implemented change / verified result | Remaining limitation |
 | --- | --- | --- | --- |
-| 1 — Radio and beacons | PARTIAL | Persist validated candidate records before changing inventory/sequence; preserve retry eligibility after rejected/failed relay writes; keep a durable new drop if the predecessor update fails. | Physical RF, dispenser acknowledgement/jams and automatic predecessor-link repair remain unvalidated or unimplemented. |
+| 1 — Radio and beacons | PARTIAL | Persistence and retry handling; predecessor-link repair now reconciles durable successor records and refuses ambiguous rewrites. | Physical RF, dispenser acknowledgement/jams and radio-level predecessor repair remain unvalidated. |
 | 2 — Battery | PASS in simulation | Measure motor travel from odometry, so a SLAM map correction does not spend motor energy; preserve the documented HOME reserve and latched return request. | Synthetic battery model, fixed route factor and ideal odometry require hardware calibration. |
 | 3 — Emergency | PASS in tested simulation | Repeated DESTROYED requests preserve the first 3-second dying-gasp deadline; block late new/rewritten Writer deployment after failure while existing beacons continue. | Restart assumes the old Writer has stopped; physical failure, radio and dispenser behavior are untested. |
 | 4 — Navigation | PARTIAL | A* remains primary; only NO_VALID_PATH (208) permits Dijkstra fallback. Default recoveries, collision checks and entrance protection remain. | Some unreachable/planner failures remain; varied mission routes do not establish general reliability improvement. |
@@ -47,7 +47,7 @@ These are repeated unchanged-SLAM results, not a successful mapping-fix comparis
 - Final Gazebo used NVIDIA D3D12, documented `full_demo` / return controls, an isolated ROS domain and isolated runtime storage. HOME, 7 successful goals, no aborts, 575 published-footprint samples, 3,542 pose samples and 1,410 LiDAR messages were recorded. All 216 inspected raw entrance-mask points were lethal; no sampled footprint crossed the boundary. This is not proof of continuous swept-volume safety.
 - Reviewed all accumulated source/test/config changes and commit contents. No known new safety regression was identified. Entrance geometry/masks, live collision checks, battery reserve and recovery actions were not weakened. No ROS message/service schema or other-team source changed. External ComputePathToPose clients must now provide a planner_id; the normal Writer tree supplies it.
 - Secret-pattern scan of changed file contents in every new commit and manual diff review found no credentials. Only source, configuration, tests and concise documentation are selected; raw logs, captures, runtime stores, build/install outputs and virtual environments remain outside the commits. Pattern scanning cannot prove absence of every possible secret.
-- All owned Gazebo/ROS and test processes stopped after final validation. No package installation, system/Windows/driver change, physical robot operation, destructive cleanup or history rewrite occurred. **Tasks 6 and 7 were not started.**
+- At the time of this 2026-11-16 report, Tasks 6 and 7 had not started. Their subsequent validation is recorded in the later Task 6, STUCK and failure-scenario reports.
 
 ## Saved commits and files
 

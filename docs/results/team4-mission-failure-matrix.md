@@ -14,7 +14,7 @@ hardware remains untested.
 | Beacon deployment response is delayed, rejected or times out | Current beacon manager directly handles simulated logical deployment; no physical acknowledgment client exists. Test-only service mock exercises delay, rejection, timeout and late responses. | **Mock coverage only.** Real dispenser timeout/retry semantics require Team 1 contract. |
 | Battery estimate suddenly drops | Current Writer battery is an internal model, not external telemetry. Mock accepts an abrupt percent change; no production telemetry input consumes it. | **Hardware gap.** Threshold response to sudden measured drop is not validated; do not infer it from the continuous simulation energy model. |
 | HOME temporarily unreachable | HOME uses longer watchdog bounds and configured bounded return attempts. An unexplained canceled HOME goal now consumes one bounded attempt; explicitly intentional cancels remain separate. | **Bounded offline behavior.** Normal route and r3 failure/battery-return simulations reached HOME. Transient versus permanent HOME failure remains unclassified. |
-| Repeated frontier failures | Policy bounds attempts and cooldowns; deterministic tests cover 15 s, 30 s, exhaustion and re-arm. | **PASS in unit tests; PARTIAL in Gazebo.** A test-only 10 m-zone r4 diagnostic recorded attempts 1/3–3/3, waits of 15 s/30 s, and exhaustion. The 120 s time-expiry/re-arm was not verified. |
+| Repeated frontier failures | Policy bounds attempts, cooldowns, exhaustion and two re-arms. | **PASS in deterministic tests and bounded Gazebo.** r4 recorded attempts 1/3–3/3, 15 s/30 s cooldowns, exhaustion, time expiry, a post-rearm cooldown, and a same-zone attempt 1/3 after expiry. |
 | Unexpected external action cancellation | Known internal cancellations preserve their reason and are not marked unreachable. An unexplained canceled HOME goal consumes a bounded return attempt. An unexplained canceled frontier remains cancellation-only and can be selected again on the next tick. | **Partial.** HOME is bounded; repeated frontier cancellations can churn. Define whether to apply separate frontier backoff or bounded escalation. |
 | Cancellation acknowledgment/result never arrives | `_cancel()` sends asynchronously; `busy` clears in the result callback, and the cancel future is not monitored. | **Unverified edge.** If Nav2 disappears after accepting the goal, a missing result could leave the explorer busy. Needs ROS action reproduction and a defined recovery policy. |
 
@@ -27,7 +27,7 @@ with three known hanging ASGI cases deselected. `living_map_interfaces` and
 offline tests, not RF, battery hardware or dispenser tests. At the time of the
 initial 2026-11-18 review, r3 was the only controlled watchdog simulation;
 the later Gazebo runs are summarized below. Cooldown time-expiry and re-arm
-remain unverified in simulation.
+were then unverified in simulation.
 
 ## 2026-11-20 continuation
 
@@ -35,11 +35,12 @@ The corrected fallback route completed the bounded normal-navigation scenario
 without false STUCK and reached HOME. Forward-drive immobilization published
 STUCK with stationary odometry. A separate static-Writer Nav2 run logged a
 watchdog cancellation followed by STUCK. The isolated ROS build completed 12
-packages; the full offline suite passed **460** with the three known hanging
-async API tests deselected. The r4 diagnostic above confirms the three retry
-attempts and cooldown waits under temporary configuration, but not time expiry
-or re-arm. Hardware freshness, localization, command-mux and dispenser gaps
-remain as listed in the matrix.
+packages; the full offline suite passed **463** with the three known hanging
+async API tests deselected. The completed r4 run confirmed three retries and
+cooldowns, then expiry and same-zone reactivation after 139.99 simulated
+seconds. A Task 1 follow-up also added tested repair for a durable beacon drop
+whose predecessor write initially fails. Hardware freshness, localization,
+command-mux, RF and dispenser gaps remain as listed in the matrix.
 
 Do not begin physical integration until Team 1 confirms sensor timestamps and
 frames, motor stop behavior, battery telemetry and beacon acknowledgment. Keep

@@ -4,13 +4,19 @@ Date: 2026-11-17
 Branch: `feature/team4-writer-dependencies-and-footprint-boundary`
 Local HEAD: `2bbc665752917c3d394aaf1953754f80f8ada872`
 
-## Status: PARTIAL
+## Latest status: COMPLETE for Task 6 software retry lifecycle; hardware acceptance remains open
 
 Task 6 production changes are built and covered by deterministic tests. The
 controlled r3 Gazebo run exercised the navigation watchdog and a first frontier
 failure. The follow-up r4 scenario for repeated same-zone failures and cooldown
 waiting was prepared and safety-reviewed, but could not be launched in this
 execution environment. No result is inferred for unrun behavior.
+
+## Original checkpoint status (2026-11-17): PARTIAL
+
+The checkpoint below records the original r3 evidence and the r4 scenario that
+was prepared but not yet run at that time. Later local continuations supersede
+its status; the historical measurements remain valid for their scenarios.
 
 ## Verified controlled Gazebo run
 
@@ -115,8 +121,9 @@ watchdog cancellation, retries 1/3–3/3, both cooldown waits (15 s and 30 s),
 and `FRONTIERS_EXHAUSTED`. Measured displacement during each injected fault
 stayed below 0.04 m.
 
-The time-expiry/re-arm phase was not verified. After attempt 3, the isolated
-runner needed to lower `min_cluster_cells` to expose other frontiers while the
+At the 2026-11-20 continuation, the time-expiry/re-arm phase had not been
+verified. After attempt 3, the isolated runner needed to lower
+`min_cluster_cells` to expose other frontiers while the
 120 s expiry elapsed. ROS parameter discovery returned `Node not found`, a
 follow-up command timed out, and another trial stopped at the injector's 0.25 m
 movement limit. All runs used separate temporary configurations, stopped
@@ -127,5 +134,24 @@ records are in
 The production 1.5 m / 2.0 m² defaults are unchanged. Deterministic tests cover
 the 120 s expiry and bounded reactivation by time/map growth. The full offline
 suite passed **460 tests** with the same three known async API tests deselected;
-the isolated Jazzy build completed 12 packages. Overall Task 6 remains
-**PARTIAL** until Gazebo verifies time-based expiry and reactivation.
+the isolated Jazzy build completed 12 packages. This status was superseded by
+the bounded Gazebo run below.
+
+## Final software validation — 2026-11-20
+
+The explorer lifecycle now waits for an eligible exhausted frontier zone to
+expire instead of completing the sortie after four empty checks. The 10 m
+diagnostic-zone Gazebo run recorded attempts 1/3–3/3, 15/30 s cooldowns,
+exhaustion, time re-arm after 120 s, the post-rearm 15 s cooldown, and a
+same-zone attempt 1/3. Reactivation occurred 139.99 simulated seconds after
+exhaustion. Maximum injected-fault displacement was 0.0433 m. The fourth fault
+was deliberately stopped after watchdog cancellation to avoid an additional
+retry. The run did not claim HOME; existing normal and battery-return HOME
+evidence was not repeated.
+
+The diagnostic used test-only 10 m / 1,000 m² values, with the production
+`min_cluster_cells=5`; project defaults are unchanged. The isolated Jazzy build
+finished 12 packages. The updated full offline suite passed **463**, with the
+same three known hanging async API tests deselected. Run artifacts are
+preserved in
+`/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/r4-expiry-reactivation-pass/`.
