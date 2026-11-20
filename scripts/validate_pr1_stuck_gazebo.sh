@@ -6,7 +6,7 @@ set -Eeuo pipefail
 # workspace's build/install/log/runtime directories or saved evidence.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
-EXPECTED_BRANCH="review/pr1-writer-stuck-detection"
+EXPECTED_BRANCHES=(review/pr1-writer-stuck-detection phase2/reliability-optimization-20261120)
 EXPECTED_COMMIT="0f79291f1bcddaa750462de7b7ac425eaa540b8e"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 RUN_ROOT="${LIVINGMAP_VALIDATION_ROOT:-$HOME/livingmap-pr1-validation}/$STAMP"
@@ -19,12 +19,27 @@ need() { command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"
 
 [[ -d "$ROOT/.git" ]] || die "run this script from the LivingMap checkout"
 cd "$ROOT"
-[[ "$(git branch --show-current)" == "$EXPECTED_BRANCH" ]] || die "expected branch $EXPECTED_BRANCH"
+CURRENT_BRANCH="$(git branch --show-current)"
+branch_allowed=false
+for expected_branch in "${EXPECTED_BRANCHES[@]}"; do
+  [[ "$CURRENT_BRANCH" == "$expected_branch" ]] && branch_allowed=true
+done
+[[ "$branch_allowed" == true ]] || die "unexpected branch: $CURRENT_BRANCH"
 git merge-base --is-ancestor "$EXPECTED_COMMIT" HEAD || die "HEAD is not based on expected review commit $EXPECTED_COMMIT"
 while IFS= read -r status; do
   path="${status:3}"
   case "$path" in
     scripts/validate_pr1_stuck_gazebo.sh|\
+    scripts/validate_pr1_external_cancel_gazebo.sh|\
+    scripts/benchmark_frontier.py|\
+    config/nav2/writer.yaml|\
+    src/living_map_writer/living_map_writer/frontier.py|\
+    src/living_map_writer/living_map_writer/frontier_node.py|\
+    src/living_map_writer/living_map_writer/pose_freshness.py|\
+    tests/test_frontier.py|\
+    tests/test_writer_navigation.py|\
+    docs/results/team4-phase2-baseline.md|\
+    docs/results/evidence/team4-phase2-baseline-20261120/*|\
     src/living_map_writer/living_map_writer/demo_fallback.py|\
     src/living_map_sim/worlds/mine.sdf|\
     tests/test_writer_stuck_integration_regressions.py)
@@ -86,7 +101,7 @@ export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
 export PYTHONDONTWRITEBYTECODE=1
 
 {
-  printf 'branch=%s\n' "$EXPECTED_BRANCH"
+  printf 'branch=%s\n' "$CURRENT_BRANCH"
   printf 'commit=%s\n' "$EXPECTED_COMMIT"
   printf 'ros_distro=%s\n' "$ROS_DISTRO"
   printf 'started=%s\n' "$(date -Is)"

@@ -1,6 +1,54 @@
 import math
+import random
 
-from living_map_writer.frontier import choose_frontier, clusters, frontier_cells
+from living_map_writer.frontier import (
+    _dilated_occupied_rows, choose_frontier, clusters, frontier_cells,
+)
+
+
+def test_frontier_cells_match_four_neighbor_reference_on_seeded_maps():
+    rng = random.Random(20261120)
+    for width, height in ((9, 7), (31, 19)):
+        data = [rng.choice((-1, 0, 20, 21, 65, 100))
+                for _ in range(width * height)]
+        expected = []
+        for y in range(1, height - 1):
+            for x in range(1, width - 1):
+                index = y * width + x
+                if (0 <= data[index] <= 20 and
+                    (data[index - 1] < 0 or data[index + 1] < 0
+                     or data[index - width] < 0 or data[index + width] < 0)):
+                    expected.append((x, y))
+        assert frontier_cells(data, width, height) == expected
+
+
+def test_bit_row_obstacle_dilation_matches_original_circular_offsets():
+    rng = random.Random(117)
+    for width, height, resolution, clearance in (
+            (13, 9, 0.1, 0.0), (21, 17, 0.05, 0.35),
+            (27, 14, 0.05, 0.49), (16, 11, 0.2, 0.7)):
+        data = [rng.choice((-1, 0, 20, 21, 65, 100))
+                for _ in range(width * height)]
+        # Exercise clipping at every map edge and corner.
+        for x, y in ((0, 0), (width - 1, 0), (0, height - 1),
+                     (width - 1, height - 1)):
+            data[y * width + x] = 100
+        radius = math.ceil(clearance / resolution)
+        offsets = [(dx, dy) for dy in range(-radius, radius + 1)
+                   for dx in range(-radius, radius + 1)
+                   if math.hypot(dx, dy) * resolution <= clearance]
+        expected = set()
+        for index, value in enumerate(data):
+            if value > 20:
+                x, y = index % width, index // width
+                expected.update((x + dx, y + dy) for dx, dy in offsets)
+        actual_rows = _dilated_occupied_rows(data, width, height,
+                                              resolution, clearance)
+        actual = {(x, y) for y, row in enumerate(actual_rows)
+                  for x in range(width) if (row >> x) & 1}
+        expected_in_map = {(x, y) for x, y in expected
+                           if 0 <= x < width and 0 <= y < height}
+        assert actual == expected_in_map
 def test_frontier_found():
  w=h=7;d=[100]*(w*h)
  for y in range(2,5):

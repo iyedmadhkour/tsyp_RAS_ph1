@@ -5,7 +5,7 @@ set -Eeuo pipefail
 # build and the explicitly supplied patched SLAM overlay. Existing evidence is
 # never deleted or reused.
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
-EXPECTED_BRANCH="review/pr1-writer-stuck-detection"
+EXPECTED_BRANCHES=(review/pr1-writer-stuck-detection phase2/reliability-optimization-20261120)
 EXPECTED_BASE="0fdf3449a5df970f74dccce922aa650c4b687c55"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 EVIDENCE_BASE="${LIVINGMAP_VALIDATION_ROOT:-$HOME/livingmap-pr1-evidence-20261120}"
@@ -22,7 +22,12 @@ need() { command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"
 
 [[ -d "$ROOT/.git" ]] || die "run from the LivingMap checkout"
 cd "$ROOT"
-[[ "$(git branch --show-current)" == "$EXPECTED_BRANCH" ]] || die "unexpected branch"
+CURRENT_BRANCH="$(git branch --show-current)"
+branch_allowed=false
+for expected_branch in "${EXPECTED_BRANCHES[@]}"; do
+  [[ "$CURRENT_BRANCH" == "$expected_branch" ]] && branch_allowed=true
+done
+[[ "$branch_allowed" == true ]] || die "unexpected branch: $CURRENT_BRANCH"
 git merge-base --is-ancestor "$EXPECTED_BASE" HEAD || die "expected review checkpoint is not an ancestor"
 [[ -f /opt/ros/jazzy/setup.bash ]] || die "ROS 2 Jazzy is unavailable"
 [[ -f "$SLAM_OVERLAY/local_setup.bash" ]] || die "validated SLAM overlay missing: $SLAM_OVERLAY"
@@ -88,7 +93,7 @@ export MESA_D3D12_DEFAULT_ADAPTER_NAME="${MESA_D3D12_DEFAULT_ADAPTER_NAME:-NVIDI
 export GZ_SIM_RESOURCE_PATH="$ROOT/src/living_map_sim/models${GZ_SIM_RESOURCE_PATH:+:$GZ_SIM_RESOURCE_PATH}"
 
 {
-  printf 'branch=%s\nbase=%s\nhead=%s\n' "$EXPECTED_BRANCH" "$EXPECTED_BASE" "$(git rev-parse HEAD)"
+  printf 'branch=%s\nbase=%s\nhead=%s\n' "$CURRENT_BRANCH" "$EXPECTED_BASE" "$(git rev-parse HEAD)"
   printf 'started=%s\nros_distro=%s\nros_domain_id=%s\nrun_root=%s\nslam_overlay=%s\n' \
     "$(date -Is)" "${ROS_DISTRO:-unknown}" "$ROS_DOMAIN_ID" "$RUN_ROOT" "$SLAM_OVERLAY"
 } | tee "$RUN_ROOT/manifest.txt"

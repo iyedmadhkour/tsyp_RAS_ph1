@@ -180,6 +180,8 @@
     # Bound translational pose error at the entrance for both candidate goals
     # and the private lethal mask. Hardware integration must verify this bound.
     entrance_position_uncertainty_xy: 0.05
+    # Do not start a new frontier from an old map transform/odometry fallback.
+    odom_fallback_max_age_s: 0.5
     # Task 6 frontier lifecycle. A failed goal gets a bounded number of
     # attempts, an exponential cooldown, then an expiry. Time or substantial
     # map growth re-arms the zone a bounded number of times; a region is never

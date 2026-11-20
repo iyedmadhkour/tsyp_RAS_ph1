@@ -1,0 +1,55 @@
+{
+  "baseline_commit": "8714209b2045f45963fde0715815d58d76f789d4",
+  "configuration_sha256": "69461f53bceea11a231ce8a6e25b17e35186622bb3fa5336e6e820de35d769da",
+  "equivalent_selector_outputs": true,
+  "maps": [
+    {
+      "baseline_median_ms": 43.06686,
+      "baseline_p95_ms": 50.041283,
+      "map_file": "maps/map-0002-periodic.npz",
+      "map_sha256": "cbd08b8bdef1e8d8c3abfa60787905990f17371d9f77c450dedccf18c3854577",
+      "median_reduction_percent": 47.42,
+      "optimized_median_ms": 22.645173,
+      "optimized_p95_ms": 26.710577,
+      "selected_xy_identical": true,
+      "selector_diagnostics_identical": true,
+      "shape_width_height": [
+        284,
+        194
+      ]
+    },
+    {
+      "baseline_median_ms": 83.814953,
+      "baseline_p95_ms": 88.53728,
+      "map_file": "maps/map-0015-periodic.npz",
+      "map_sha256": "35aaecbad65aee019e045a6ed196f00fb3eb332c5597a687e1ffe125b8c4f86f",
+      "median_reduction_percent": 54.37,
+      "optimized_median_ms": 38.24326,
+      "optimized_p95_ms": 46.895243,
+      "selected_xy_identical": true,
+      "selector_diagnostics_identical": true,
+      "shape_width_height": [
+        371,
+        195
+      ]
+    },
+    {
+      "baseline_median_ms": 158.993334,
+      "baseline_p95_ms": 170.703733,
+      "map_file": "maps/map-0030-periodic.npz",
+      "map_sha256": "35df3dc869d2a3e53773123b2fbfa08684c0a63e89bbff0ed0184af3b31361a3",
+      "median_reduction_percent": 54.05,
+      "optimized_median_ms": 73.053357,
+      "optimized_p95_ms": 77.584111,
+      "selected_xy_identical": true,
+      "selector_diagnostics_identical": true,
+      "shape_width_height": [
+        477,
+        195
+      ]
+    }
+  ],
+  "optimized_source_sha256": "8cbcd5d0f9be917be569dbcd2d041167098c45a5901c2ec7c3d2f90e905c9d99",
+  "trials_per_map": 15,
+  "warmups_per_map": 2
+}

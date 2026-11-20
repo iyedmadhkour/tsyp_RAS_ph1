@@ -12,6 +12,7 @@ from living_map_writer.frontier_node import FrontierExplorer
 from living_map_writer.frontier_policy import FrontierPolicy
 from living_map_writer.sortie import Sortie
 from living_map_writer.entrance import padded_footprint
+from living_map_writer.pose_freshness import pose_stamp_is_fresh
 
 
 @pytest.mark.parametrize("wall_gap", [0.40, 0.80])
@@ -57,6 +58,64 @@ def test_frontier_selection_leaves_room_for_the_padded_robot_to_turn(wall_gap):
         _, y, kind = e._send_goal.call_args.args
         assert y - .05 >= radius
         assert kind == "frontier"
+
+
+@pytest.mark.parametrize("stamp,expected", [
+    (9.5, True), (9.5001, True), (9.4999, False), (10.0, True),
+    (10.001, False), (8.0, False), (math.nan, False),
+])
+def test_pose_timestamp_freshness_rejects_old_future_and_nonfinite(stamp, expected):
+    assert pose_stamp_is_fresh(10.0, stamp, 0.5) is expected
+    assert not pose_stamp_is_fresh(10.0, stamp, 0.0)
+
+
+def test_stale_transform_falls_back_only_to_fresh_odometry():
+    from tf2_ros import TransformException
+
+    e = SimpleNamespace(
+        _now_s=lambda: 10.0,
+        get_parameter=lambda _: SimpleNamespace(value=0.5),
+        tf_buffer=Mock(), odom_fallback=(2.0, 3.0),
+        odom_fallback_stamp_s=9.7, stale_pose_reported=False,
+        get_logger=lambda: Mock(),
+    )
+    e.tf_buffer.lookup_transform.side_effect = TransformException("missing transform")
+    assert FrontierExplorer.map_pose(e) == (2.0, 3.0)
+    e.odom_fallback_stamp_s = 9.49
+    assert FrontierExplorer.map_pose(e) is None
+    assert e.stale_pose_reported
+
+
+def test_stale_localization_does_not_start_a_frontier_goal():
+    e = SimpleNamespace(
+        _now_s=lambda: 10.0, last_tick_s=None, enabled=True, failed=False,
+        stuck=False, busy=False, map=object(), nav=SimpleNamespace(server_is_ready=lambda: True),
+        sortie=Sortie(budget_s=600), policy=Mock(), known_area_m2=0.0,
+        counts=Counter(), _publish_state=Mock(), map_pose=lambda: None,
+        _publish_summary=Mock(), _send_goal=Mock(), get_logger=lambda: Mock(),
+        last_stale_pose_summary_s=None,
+    )
+    e.sortie.phase = "EXPLORING"
+    FrontierExplorer.tick(e)
+    assert e.counts["pose_unavailable"] == 1
+    e._send_goal.assert_not_called()
+    e.policy.visited_points.assert_not_called()
+
+
+def test_stale_localization_does_not_break_active_goal_watchdog():
+    e = SimpleNamespace(
+        active_goal={"x": 8.0, "y": 9.0, "watchdog_reason": None,
+                     "cancel_reason": None, "last_watchdog_pose": (2.0, 3.0)},
+        map_pose=lambda: None, angular_z=0.0, feedback_distance=4.0,
+        feedback_recoveries=0, watchdog=Mock(), counts=Counter(),
+        _cancel=Mock(), get_logger=lambda: Mock(),
+    )
+    e.watchdog.update.return_value = None
+
+    FrontierExplorer._update_watchdog(e, 12.0)
+
+    e.watchdog.update.assert_called_once_with(12.0, 4.0, 0, 2.0, 3.0, False)
+    assert e.counts["watchdog_pose_unavailable"] == 1
 
 
 def test_transit_doorway_does_not_require_in_place_rotation():

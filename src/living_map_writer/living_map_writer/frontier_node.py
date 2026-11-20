@@ -21,6 +21,7 @@ from .frontier import choose_frontier, frontier_cells
 from .entrance import padded_footprint, rotation_safe_center_x
 from .frontier_policy import FrontierPolicy, FrontierPolicyConfig
 from .goal_watchdog import GoalWatchdog, WatchdogConfig
+from .pose_freshness import pose_stamp_is_fresh
 from .sortie import Sortie
 
 
@@ -37,6 +38,7 @@ class FrontierExplorer(Node):
         super().__init__("frontier_explorer", namespace="/writer")
         self.map: OccupancyGrid | None = None
         self.odom_fallback = (0.0, 0.0)
+        self.odom_fallback_stamp_s: float | None = None
         self.angular_z = 0.0
         self.busy = False
         self.failed = False
@@ -49,6 +51,8 @@ class FrontierExplorer(Node):
         self.known_area_m2 = 0.0
         self.counts: Counter[str] = Counter()
         self.last_wait_log_key: float | None = None
+        self.stale_pose_reported = False
+        self.last_stale_pose_summary_s: float | None = None
         self.behavior_tree = str(Path(get_package_share_directory("living_map_writer"))
                                  / "behavior_trees" / "navigate_with_planner_fallback.xml")
         if not Path(self.behavior_tree).is_file():
@@ -66,6 +70,7 @@ class FrontierExplorer(Node):
         self.declare_parameter("footprint_padding", 0.01)
         self.declare_parameter("goal_tolerance_xy", 0.25)
         self.declare_parameter("entrance_position_uncertainty_xy", 0.0)
+        self.declare_parameter("odom_fallback_max_age_s", 0.5)
         # Frontier lifecycle (Task 6). See docs/results/team4-task6-exploration.md.
         self.declare_parameter("frontier_zone_radius_m", 1.5)
         self.declare_parameter("frontier_max_attempts", 3)
@@ -151,14 +156,29 @@ class FrontierExplorer(Node):
 
     def on_odom(self, msg: Odometry) -> None:
         self.odom_fallback = (msg.pose.pose.position.x, msg.pose.pose.position.y)
+        self.odom_fallback_stamp_s = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
         self.angular_z = float(msg.twist.twist.angular.z)
 
-    def map_pose(self) -> tuple[float, float]:
+    def map_pose(self) -> tuple[float, float] | None:
+        now = self._now_s()
+        max_age = float(self.get_parameter("odom_fallback_max_age_s").value)
         try:
             transform = self.tf_buffer.lookup_transform("map", "writer/base_link", Time())
-            return transform.transform.translation.x, transform.transform.translation.y
+            stamp = transform.header.stamp.sec + transform.header.stamp.nanosec / 1e9
+            if pose_stamp_is_fresh(now, stamp, max_age):
+                self.stale_pose_reported = False
+                return transform.transform.translation.x, transform.transform.translation.y
         except TransformException:
+            pass
+        if (self.odom_fallback_stamp_s is not None
+                and pose_stamp_is_fresh(now, self.odom_fallback_stamp_s, max_age)):
+            self.stale_pose_reported = False
             return self.odom_fallback
+        if not self.stale_pose_reported:
+            self.get_logger().warning(
+                "No fresh map transform or odometry pose; waiting before selecting a goal")
+            self.stale_pose_reported = True
+        return None
 
     def _cancel(self, reason: str) -> None:
         if self.goal_handle is not None:
@@ -253,7 +273,15 @@ class FrontierExplorer(Node):
         if self.sortie.phase != "EXPLORING":
             return
 
-        robot_x, robot_y = self.map_pose()
+        pose = self.map_pose()
+        if pose is None:
+            self.counts["pose_unavailable"] += 1
+            if (self.last_stale_pose_summary_s is None
+                    or now - self.last_stale_pose_summary_s >= 5.0):
+                self._publish_summary()
+                self.last_stale_pose_summary_s = now
+            return
+        robot_x, robot_y = pose
         visited = self.policy.visited_points(now, self.known_area_m2)
         stats: dict = {}
         candidate = self._choose(robot_x, robot_y, self.policy.blacklist(now),
@@ -395,7 +423,17 @@ class FrontierExplorer(Node):
         if (active is None or active.get("watchdog_reason") is not None
                 or active.get("cancel_reason") is not None):
             return
-        robot_x, robot_y = self.map_pose()
+        pose = self.map_pose()
+        if pose is not None:
+            active["last_watchdog_pose"] = pose
+        else:
+            # Keep the watchdog operational while localization is temporarily
+            # unavailable. Reusing the last observed position is conservative:
+            # it cannot manufacture progress and lets the bounded watchdog
+            # cancel an unobservable, non-progressing goal.
+            pose = active.get("last_watchdog_pose", (active["x"], active["y"]))
+            self.counts["watchdog_pose_unavailable"] += 1
+        robot_x, robot_y = pose
         rotating = abs(self.angular_z) >= 0.15
         verdict = self.watchdog.update(
             now, self.feedback_distance, self.feedback_recoveries,

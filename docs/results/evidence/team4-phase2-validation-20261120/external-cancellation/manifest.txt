@@ -1,0 +1,10 @@
+branch=phase2/reliability-optimization-20261120
+base=0fdf3449a5df970f74dccce922aa650c4b687c55
+head=8714209b2045f45963fde0715815d58d76f789d4
+started=2026-11-20T17:17:42+01:00
+ros_distro=jazzy
+ros_domain_id=174
+run_root=/tmp/livingmap-phase2-gazebo-20261120/external-cancel-20261120-171742
+slam_overlay=/home/iyed/livingmap-setup/writer-slam-5b-9qc5m2a6/overlay/install
+complete=true
+finished=2026-11-20T17:20:10+01:00
