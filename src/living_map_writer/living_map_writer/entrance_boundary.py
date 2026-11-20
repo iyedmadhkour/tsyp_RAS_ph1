@@ -13,6 +13,7 @@ class EntranceBoundary(Node):
     def __init__(self):
         super().__init__("entrance_boundary", namespace="/writer")
         self.declare_parameter("entrance_x", -1.0)
+        self.declare_parameter("position_uncertainty_xy", 0.0)
         qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.mask_pub = self.create_publisher(OccupancyGrid, "/writer/entrance_mask", qos)
         self.create_subscription(OccupancyGrid, "/map", self.on_map, qos)
@@ -27,7 +28,8 @@ class EntranceBoundary(Node):
         mask.info = copy.deepcopy(msg.info)
         mask.data = entrance_mask(msg.info.width, msg.info.height, msg.info.resolution,
                                   msg.info.origin.position.x,
-                                  float(self.get_parameter("entrance_x").value))
+                                  float(self.get_parameter("entrance_x").value),
+                                  float(self.get_parameter("position_uncertainty_xy").value))
         self.mask_pub.publish(mask)
 
 

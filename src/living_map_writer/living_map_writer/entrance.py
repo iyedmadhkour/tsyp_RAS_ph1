@@ -24,19 +24,23 @@ def footprint_min_x(center_x: float, yaw: float, footprint) -> float:
     return min(center_x + x * c - y * s for x, y in footprint)
 
 
-def rotation_safe_center_x(entrance_x: float, footprint, goal_tolerance: float) -> float:
+def rotation_safe_center_x(entrance_x: float, footprint, goal_tolerance: float,
+                           position_uncertainty: float = 0.0) -> float:
     """Allow every heading, including goal-position tolerance toward the entrance.
 
     The circumradius is the exact maximum support of this polygon over all
     orientations, not an empirically chosen buffer.
     """
-    if not math.isfinite(entrance_x) or not math.isfinite(goal_tolerance) or goal_tolerance < 0:
-        raise ValueError("Entrance and nonnegative goal tolerance must be finite")
-    return entrance_x + max(math.hypot(x, y) for x, y in footprint) + goal_tolerance
+    if (not math.isfinite(entrance_x) or not math.isfinite(goal_tolerance)
+            or not math.isfinite(position_uncertainty) or goal_tolerance < 0
+            or position_uncertainty < 0):
+        raise ValueError("Entrance, goal tolerance and position uncertainty must be finite and nonnegative")
+    return (entrance_x + max(math.hypot(x, y) for x, y in footprint)
+            + goal_tolerance + position_uncertainty)
 
 
 def entrance_mask(width: int, height: int, resolution: float, origin_x: float,
-                  entrance_x: float) -> list[int]:
+                  entrance_x: float, position_uncertainty: float = 0.0) -> list[int]:
     """Lethal half-plane for a map-aligned Nav2 StaticLayer.
 
     Mark every cell touching the forbidden half-plane. Half a cell diagonal
@@ -44,9 +48,10 @@ def entrance_mask(width: int, height: int, resolution: float, origin_x: float,
     map through a rotated TF. Allowed cells are unknown, so merging with max
     preserves the SLAM map's unknowns and existing obstacles.
     """
-    if width <= 0 or height <= 0 or not all(math.isfinite(v) for v in
-            (resolution, origin_x, entrance_x)) or resolution <= 0:
+    if (width <= 0 or height <= 0 or not all(math.isfinite(v) for v in
+            (resolution, origin_x, entrance_x, position_uncertainty))
+            or resolution <= 0 or position_uncertainty < 0):
         raise ValueError("Invalid occupancy-grid geometry")
-    limit = entrance_x + resolution / math.sqrt(2.0)
+    limit = entrance_x + position_uncertainty + resolution / math.sqrt(2.0)
     columns = [100 if origin_x + x * resolution < limit else -1 for x in range(width)]
     return columns * height

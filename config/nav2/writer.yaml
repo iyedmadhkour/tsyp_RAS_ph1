@@ -177,6 +177,9 @@
     footprint: "[[0.35, 0.32], [0.35, -0.32], [-0.35, -0.32], [-0.35, 0.32]]"
     footprint_padding: 0.01
     goal_tolerance_xy: 0.25
+    # Bound translational pose error at the entrance for both candidate goals
+    # and the private lethal mask. Hardware integration must verify this bound.
+    entrance_position_uncertainty_xy: 0.05
     # Task 6 frontier lifecycle. A failed goal gets a bounded number of
     # attempts, an exponential cooldown, then an expiry. Time or substantial
     # map growth re-arms the zone a bounded number of times; a region is never
@@ -207,3 +210,4 @@
 "/writer/entrance_boundary":
   ros__parameters:
     entrance_x: -1.0
+    position_uncertainty_xy: 0.05

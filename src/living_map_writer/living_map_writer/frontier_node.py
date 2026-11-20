@@ -65,6 +65,7 @@ class FrontierExplorer(Node):
         self.declare_parameter("footprint", "[[0.35,0.32],[0.35,-0.32],[-0.35,-0.32],[-0.35,0.32]]")
         self.declare_parameter("footprint_padding", 0.01)
         self.declare_parameter("goal_tolerance_xy", 0.25)
+        self.declare_parameter("entrance_position_uncertainty_xy", 0.0)
         # Frontier lifecycle (Task 6). See docs/results/team4-task6-exploration.md.
         self.declare_parameter("frontier_zone_radius_m", 1.5)
         self.declare_parameter("frontier_max_attempts", 3)
@@ -92,7 +93,8 @@ class FrontierExplorer(Node):
         self.frontier_clearance = max(math.hypot(x, y) for x, y in footprint)
         self.minimum_goal_x = rotation_safe_center_x(
             float(self.get_parameter("entrance_x").value), footprint,
-            float(self.get_parameter("goal_tolerance_xy").value))
+            float(self.get_parameter("goal_tolerance_xy").value),
+            float(self.get_parameter("entrance_position_uncertainty_xy").value))
         self.sortie = Sortie(
             float(self.get_parameter("exploration_budget_s").value),
             int(self.get_parameter("empty_ticks_to_complete").value),

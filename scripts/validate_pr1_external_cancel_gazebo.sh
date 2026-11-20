@@ -38,6 +38,8 @@ mkdir -p "$BUILD" "$INSTALL" "$LOGS" "$RUNTIME" \
 
 LAUNCH_PID=""
 OBSERVER_PID=""
+HOLD_PID=""
+TF_PID=""
 cleanup() {
   set +e
   if [[ -n "$OBSERVER_PID" ]]; then
@@ -45,6 +47,18 @@ cleanup() {
     for _ in {1..10}; do kill -0 "$OBSERVER_PID" 2>/dev/null || break; sleep 0.2; done
     kill -TERM "$OBSERVER_PID" 2>/dev/null
     wait "$OBSERVER_PID" 2>/dev/null
+  fi
+  if [[ -n "$HOLD_PID" ]]; then
+    kill -INT "$HOLD_PID" 2>/dev/null
+    for _ in {1..10}; do kill -0 "$HOLD_PID" 2>/dev/null || break; sleep 0.2; done
+    kill -TERM "$HOLD_PID" 2>/dev/null
+    wait "$HOLD_PID" 2>/dev/null
+  fi
+  if [[ -n "$TF_PID" ]]; then
+    kill -INT "$TF_PID" 2>/dev/null
+    for _ in {1..10}; do kill -0 "$TF_PID" 2>/dev/null || break; sleep 0.2; done
+    kill -TERM "$TF_PID" 2>/dev/null
+    wait "$TF_PID" 2>/dev/null
   fi
   if [[ -n "$LAUNCH_PID" ]]; then
     kill -INT -- "-$LAUNCH_PID" 2>/dev/null
@@ -56,7 +70,7 @@ cleanup() {
     fi
     wait "$LAUNCH_PID" 2>/dev/null
   fi
-  LAUNCH_PID="" OBSERVER_PID=""
+  LAUNCH_PID="" OBSERVER_PID="" HOLD_PID="" TF_PID=""
   set -e
 }
 trap cleanup EXIT
@@ -109,6 +123,15 @@ python3 "$HELPER" observe --output "$RUN_ROOT/observations.jsonl" \
   --launch-log "$RUN_ROOT/launch.log" --config "$ROOT/config/nav2/writer.yaml" \
   >"$RUN_ROOT/observer.log" 2>&1 &
 OBSERVER_PID=$!
+if [[ "${LIVINGMAP_CONTROLLED_SAME_ZONE_RETRY:-false}" == true ]]; then
+  python3 "$HELPER" hold-after-cancel --launch-log "$RUN_ROOT/launch.log" \
+    --paused-file "$RUN_ROOT/controlled-pause.json" \
+    --resume-file "$RUN_ROOT/controlled-resume.request" \
+    --transform-file "$RUN_ROOT/map-to-odom.json" \
+    --cancel-first-frontier \
+    >"$RUN_ROOT/hold-controller.log" 2>&1 &
+  HOLD_PID=$!
+fi
 
 echo 'Waiting up to 150 s for an autonomous frontier goal and the patched SLAM process.'
 selected=false
@@ -133,6 +156,16 @@ done
 [[ "$selected" == true ]] || die "no frontier goal appeared within 150 s"
 [[ "$slam_verified" == true ]] || die "running SLAM process libraries did not resolve to the patched overlay"
 
+if [[ "${LIVINGMAP_CONTROLLED_SAME_ZONE_RETRY:-false}" == true ]]; then
+  echo 'Waiting for the preconnected probe to cancel the first frontier goal.'
+  for _ in {1..180}; do
+    [[ -s "$RUN_ROOT/cancel-response.json" ]] && break
+    kill -0 "$HOLD_PID" 2>/dev/null || die "first-frontier cancellation controller exited early"
+    sleep 0.25
+  done
+  [[ -s "$RUN_ROOT/cancel-response.json" ]] || die "first frontier was not canceled within 45 s"
+  cp "$RUN_ROOT/cancel-response.json" "$RUN_ROOT/cancel-service.log"
+else
 echo 'Requesting cancellation of the active Nav2 goal.'
 cancel_count=0
 for _ in {1..8}; do
@@ -147,6 +180,7 @@ for _ in {1..8}; do
   sleep 1
 done
 (( cancel_count > 0 )) || die "Nav2 did not report an active goal for cancellation"
+fi
 
 echo 'Waiting for cancellation evidence and the published retry deadline.'
 cancel_observed=false
@@ -178,6 +212,42 @@ done
 [[ -n "$retry_deadline" ]] || die "summary did not report cancellation-only cooldown deadline"
 
 echo "Waiting for simulation time to pass retry deadline $retry_deadline."
+if [[ "${LIVINGMAP_CONTROLLED_SAME_ZONE_RETRY:-false}" == true ]]; then
+  echo 'Holding the unchanged Writer pose during the cancellation-only cooldown.'
+  for _ in {1..40}; do
+    [[ -f "$RUN_ROOT/controlled-pause.json" ]] && break
+    kill -0 "$HOLD_PID" 2>/dev/null || die "controlled pause controller exited early"
+    sleep 0.25
+  done
+  [[ -f "$RUN_ROOT/controlled-pause.json" ]] || die "Writer did not pause after external cancellation"
+  [[ -s "$RUN_ROOT/map-to-odom.json" ]] || die "map-to-odom snapshot was not captured"
+  lifecycle_inactive=false
+  for _ in {1..8}; do
+    lifecycle_state="$(timeout 10s ros2 lifecycle get /slam_toolbox 2>&1 || true)"
+    printf '%s\n' "$lifecycle_state" | tee -a "$RUN_ROOT/slam-freeze.txt"
+    if rg -qi 'inactive' <<<"$lifecycle_state"; then
+      lifecycle_inactive=true
+      break
+    fi
+    if rg -qi 'active' <<<"$lifecycle_state"; then
+      timeout 12s ros2 lifecycle set /slam_toolbox deactivate \
+        2>&1 | tee -a "$RUN_ROOT/slam-freeze.txt" || true
+    fi
+    sleep 1
+  done
+  [[ "$lifecycle_inactive" == true ]] || die "SLAM did not enter inactive state"
+  read -r tf_x tf_y tf_z tf_yaw < <(python3 - "$RUN_ROOT/map-to-odom.json" <<'PY'
+import json, sys
+d=json.load(open(sys.argv[1]))
+print(d['x'], d['y'], d['z'], d['yaw'])
+PY
+  )
+  ros2 run tf2_ros static_transform_publisher --x "$tf_x" --y "$tf_y" \
+    --z "$tf_z" --yaw "$tf_yaw" --frame-id map --child-frame-id writer/odom \
+    >"$RUN_ROOT/static-map-to-odom.log" 2>&1 &
+  TF_PID=$!
+  sleep 1
+fi
 deadline_passed=false
 for _ in {1..180}; do
   health="$(python3 - "$RUN_ROOT/observations.jsonl" <<'PY'
@@ -201,6 +271,16 @@ PY
   sleep 1
 done
 [[ "$deadline_passed" == true ]] || die "simulation clock did not pass the cancellation retry deadline"
+if [[ "${LIVINGMAP_CONTROLLED_SAME_ZONE_RETRY:-false}" == true ]]; then
+  touch "$RUN_ROOT/controlled-resume.request"
+  for _ in {1..40}; do
+    rg -q 'controlled_resume_confirmed' "$RUN_ROOT/hold-controller.log" 2>/dev/null && break
+    kill -0 "$HOLD_PID" 2>/dev/null || die "controlled resume controller exited early"
+    sleep 0.25
+  done
+  rg -q 'controlled_resume_confirmed' "$RUN_ROOT/hold-controller.log" \
+    || die "Writer did not confirm exploration resumption after cooldown"
+fi
 
 echo 'Allowing up to 20 additional simulation seconds for post-cooldown exploration.'
 post_cooldown_selection=false
@@ -302,12 +382,16 @@ same_zone_retry=any(math.hypot(e['data']['x']-cx,e['data']['y']-cy) <= 1.5
                     for e in post)
 if not post:
     raise SystemExit('no frontier goal was selected after the cancellation cooldown elapsed')
+if __import__('os').environ.get('LIVINGMAP_CONTROLLED_SAME_ZONE_RETRY') == 'true' and not same_zone_retry:
+    raise SystemExit('controlled scenario did not reselect the cancelled frontier zone')
 final=next((e['data'] for e in reversed(events) if e.get('event')=='final'), {})
 if final.get('state')!='HOME':
     raise SystemExit(f"final observer state was {final.get('state')!r}, not HOME")
 if final.get('stuck') or re.search(r'WRITER STUCK:|Navigation watchdog cancelling',log):
     raise SystemExit('external cancellation caused STUCK or an unexpected watchdog cancellation')
-if final.get('boundary_crossed') or final.get('minimum_footprint_x', math.inf) < final.get('entrance_x',-1.0):
+if (final.get('boundary_crossed')
+        or final.get('minimum_footprint_x', math.inf) < final.get('entrance_x',-1.0)
+        or final.get('minimum_uncertain_footprint_x', math.inf) < final.get('entrance_x',-1.0)):
     raise SystemExit('padded Writer footprint crossed the entrance boundary')
 if final.get('odom_samples', 0) < 10:
     raise SystemExit('insufficient odometry samples to verify entrance clearance')
@@ -317,8 +401,12 @@ result={"cancel_reason":cancel['data']['reason'],"cancel_sim_s":summary['sim_s']
         "post_cooldown_selection_observed":bool(post),
         "same_zone_retry_observed":same_zone_retry,
         "stuck":final.get('stuck'),"minimum_padded_footprint_x":final.get('minimum_footprint_x'),
+        "minimum_uncertain_footprint_x":final.get('minimum_uncertain_footprint_x'),
+        "position_uncertainty_xy":final.get('position_uncertainty_xy'),
         "entrance_x":final.get('entrance_x'),"odom_samples":final.get('odom_samples'),
         "path_length_m":final.get('path_length_m'),"boundary_crossed":final.get('boundary_crossed')}
+result["controlled_same_zone_retry"] = (__import__('os').environ.get(
+    'LIVINGMAP_CONTROLLED_SAME_ZONE_RETRY') == 'true' and same_zone_retry)
 Path(sys.argv[3]).write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
 print(json.dumps(result,indent=2,sort_keys=True))
 PY

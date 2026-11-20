@@ -55,6 +55,29 @@ def test_frontiers_near_entrance_leave_room_to_rotate_and_stop():
     assert goal is not None and goal[1] >= minimum
 
 
+def test_entrance_goal_margin_contains_bounded_pose_error_and_goal_tolerance():
+    uncertainty = 0.05
+    tolerance = float(PARAMS["goal_tolerance_xy"])
+    minimum = rotation_safe_center_x(-1, FOOTPRINT, tolerance, uncertainty)
+    # The estimated base can stop one goal tolerance toward the boundary, and
+    # the physical base can be another 5 cm toward it due to pose error.
+    actual_center_x = minimum - tolerance - uncertainty
+    for degrees in range(0, 360, 5):
+        assert footprint_min_x(actual_center_x, math.radians(degrees), FOOTPRINT) >= -1 - 1e-12
+
+
+def test_entrance_mask_moves_lethal_wall_by_pose_uncertainty():
+    res, width, height, origin, uncertainty = 0.05, 100, 4, -2.0, 0.05
+    mask = entrance_mask(width, height, res, origin, -1, uncertainty)
+    limit = -1 + uncertainty + res / math.sqrt(2)
+    for x in range(width):
+        left = origin + x * res
+        if left < limit:
+            assert all(mask[y * width + x] == 100 for y in range(height))
+        else:
+            assert mask[x] == -1
+
+
 def test_reachability_cannot_use_outside_as_a_shortcut():
     width = height = 12
     data = [100] * (width * height)
@@ -99,6 +122,9 @@ def test_nav2_costmaps_share_geometry_and_cannot_clear_the_virtual_wall():
         assert p["plugins"].index("entrance_layer") < p["plugins"].index("inflation_layer")
         assert p["entrance_layer"]["map_topic"] == "/writer/entrance_mask"
         assert p["entrance_layer"]["footprint_clearing_enabled"] is False
+    assert PARAMS["entrance_position_uncertainty_xy"] == pytest.approx(0.05)
+    assert CONFIG["/writer/entrance_boundary"]["ros__parameters"][
+        "position_uncertainty_xy"] == PARAMS["entrance_position_uncertainty_xy"]
     goal = CONFIG["/writer/controller_server"]["ros__parameters"]["goal_checker"]
     assert goal["xy_goal_tolerance"] == PARAMS["goal_tolerance_xy"]
     assert CONFIG["/writer/entrance_boundary"]["ros__parameters"]["entrance_x"] == PARAMS["entrance_x"]
@@ -128,7 +154,8 @@ def test_mask_publisher_preserves_shared_map_and_metadata():
     msg.info.origin.orientation.w = 1
     msg.data = [-1, 0, 100] * 80
     original = list(msg.data)
-    node = SimpleNamespace(mask_pub=Mock(), get_parameter=lambda _: SimpleNamespace(value=-1.0))
+    values = {"entrance_x": -1.0, "position_uncertainty_xy": 0.05}
+    node = SimpleNamespace(mask_pub=Mock(), get_parameter=lambda name: SimpleNamespace(value=values[name]))
     EntranceBoundary.on_map(node, msg)
     mask = node.mask_pub.publish.call_args.args[0]
     assert list(msg.data) == original

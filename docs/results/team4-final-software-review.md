@@ -5,6 +5,21 @@ Scope: requirements closure and correctness only; no optimization work.
 
 ## Work completed in this continuation
 
+- Added an explicit 0.05 m bounded entrance-position uncertainty parameter.
+  Frontier goal centers include that allowance in addition to the padded
+  footprint's all-heading radius and Nav2 goal tolerance. The Writer-only
+  lethal entrance mask is shifted inward by the same amount. Shared SLAM data
+  and robot footprint dimensions are unchanged. Tests cover the combined
+  worst-case position error, goal tolerance, all robot headings, and mask
+  rasterization. The 5 cm bound is a software acceptance assumption; Team 1
+  must confirm it against measured localization behavior before hardware use.
+- Added a preconnected validation controller so the first frontier goal can be
+  canceled before the Writer moves far enough to map the candidate away. The
+  bounded Gazebo scenario holds the Explorer and map snapshot through the
+  configured cancellation-only cooldown, then verifies the same spatial zone
+  is selected after expiry. The diagnostic variants where cancellation came
+  later are preserved and not counted as passes.
+
 - An unexplained external cancellation of a frontier goal now receives the
   configured base cooldown before the same spatial goal can be submitted again.
   It remains a cancellation, not evidence of an unreachable frontier: the
@@ -40,29 +55,28 @@ Scope: requirements closure and correctness only; no optimization work.
 ## Verification
 
 - Focused navigation, policy, watchdog, and detector integration regressions:
-  **83 passed**.
-- Full offline suite outside the workspace sandbox, with no deselections:
-  **466 passed**. The three formerly excluded ASGI tests passed together:
-  **3 passed**.
-- External-cancel Gazebo run: **PASS**. The Nav2 cancel service reported one
-  active Writer goal canceled at simulation time 3.142 s. The explorer published
-  a cancellation-only cooldown until 18.142 s (exactly 15 s), with zero failed
-  frontiers and zero failure zones. No same-zone goal was selected before the
-  deadline. Exploration resumed with a new frontier at 26.132 s, outside the
-  canceled 1.5 m zone. Battery reserve then triggered HOME; the Writer reached
-  HOME. STUCK remained false and no watchdog cancellation occurred. The padded
-  footprint's minimum x was -0.3600 m against the -1.0 m entrance boundary;
-  1,566 odometry samples covered 20.30 m of path.
-- Isolated ROS 2 Jazzy build: **12 packages finished** in
-  `/tmp/livingmap-final-20261120/`.
+  **146 passed** after adding the uncertainty envelope and entrance-mask tests.
+- Full offline suite with the modified Writer source explicitly first on
+  `PYTHONPATH`: **468 passed**, no deselections. The three previously hanging
+  ASGI tests pass outside the sandbox with the unchanged AnyIO environment.
+- Controlled external-cancel Gazebo run: **PASS**. The first frontier goal was
+  canceled at simulation time 2.232 s; its cancellation-only retry deadline
+  was 17.232 s (15.000 s later), with zero failure zones and zero failure
+  attempts. After expiry, the same zone was selected again. STUCK remained
+  false, the watchdog did not cancel, and the battery-reserve path reached
+  HOME. The minimum padded footprint x was -0.3600 m; applying the configured
+  0.05 m worst-case x-pose error gives -0.4100 m, still 0.59 m inside the
+  x=-1.0 m boundary. The result includes 929 odometry samples. Evidence:
+  `docs/results/evidence/team4-same-zone-retry-20261120/`.
+- Isolated ROS 2 Jazzy build during the final Gazebo run: **12 packages
+  finished** in `/tmp/livingmap-pr1-evidence-20261120/external-cancel-20261120-163548/`.
 - SLAM overlay resolver and actual runtime checks: **passed** for
   `/home/iyed/livingmap-setup/writer-slam-5b-9qc5m2a6/overlay/install`.
 - Prior preserved evidence remains the basis for successful Task 5B patched
-  missions, Task 6 expiry/reactivation, STUCK/watchdog integration, HOME return,
-  battery reserve, and entrance-boundary behavior. No long mission was repeated
-  for changes that do not alter those paths. The cancellation pacing change has
-  unit/regression coverage but has not had a new Gazebo action-cancellation
-  experiment.
+  missions, Task 6 expiry/reactivation, forward-drive STUCK/watchdog integration,
+  battery reserve, and HOME behavior. The current Gazebo run also covers
+  cancellation pacing, same-zone recovery and the bounded entrance-pose-error
+  envelope; it does not simulate stochastic SLAM localization error.
 - No physical robot/HIL test was performed. No Gazebo validation is claimed
   on physical hardware.
 
@@ -77,12 +91,11 @@ Scope: requirements closure and correctness only; no optimization work.
 3. Emergency/destruction handling — **PARTIAL**: software and simulated
    failure paths pass; motor-stop timing, radio loss, and restart behavior need
    HIL.
-4. Navigation and entrance safety — **PARTIAL**: watchdog, bounded unreachable
-   retries, cancellation pacing, post-cooldown exploration, battery-triggered
-   HOME, footprint boundary, and rotation have regression/simulation evidence;
-   noisy localization and continuous swept volume need additional acceptance
-   evidence. External-cancel Gazebo evidence is in
-   `external-cancel-20261120-154017` under the evidence root below.
+4. Navigation and entrance safety — **COMPLETE for software scenarios;
+   hardware acceptance PARTIAL**: watchdog, retry budget, cancellation pacing,
+   same-zone post-cooldown selection, battery-triggered HOME, rotated footprint
+   boundary and a 5 cm pose-error envelope have test/simulation evidence.
+   Stochastic localization and continuous swept-volume acceptance remain open.
 5. SLAM — **PARTIAL**: isolated Karto fix, native 8/8 checks and three completed
    patched missions are preserved; the explicit demo overlay is now selectable.
    Lower-passage visibility, comprehensive map completeness, and physical
@@ -104,16 +117,18 @@ Scope: requirements closure and correctness only; no optimization work.
 - Obtain Team 1's signed hardware interfaces and a safe HIL procedure before
   physical sensor freshness, command lease, RF, battery, beacon, motor-stop, or
   dispenser acceptance.
-- The Gazebo run observed exploration resume after cooldown on a new frontier
-  outside the canceled zone; the same zone was not selected again because map
-  frontiers changed during the run. A unit regression separately verifies that
-  the canceled location becomes eligible at expiry. A stricter same-zone
-  diagnostic run is preserved; its original candidate disappeared as the map
-  evolved, but navigation and HOME completed safely. Existing successful Gazebo
-  evidence was preserved and not overwritten. Two earlier harness attempts
-  (wrong action namespace and outdated HOME-log matcher) are also retained.
-- The successful external-cancel capture is
-  `/home/iyed/livingmap-pr1-evidence-20261120/external-cancel-20261120-154017/`.
-  Diagnostic attempts remain alongside it and were not overwritten.
+- The same-zone Gazebo requirement now passes under a frozen map/pose snapshot;
+  this controlled setup isolates cooldown eligibility and is not a claim that
+  an evolving frontier map must retain the same candidate during ordinary
+  exploration. Failed setup attempts and earlier successful runs remain
+  preserved in their original locations.
+- The 5 cm position-error bound has not yet been confirmed against Team 1's
+  physical localization accuracy. Stale sensor/pose freshness thresholds,
+  command leases, RF and measured-battery interfaces likewise await the signed
+  hardware data rates and safety contracts. No evidence of stochastic SLAM
+  localization or continuous swept-volume acceptance is claimed.
+- The final controlled Gazebo run is under
+  `/tmp/livingmap-pr1-evidence-20261120/external-cancel-20261120-163548/`; key
+  logs and results are preserved in the repository evidence directory.
 - All work remains local. No GitHub account, remote, PR, or branch was accessed
   or changed.
