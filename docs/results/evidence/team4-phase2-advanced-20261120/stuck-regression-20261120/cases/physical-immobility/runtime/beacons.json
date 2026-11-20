@@ -1,0 +1,21 @@
+{
+  "1": {
+    "beacon_id": 1,
+    "bearing_rad": 0.0,
+    "confidence": 1.0,
+    "crc32": 0,
+    "event_type": 0,
+    "flags": 8,
+    "mission_id": 1,
+    "next_beacon_id": 0,
+    "previous_beacon_id": 0,
+    "protocol_version": 2,
+    "range_m": 0.0,
+    "sequence": 1,
+    "severity": 0,
+    "timestamp_sec": 1795195399,
+    "ttl_sec": 1800,
+    "x_m": 0.0,
+    "y_m": 0.0
+  }
+}

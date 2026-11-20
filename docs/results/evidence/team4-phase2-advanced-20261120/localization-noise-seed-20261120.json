@@ -1,0 +1,54 @@
+{
+  "classification": "SIMULATION_ASSUMPTION; not measured sensor performance",
+  "commit": "7e5ac45a00457ff5c34ddfe7baed34ebdfbac9a6",
+  "config": {
+    "config_sha256": "673f7fbcd4b7e6e34d08ac9fd549ee79ab792ee1976d8fd2471d7d2cfb8e206f",
+    "configured_xy_allowance_m": 0.05,
+    "entrance_x_m": -1.0,
+    "footprint": "[[0.35, 0.32], [0.35, -0.32], [-0.35, -0.32], [-0.35, 0.32]]",
+    "footprint_padding_m": 0.01,
+    "safe_goal_center_x_m": -0.21163538211700877,
+    "writer_source_sha256": "02dbb314af7b24be0d7842d3362baced94863d249eb4f7420b3fc7c5d9b52535"
+  },
+  "disturbance_bounds": {
+    "x_m": 0.05,
+    "y_m": 0.05,
+    "yaw_deg": 5.0
+  },
+  "experiment": "seeded_bounded_pose_error_software_model",
+  "frontier_selection": {
+    "attempted": 100,
+    "goal_variants": [
+      [
+        2.175,
+        1.575
+      ]
+    ],
+    "map_shape": [
+      120,
+      100
+    ],
+    "resolution_m": 0.05,
+    "safe_selected": 100,
+    "selected": 100
+  },
+  "scope_note": "The Nav watchdog and command/odometry STUCK detector are exercised independently; this model does not simulate the Gazebo localization or motor interface.",
+  "seed": 20261120,
+  "stuck_detector": {
+    "moving_false_stuck": 0,
+    "stationary_detection_median_s": 45.0,
+    "stationary_stuck_detected": 100
+  },
+  "swept_entrance_check": {
+    "contained": true,
+    "entrance_x_m": -1.0,
+    "minimum_footprint_x_m": -0.6964609253255252,
+    "pose_samples": 101
+  },
+  "trials": 100,
+  "watchdog": {
+    "moving_false_cancels": 0,
+    "stationary_cancel_median_s": 26.0,
+    "stationary_cancelled": 100
+  }
+}

@@ -1,0 +1,1 @@
+INCOMPLETE: isolated colcon build completed 12/12; script stopped while sourcing install/setup.bash under nounset because COLCON_TRACE was unset. Gazebo was not launched. No process cleanup was needed. Wrapper was corrected in source.

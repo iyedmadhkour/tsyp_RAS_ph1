@@ -1,0 +1,1 @@
+INCOMPLETE: fault was injected after Frontier selected its first goal but before Nav2 lifecycle activation; Nav2 rejected the goal. The no-fresh-input gate blocked further goals, but active-goal cancellation was not exercised. Scenario now waits for Writer NAVIGATING plus writer.controller_server goal receipt.

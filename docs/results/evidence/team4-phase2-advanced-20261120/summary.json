@@ -1,0 +1,50 @@
+{
+  "branch": "phase2/reliability-optimization-20261120",
+  "starting_commit": "7e5ac45a00457ff5c34ddfe7baed34ebdfbac9a6",
+  "scope": "phase 2 round 2 advanced safety validation",
+  "github_operations": false,
+  "full_pytest": {"status": "PASS", "passed": 500, "failed": 0,
+    "log": "pytest-full-20261120.log"},
+  "ros2_jazzy_build": {"status": "PASS", "packages_finished": 12,
+    "evidence": "stuck-regression-20261120/build.log"},
+  "gazebo": {
+    "normal_navigation_rotation_intentional_stops_home": "PASS",
+    "forward_drive_immobilization_stuck": "PASS",
+    "watchdog_cancel_then_physical_stuck": "PASS",
+    "stale_pose_and_lidar_bridge_loss_cancel_then_home": "PASS",
+    "same_zone_cancel_only_cooldown_failure_budget_home": "PASS",
+    "same_zone_swept_padded_footprint": {
+      "status": "PASS",
+      "minimum_x_with_5cm_uncertainty_m": -0.410000583,
+      "entrance_x_m": -1.0,
+      "odom_samples": 1025,
+      "odom_gaps_over_0_5s": 0,
+      "unmapped_motion_samples": 0
+    },
+    "swept_boundary_across_stale_sensor_outage": {
+      "status": "INCONCLUSIVE",
+      "reason": "8.874 s odometry gap and one unaligned-motion sample during bridge fault"
+    }
+  },
+  "localization_noise_model": {
+    "status": "PASS as software simulation assumption",
+    "seed": 20261120,
+    "trials": 100,
+    "x_y_bound_m": 0.05,
+    "yaw_bound_deg": 5.0,
+    "moving_watchdog_false_cancels": 0,
+    "stationary_watchdog_detected": 100,
+    "moving_false_stuck": 0,
+    "stationary_stuck_detected": 100,
+    "physical_sensor_performance_claimed": false,
+    "evidence": "localization-noise-seed-20261120.json"
+  },
+  "frontier_benchmark": {
+    "status": "PASS; selected candidates and diagnostics identical",
+    "captured_map_median_reduction_percent": [43.1, 54.3, 54.1],
+    "seeded_synthetic_map_median_reduction_percent": [59.2, 61.9, 71.9],
+    "seed": 20261120,
+    "evidence": "frontier-comparison-seed-20261120.json"
+  },
+  "hardware_acceptance": "BLOCKED pending Team 1 sensor, motor-stop, battery and actuator contracts"
+}
