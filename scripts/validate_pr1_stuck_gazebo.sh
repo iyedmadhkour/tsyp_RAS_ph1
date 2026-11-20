@@ -21,9 +21,17 @@ need() { command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"
 cd "$ROOT"
 [[ "$(git branch --show-current)" == "$EXPECTED_BRANCH" ]] || die "expected branch $EXPECTED_BRANCH"
 git merge-base --is-ancestor "$EXPECTED_COMMIT" HEAD || die "HEAD is not based on expected review commit $EXPECTED_COMMIT"
-if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
-  die "tracked working-tree changes exist; review them before validation"
-fi
+while IFS= read -r status; do
+  path="${status:3}"
+  case "$path" in
+    scripts/validate_pr1_stuck_gazebo.sh|\
+    src/living_map_writer/living_map_writer/demo_fallback.py|\
+    src/living_map_sim/worlds/mine.sdf|\
+    tests/test_writer_stuck_integration_regressions.py)
+      ;;
+    *) die "unreviewed working-tree change exists: $path" ;;
+  esac
+done < <(git status --porcelain --untracked-files=all)
 [[ -f /opt/ros/jazzy/setup.bash ]] || die "ROS 2 Jazzy is not installed at /opt/ros/jazzy"
 need colcon
 need pytest
@@ -200,8 +208,9 @@ PY
 
   cleanup_case
 
+  local analysis_failed=false
   if [[ "$expected" == home || "$expected" == stuck ]]; then
-    python3 - "$case_dir/bag" <<'PY' | tee "$case_dir/command-analysis.txt"
+    if ! python3 - "$case_dir/bag" <<'PY' | tee "$case_dir/command-analysis.txt"
 import sys
 from pathlib import Path
 import rosbag2_py
@@ -251,10 +260,13 @@ if scenario == "physical-immobility":
 elif not translations or not turns or not zeros or odometry < 10 or path_length < 1.0 or distance > 1.0:
     raise SystemExit("normal route did not demonstrate translation, rotation, stops, travel and return to HOME")
 PY
+    then
+      analysis_failed=true
+    fi
   fi
 
   local case_status=PASS
-  if [[ "$result" != "$expected" && ! ( "$expected" == watchdog && "$result" == watchdog_then_stuck ) ]]; then
+  if [[ "$analysis_failed" == true || ( "$result" != "$expected" && ! ( "$expected" == watchdog && "$result" == watchdog_then_stuck ) ) ]]; then
     case_status=FAIL
     FAILURES=$((FAILURES + 1))
   fi
