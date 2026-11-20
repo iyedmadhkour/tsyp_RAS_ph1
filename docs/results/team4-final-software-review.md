@@ -125,8 +125,11 @@ Scope: requirements closure and correctness only; no optimization work.
 - The 5 cm position-error bound has not yet been confirmed against Team 1's
   physical localization accuracy. Stale sensor/pose freshness thresholds,
   command leases, RF and measured-battery interfaces likewise await the signed
-  hardware data rates and safety contracts. No evidence of stochastic SLAM
-  localization or continuous swept-volume acceptance is claimed.
+  hardware data rates and safety contracts. A lost Nav2 cancel result also has
+  no validated recovery policy: safely deciding whether to retry, halt or
+  return depends on action-server and motor-command lease semantics. No evidence
+  of stochastic SLAM localization or continuous swept-volume acceptance is
+  claimed.
 - The final controlled Gazebo run is under
   `/tmp/livingmap-pr1-evidence-20261120/external-cancel-20261120-163548/`; key
   logs and results are preserved in the repository evidence directory.
