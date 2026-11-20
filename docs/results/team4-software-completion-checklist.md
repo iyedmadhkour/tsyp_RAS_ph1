@@ -74,3 +74,14 @@ modified.
 
 See `team4-final-software-review.md` for remaining hardware interface blockers,
 overlay invocation, cancellation policy, and evidence limits.
+
+## Master Phase 2 and final QA addendum — 2026-11-20
+
+The expanded master mission audit, twelve-domain checklist, final QA results,
+coverage report, reproduction steps and Team 1/demo handoff are recorded in
+[`team4-master-autonomous-completion-20261120.md`](team4-master-autonomous-completion-20261120.md).
+Current final checkout results: **500/500 pytest passed; 12/12 ROS 2 Jazzy
+packages built; 82% statement coverage**. Gazebo acceptance remains partial:
+the stale bridge outage's swept-boundary interval is inconclusive, and live
+single-sensor faults and dropped/conflicting action-server responses were not
+injected. Physical/HIL acceptance remains blocked on Team 1 contracts.

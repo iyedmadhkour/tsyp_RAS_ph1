@@ -1,0 +1,70 @@
+{
+  "branch": "phase2/reliability-optimization-20261120",
+  "validated_source_commit": "d6ae84bda9f9f598e47aafb250c2c20b46362d20",
+  "starting_commit": "7e5ac45a00457ff5c34ddfe7baed34ebdfbac9a6",
+  "scope": "master Phase 2 completion and final QA",
+  "tests": {
+    "status": "PASS",
+    "command": "python3 -m coverage run --source=src -m pytest -ra -q tests",
+    "passed": 500,
+    "failed": 0,
+    "skipped": 0,
+    "deselected": 0,
+    "duration_seconds": 8.27,
+    "coverage_statement_percent": 82,
+    "coverage_source_statements": 3359,
+    "coverage_missed_statements": 615,
+    "branch_coverage_measured": false,
+    "log": "pytest-full-coverage.log",
+    "coverage_report": "coverage-summary.txt"
+  },
+  "ros2_jazzy_build": {
+    "status": "PASS",
+    "packages_discovered": 12,
+    "packages_finished": 12,
+    "elapsed_seconds": 19.7,
+    "isolated_prefix": "/tmp/livingmap-team4-master-qa-20261120/install",
+    "log": "ros2-build.log"
+  },
+  "gazebo": {
+    "normal_navigation_rotation_stops_home": "PASS",
+    "forward_drive_immobilization_stuck": "PASS",
+    "watchdog_then_stuck": "PASS",
+    "combined_stale_pose_scan_recovery_home": "PASS",
+    "swept_boundary_during_stale_outage": "INCONCLUSIVE",
+    "external_cancel_same_zone_retry_home": "PASS",
+    "stale_outage_boundary_reason": "8.874 second odometry gap and one unaligned-motion sample"
+  },
+  "localization_model": {
+    "status": "PASS as a bounded software model only",
+    "seed": 20261120,
+    "trials": 100,
+    "x_y_bound_m": 0.05,
+    "yaw_bound_deg": 5.0,
+    "physical_sensor_performance_claimed": false
+  },
+  "frontier_benchmark": {
+    "status": "PASS; selected goals and diagnostics equivalent across six maps",
+    "trials": 15,
+    "warmups": 2,
+    "captured_map_median_reduction_percent": [43.1, 54.3, 54.1],
+    "seeded_synthetic_map_median_reduction_percent": [59.2, 61.9, 71.9]
+  },
+  "coverage_and_acceptance": {
+    "overall_verdict": "PARTIAL",
+    "known_critical_software_defects": 0,
+    "hardware_acceptance": "BLOCKED pending Team 1 interface contracts and HIL",
+    "live_faults_not_executed": [
+      "pose-only Gazebo interruption",
+      "scan-only Gazebo interruption",
+      "stochastic localization disturbance in live Gazebo",
+      "missing or conflicting Nav2 action response from live server",
+      "swept boundary assurance throughout stale sensor outage"
+    ],
+    "github_or_physical_robot_operations": false
+  },
+  "author_for_next_local_commit": {
+    "name": "Iyed Madhkour",
+    "email": "iyedmadhkour4@gmail.com"
+  }
+}
