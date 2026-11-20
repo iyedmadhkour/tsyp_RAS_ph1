@@ -4,6 +4,7 @@ from collections import Counter
 import json
 import math
 from pathlib import Path
+import time
 
 from ament_index_python.packages import get_package_share_directory
 
@@ -12,6 +13,7 @@ from nav2_msgs.action import NavigateToPose
 from nav_msgs.msg import OccupancyGrid, Odometry
 from sensor_msgs.msg import LaserScan
 from rclpy.action import ActionClient
+from rclpy.clock import Clock, ClockType
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, DurabilityPolicy
 from rclpy.time import Time
@@ -78,6 +80,7 @@ class FrontierExplorer(Node):
         self.declare_parameter("entrance_position_uncertainty_xy", 0.0)
         self.declare_parameter("odom_fallback_max_age_s", 0.5)
         self.declare_parameter("scan_max_age_s", 0.5)
+        self.declare_parameter("action_response_timeout_s", 3.0)
         # Frontier lifecycle (Task 6). See docs/results/team4-task6-exploration.md.
         self.declare_parameter("frontier_zone_radius_m", 1.5)
         self.declare_parameter("frontier_max_attempts", 3)
@@ -156,6 +159,13 @@ class FrontierExplorer(Node):
             String, "/living_map/writer_exploration_summary", state_qos)
         self.published_state = ""
         self.create_timer(2.0, self.tick)
+        # Frontier selection is intentionally slow; stale-input cancellation
+        # must run independently so Nav2's costmap timeout cannot win the race.
+        self.create_timer(0.1, self._monitor_navigation_safety)
+        # Action deadlines use monotonic time and must continue if /clock pauses.
+        self.action_deadline_clock = Clock(clock_type=ClockType.STEADY_TIME)
+        self.create_timer(0.1, self._monitor_action_response_deadlines,
+                          clock=self.action_deadline_clock)
 
     def on_map(self, msg: OccupancyGrid) -> None:
         self.map = msg
@@ -245,6 +255,7 @@ class FrontierExplorer(Node):
             return
         active["cancel_sent"] = True
         active["cancel_response"] = "pending"
+        active["cancel_sent_at"] = time.monotonic()
         try:
             self.cancel_future = self.goal_handle.cancel_goal_async()
             self.cancel_future.add_done_callback(self._on_cancel_response)
@@ -252,6 +263,8 @@ class FrontierExplorer(Node):
         except Exception as exc:
             active["cancel_response"] = "response_unknown"
             self.get_logger().error(f"Nav2 cancellation request failed: {exc}")
+            self._latch_navigation_uncertain(
+                f"Nav2 cancellation request failed ({type(exc).__name__})")
             self._publish_summary()
 
     def _on_cancel_response(self, future) -> None:
@@ -266,6 +279,12 @@ class FrontierExplorer(Node):
         except Exception as exc:
             active["cancel_response"] = "response_unknown"
             self.get_logger().error(f"Nav2 cancellation response is unknown: {exc}")
+            self._latch_navigation_uncertain(
+                f"Nav2 cancellation response unavailable ({type(exc).__name__})")
+        else:
+            if not response.goals_canceling:
+                self._latch_navigation_uncertain(
+                    "Nav2 did not confirm cancellation; awaiting terminal action result")
         # A cancel service response is not proof that the action has stopped.
         # busy remains true until the terminal action result arrives.
         self._publish_summary()
@@ -498,7 +517,10 @@ class FrontierExplorer(Node):
         goal.pose.pose.orientation.w = 1.0
         self.busy = True
         self.active_goal = {"x": x, "y": y, "kind": kind,
-                            "watchdog_reason": None, "cancel_reason": None}
+                            "watchdog_reason": None, "cancel_reason": None,
+                            "goal_response_started_at": time.monotonic(),
+                            "cancel_sent_at": None,
+                            "action_timeout_reported": False}
         self.feedback_distance = None
         self.feedback_recoveries = 0
         self.watchdog.start(kind, x, y, self._now_s())
@@ -516,19 +538,78 @@ class FrontierExplorer(Node):
         except Exception:
             pass
 
-    def _update_watchdog(self, now: float) -> None:
+    def _check_action_response_deadline(self, active) -> None:
+        timeout_s = float(self.get_parameter("action_response_timeout_s").value)
+        now = time.monotonic()
+        cancel_sent_at = active.get("cancel_sent_at")
+        if active.get("cancel_reason") is not None and cancel_sent_at is not None:
+            started = cancel_sent_at
+            timed_out = started is not None and now - started >= timeout_s
+            reason = (f"Nav2 did not return a terminal action result within {timeout_s:g} s "
+                      "after cancellation")
+        else:
+            started = active.get("goal_response_started_at")
+            timed_out = (getattr(self, "goal_handle", None) is None
+                         and started is not None and now - started >= timeout_s)
+            reason = f"Nav2 goal acceptance response timed out after {timeout_s:g} s"
+        if timed_out and not active.get("action_timeout_reported"):
+            active["action_timeout_reported"] = True
+            self._latch_navigation_uncertain(reason)
+
+    def _monitor_action_response_deadlines(self) -> None:
+        """Enforce acceptance/cancel deadlines against steady wall time."""
         active = getattr(self, "active_goal", None)
-        if (active is None or active.get("watchdog_reason") is not None
+        if not self.busy or active is None:
+            return
+        if active.get("cancel_reason") is not None or self.goal_handle is None:
+            FrontierExplorer._check_action_response_deadline(self, active)
+
+    def _cancel_for_stale_inputs(self, now: float) -> bool:
+        pose = self.map_pose()
+        scan_fresh = self.scan_is_fresh(now)
+        if pose is not None and scan_fresh:
+            return False
+        self.counts["watchdog_pose_unavailable"] += pose is None
+        self.counts["watchdog_scan_unavailable"] += not scan_fresh
+        reason = "localization unavailable" if pose is None else "LiDAR data stale"
+        if not scan_fresh and not getattr(self, "stale_scan_reported", False):
+            self.get_logger().warning(
+                "No fresh Writer LiDAR scan; requesting active-goal cancellation")
+            self.stale_scan_reported = True
+        self._cancel(reason)
+        self._publish_summary()
+        return True
+
+    def _monitor_navigation_safety(self) -> None:
+        """Check action deadlines and sensor freshness outside frontier ticks."""
+        active = getattr(self, "active_goal", None)
+        if not self.busy or active is None:
+            return
+        if active.get("cancel_reason") is not None or self.goal_handle is None:
+            FrontierExplorer._check_action_response_deadline(self, active)
+            if active.get("cancel_reason") is not None or self.navigation_uncertain:
+                return
+        if (self.navigation_uncertain or active.get("watchdog_reason") is not None
                 or active.get("cancel_reason") is not None):
             return
+        FrontierExplorer._cancel_for_stale_inputs(self, self._now_s())
+
+    def _update_watchdog(self, now: float) -> None:
+        active = getattr(self, "active_goal", None)
+        if active is None:
+            return
+        if active.get("cancel_reason") is not None:
+            FrontierExplorer._check_action_response_deadline(self, active)
+            return
+        if active.get("watchdog_reason") is not None:
+            return
+        if getattr(self, "goal_handle", None) is None:
+            FrontierExplorer._check_action_response_deadline(self, active)
+            return
+        if FrontierExplorer._cancel_for_stale_inputs(self, now):
+            return
         pose = self.map_pose()
-        if pose is None or not self.scan_is_fresh(now):
-            self.counts["watchdog_pose_unavailable"] += pose is None
-            self.counts["watchdog_scan_unavailable"] += not self.scan_is_fresh(now)
-            reason = ("localization unavailable" if pose is None
-                      else "LiDAR data stale")
-            self._cancel(reason)
-            self._publish_summary()
+        if pose is None:
             return
         active["last_watchdog_pose"] = pose
         robot_x, robot_y = pose
@@ -635,6 +716,12 @@ class FrontierExplorer(Node):
         watchdog_reason = active.get("watchdog_reason")
         cancel_reason = active.get("cancel_reason")
         self.active_goal = None
+        if self.navigation_uncertain:
+            # A terminal result for this tracked goal resolves the uncertain
+            # Nav2 action state. It does not guarantee that the base stopped.
+            self.navigation_uncertain = False
+            self.navigation_uncertain_reason = None
+            self.counts["navigation_uncertainty_resolved"] += 1
         now = self._now_s()
         if status == 4:
             if kind == "home":
@@ -683,6 +770,8 @@ class FrontierExplorer(Node):
 
     def _latch_navigation_uncertain(self, reason: str) -> None:
         """Stop issuing new goals when Nav2 cannot prove the old goal ended."""
+        if self.navigation_uncertain:
+            return
         self.navigation_uncertain = True
         self.navigation_uncertain_reason = reason
         self.counts["navigation_result_unknown"] += 1

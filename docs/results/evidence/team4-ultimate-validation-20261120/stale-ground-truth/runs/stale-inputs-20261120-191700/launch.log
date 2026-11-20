@@ -1,0 +1,1122 @@
+[INFO] [launch]: All log files can be found below /tmp/team4-ultimate-stale-gt-03/ros-logs/2026-11-20-19-17-32-056235-DESKTOP-KQ9CKJB-177887
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gz-1]: process started with pid [177922]
+[INFO] [sim_guard-2]: process started with pid [177923]
+[INFO] [parameter_bridge-3]: process started with pid [177924]
+[INFO] [clock_throttle-4]: process started with pid [177925]
+[INFO] [nav2_guard-5]: process started with pid [177926]
+[INFO] [static_transform_publisher-6]: process started with pid [177927]
+[INFO] [static_transform_publisher-7]: process started with pid [177928]
+[INFO] [static_transform_publisher-8]: process started with pid [177929]
+[INFO] [static_transform_publisher-9]: process started with pid [177934]
+[INFO] [static_transform_publisher-10]: process started with pid [177937]
+[INFO] [async_slam_toolbox_node-11]: process started with pid [177938]
+[INFO] [controller_server-12]: process started with pid [177939]
+[INFO] [planner_server-13]: process started with pid [177940]
+[INFO] [behavior_server-14]: process started with pid [177941]
+[INFO] [bt_navigator-15]: process started with pid [177942]
+[INFO] [lifecycle_manager-16]: process started with pid [177945]
+[INFO] [controller_server-17]: process started with pid [177946]
+[INFO] [planner_server-18]: process started with pid [177947]
+[INFO] [behavior_server-19]: process started with pid [177954]
+[INFO] [bt_navigator-20]: process started with pid [177968]
+[INFO] [lifecycle_manager-21]: process started with pid [177971]
+[INFO] [controller_server-22]: process started with pid [177986]
+[INFO] [planner_server-23]: process started with pid [177993]
+[INFO] [behavior_server-24]: process started with pid [177996]
+[INFO] [bt_navigator-25]: process started with pid [178001]
+[INFO] [lifecycle_manager-26]: process started with pid [178002]
+[INFO] [writer-27]: process started with pid [178003]
+[INFO] [scan_frames-28]: process started with pid [178017]
+[INFO] [entrance_boundary-29]: process started with pid [178020]
+[INFO] [frontier_explorer-30]: process started with pid [178023]
+[INFO] [event_sensor-31]: process started with pid [178024]
+[INFO] [beacon_manager-32]: process started with pid [178028]
+[INFO] [beacon_visualizer-33]: process started with pid [178042]
+[INFO] [radio-34]: process started with pid [178044]
+[INFO] [gateway-35]: process started with pid [178046]
+[INFO] [link_sim-36]: process started with pid [178048]
+[INFO] [command_post-37]: process started with pid [178067]
+[INFO] [executor-38]: process started with pid [178076]
+[INFO] [executor-39]: process started with pid [178079]
+[clock_throttle-4] [INFO] [1795198652.283299742] [clock_throttle]: Forwarding /clock_raw to /clock every 10 ms of simulation time
+[static_transform_publisher-6] [WARN] [1795198652.262735649] []: Old-style arguments are deprecated; see --help for new-style arguments
+[static_transform_publisher-6] [INFO] [1795198652.275256643] [static_transform_publisher_c4drtIKPElgpUxFx]: Spinning until stopped - publishing transform
+[static_transform_publisher-6] translation: ('-2.000000', '-2.000000', '0.000000')
+[static_transform_publisher-6] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-6] from 'writer/odom' to 'executor/odom'
+[static_transform_publisher-7] [WARN] [1795198652.267773908] []: Old-style arguments are deprecated; see --help for new-style arguments
+[static_transform_publisher-7] [INFO] [1795198652.284574369] [static_transform_publisher_jQA18GsnnF2XTZ8n]: Spinning until stopped - publishing transform
+[static_transform_publisher-7] translation: ('0.000000', '0.000000', '0.405000')
+[static_transform_publisher-7] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-7] from 'writer/base_link' to 'writer/laser'
+[static_transform_publisher-8] [WARN] [1795198652.296150392] []: Old-style arguments are deprecated; see --help for new-style arguments
+[static_transform_publisher-9] [WARN] [1795198652.285877029] []: Old-style arguments are deprecated; see --help for new-style arguments
+[static_transform_publisher-10] [WARN] [1795198652.280884754] []: Old-style arguments are deprecated; see --help for new-style arguments
+[static_transform_publisher-9] [INFO] [1795198652.313769832] [static_transform_publisher_ExDKe5v4iPd2ruNm]: Spinning until stopped - publishing transform
+[static_transform_publisher-9] translation: ('-2.000000', '2.000000', '0.000000')
+[static_transform_publisher-9] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-9] from 'writer/odom' to 'firebot/odom'
+[controller_server-12] [INFO] [1795198652.319541405] [writer.controller_server]: 
+[controller_server-12] 	controller_server lifecycle node launched. 
+[controller_server-12] 	Waiting on external lifecycle transitions to activate
+[controller_server-12] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[static_transform_publisher-8] [INFO] [1795198652.320472623] [static_transform_publisher_0GzKS8DDspTC9a3Y]: Spinning until stopped - publishing transform
+[static_transform_publisher-8] translation: ('0.300000', '0.000000', '0.480000')
+[static_transform_publisher-8] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-8] from 'executor/base_link' to 'executor/laser'
+[planner_server-13] [INFO] [1795198652.320797251] [writer.planner_server]: 
+[planner_server-13] 	planner_server lifecycle node launched. 
+[planner_server-13] 	Waiting on external lifecycle transitions to activate
+[planner_server-13] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[static_transform_publisher-10] [INFO] [1795198652.321799264] [static_transform_publisher_Mh7saLzVjIK2icB2]: Spinning until stopped - publishing transform
+[static_transform_publisher-10] translation: ('0.300000', '0.000000', '0.480000')
+[static_transform_publisher-10] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-10] from 'firebot/base_link' to 'firebot/laser'
+[planner_server-13] [INFO] [1795198652.326879964] [writer.planner_server]: Creating
+[controller_server-12] [INFO] [1795198652.327130076] [writer.controller_server]: Creating controller server
+[planner_server-13] [INFO] [1795198652.347373345] [writer.global_costmap.global_costmap]: 
+[planner_server-13] 	global_costmap lifecycle node launched. 
+[planner_server-13] 	Waiting on external lifecycle transitions to activate
+[planner_server-13] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-13] [INFO] [1795198652.347732468] [writer.global_costmap.global_costmap]: Creating Costmap
+[behavior_server-14] [INFO] [1795198652.356042346] [writer.behavior_server]: 
+[behavior_server-14] 	behavior_server lifecycle node launched. 
+[behavior_server-14] 	Waiting on external lifecycle transitions to activate
+[behavior_server-14] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-12] [INFO] [1795198652.364751910] [writer.local_costmap.local_costmap]: 
+[controller_server-12] 	local_costmap lifecycle node launched. 
+[controller_server-12] 	Waiting on external lifecycle transitions to activate
+[controller_server-12] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-12] [INFO] [1795198652.365128014] [writer.local_costmap.local_costmap]: Creating Costmap
+[bt_navigator-15] [INFO] [1795198652.391665421] [writer.bt_navigator]: 
+[bt_navigator-15] 	bt_navigator lifecycle node launched. 
+[controller_server-17] [INFO] [1795198652.392424036] [executor.controller_server]: 
+[controller_server-17] 	controller_server lifecycle node launched. 
+[controller_server-17] 	Waiting on external lifecycle transitions to activate
+[controller_server-17] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-15] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-15] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-15] [INFO] [1795198652.395738750] [writer.bt_navigator]: Creating
+[planner_server-23] [INFO] [1795198652.397604565] [firebot.planner_server]: 
+[planner_server-23] 	planner_server lifecycle node launched. 
+[planner_server-23] 	Waiting on external lifecycle transitions to activate
+[planner_server-23] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-23] [INFO] [1795198652.399272097] [firebot.planner_server]: Creating
+[controller_server-17] [INFO] [1795198652.399333745] [executor.controller_server]: Creating controller server
+[behavior_server-19] [INFO] [1795198652.415305297] [executor.behavior_server]: 
+[behavior_server-19] 	behavior_server lifecycle node launched. 
+[bt_navigator-20] [INFO] [1795198652.415550266] [executor.bt_navigator]: 
+[bt_navigator-20] 	bt_navigator lifecycle node launched. 
+[bt_navigator-20] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-20] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[behavior_server-19] 	Waiting on external lifecycle transitions to activate
+[behavior_server-19] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-20] [INFO] [1795198652.417319614] [executor.bt_navigator]: Creating
+[lifecycle_manager-26] [INFO] [1795198652.420452339] [firebot.lifecycle_manager_navigation]: Creating
+[lifecycle_manager-16] [INFO] [1795198652.429668798] [writer.lifecycle_manager_navigation]: Creating
+[planner_server-23] [INFO] [1795198652.435239086] [firebot.global_costmap.global_costmap]: 
+[planner_server-23] 	global_costmap lifecycle node launched. 
+[planner_server-23] 	Waiting on external lifecycle transitions to activate
+[planner_server-23] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-23] [INFO] [1795198652.435589269] [firebot.global_costmap.global_costmap]: Creating Costmap
+[lifecycle_manager-26] [INFO] [1795198652.443176480] [firebot.lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[lifecycle_manager-16] [INFO] [1795198652.444638292] [writer.lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[bt_navigator-25] [INFO] [1795198652.444707734] [firebot.bt_navigator]: 
+[bt_navigator-25] 	bt_navigator lifecycle node launched. 
+[bt_navigator-25] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-25] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-25] [INFO] [1795198652.447102590] [firebot.bt_navigator]: Creating
+[planner_server-18] [INFO] [1795198652.449800015] [executor.planner_server]: 
+[planner_server-18] 	planner_server lifecycle node launched. 
+[planner_server-18] 	Waiting on external lifecycle transitions to activate
+[planner_server-18] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-22] [INFO] [1795198652.450266814] [firebot.controller_server]: 
+[controller_server-22] 	controller_server lifecycle node launched. 
+[controller_server-22] 	Waiting on external lifecycle transitions to activate
+[controller_server-22] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-18] [INFO] [1795198652.450827629] [executor.planner_server]: Creating
+[controller_server-17] [INFO] [1795198652.454813198] [executor.local_costmap.local_costmap]: 
+[controller_server-17] 	local_costmap lifecycle node launched. 
+[controller_server-17] 	Waiting on external lifecycle transitions to activate
+[controller_server-17] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-17] [INFO] [1795198652.455514808] [executor.local_costmap.local_costmap]: Creating Costmap
+[parameter_bridge-3] [INFO] [1795198652.460975532] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[controller_server-22] [INFO] [1795198652.466426177] [firebot.controller_server]: Creating controller server
+[parameter_bridge-3] [INFO] [1795198652.480279164] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/writer/cmd_vel (geometry_msgs/msg/Twist) -> /writer/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[async_slam_toolbox_node-11] [INFO] [1795198652.484613393] [slam_toolbox]: Node using stack size 40000000
+[behavior_server-24] [INFO] [1795198652.491933872] [firebot.behavior_server]: 
+[behavior_server-24] 	behavior_server lifecycle node launched. 
+[behavior_server-24] 	Waiting on external lifecycle transitions to activate
+[behavior_server-24] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-21] [INFO] [1795198652.492840693] [executor.lifecycle_manager_navigation]: Creating
+[planner_server-18] [INFO] [1795198652.493625845] [executor.global_costmap.global_costmap]: 
+[planner_server-18] 	global_costmap lifecycle node launched. 
+[planner_server-18] 	Waiting on external lifecycle transitions to activate
+[planner_server-18] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-18] [INFO] [1795198652.494188658] [executor.global_costmap.global_costmap]: Creating Costmap
+[parameter_bridge-3] [INFO] [1795198652.501876024] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/writer/world_odom (gz.msgs.Odometry) -> /writer/world_odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1795198652.512189305] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/writer/scan (gz.msgs.LaserScan) -> /writer/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[controller_server-22] [INFO] [1795198652.524760515] [firebot.local_costmap.local_costmap]: 
+[controller_server-22] 	local_costmap lifecycle node launched. 
+[controller_server-22] 	Waiting on external lifecycle transitions to activate
+[controller_server-22] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-22] [INFO] [1795198652.526624257] [firebot.local_costmap.local_costmap]: Creating Costmap
+[parameter_bridge-3] [INFO] [1795198652.527217012] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/executor/cmd_vel (geometry_msgs/msg/Twist) -> /executor/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[lifecycle_manager-21] [INFO] [1795198652.528003059] [executor.lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[parameter_bridge-3] [INFO] [1795198652.530769636] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/executor/world_odom (gz.msgs.Odometry) -> /executor/world_odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1795198652.538233744] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/executor/scan (gz.msgs.LaserScan) -> /executor/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1795198652.548835757] [ros_gz_bridge]: Creating ROS->GZ Bridge: [/firebot/cmd_vel (geometry_msgs/msg/Twist) -> /firebot/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1795198652.559840224] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/firebot/world_odom (gz.msgs.Odometry) -> /firebot/world_odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1795198652.562967123] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/firebot/scan (gz.msgs.LaserScan) -> /firebot/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[async_slam_toolbox_node-11] [INFO] [1795198652.568974378] [slam_toolbox]: Configuring
+[async_slam_toolbox_node-11] [INFO] [1795198652.596353163] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[async_slam_toolbox_node-11] [INFO] [1795198652.602955410] [slam_toolbox]: CeresSolver: Using SCHUR_JACOBI preconditioner.
+[lifecycle_manager-26] [INFO] [1795198652.615637380] [firebot.lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-26] [INFO] [1795198652.615709741] [firebot.lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[controller_server-22] [INFO] [1795198652.618830204] [firebot.controller_server]: Configuring controller interface
+[controller_server-22] [INFO] [1795198652.618888721] [firebot.controller_server]: getting progress checker plugins..
+[controller_server-22] [INFO] [1795198652.621267006] [firebot.controller_server]: getting goal checker plugins..
+[controller_server-22] [INFO] [1795198652.629254018] [firebot.controller_server]: Controller frequency set to 12.0000Hz
+[controller_server-22] [INFO] [1795198652.629456348] [firebot.local_costmap.local_costmap]: Configuring
+[controller_server-22] [INFO] [1795198652.685474089] [firebot.local_costmap.local_costmap]: Using plugin "obstacle_layer"
+[controller_server-22] [INFO] [1795198652.699971775] [firebot.local_costmap.local_costmap]: Subscribed to Topics: scan
+[INFO] [launch.user]: [LifecycleLaunch] Slamtoolbox node is activating.
+[lifecycle_manager-16] [INFO] [1795198652.712474228] [writer.lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-16] [INFO] [1795198652.712519888] [writer.lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[controller_server-12] [INFO] [1795198652.712863400] [writer.controller_server]: Configuring controller interface
+[controller_server-12] [INFO] [1795198652.712882988] [writer.controller_server]: getting progress checker plugins..
+[controller_server-12] [INFO] [1795198652.713111556] [writer.controller_server]: getting goal checker plugins..
+[controller_server-12] [INFO] [1795198652.713309635] [writer.controller_server]: Controller frequency set to 12.0000Hz
+[controller_server-12] [INFO] [1795198652.713342209] [writer.local_costmap.local_costmap]: Configuring
+[async_slam_toolbox_node-11] [INFO] [1795198652.715937433] [slam_toolbox]: Activating
+[controller_server-22] [INFO] [1795198652.739678625] [firebot.local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-22] [INFO] [1795198652.739841267] [firebot.local_costmap.local_costmap]: Using plugin "inflation_layer"
+[controller_server-22] [INFO] [1795198652.751983509] [firebot.local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[controller_server-12] [INFO] [1795198652.756609652] [writer.local_costmap.local_costmap]: Using plugin "obstacle_layer"
+[controller_server-12] [INFO] [1795198652.779815767] [writer.local_costmap.local_costmap]: Subscribed to Topics: scan
+[controller_server-12] [INFO] [1795198652.794721087] [writer.local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-12] [INFO] [1795198652.794773024] [writer.local_costmap.local_costmap]: Using plugin "entrance_layer"
+[controller_server-12] [INFO] [1795198652.802169965] [writer.local_costmap.local_costmap]: Subscribing to the map topic (/writer/entrance_mask) with transient local durability
+[controller_server-12] [INFO] [1795198652.805108227] [writer.local_costmap.local_costmap]: Initialized plugin "entrance_layer"
+[controller_server-12] [INFO] [1795198652.807531200] [writer.local_costmap.local_costmap]: Using plugin "inflation_layer"
+[controller_server-12] [INFO] [1795198652.817801174] [writer.local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[lifecycle_manager-21] [INFO] [1795198652.847712793] [executor.lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-21] [INFO] [1795198652.847761797] [executor.lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[controller_server-17] [INFO] [1795198652.848798075] [executor.controller_server]: Configuring controller interface
+[controller_server-17] [INFO] [1795198652.848849754] [executor.controller_server]: getting progress checker plugins..
+[controller_server-17] [INFO] [1795198652.849108590] [executor.controller_server]: getting goal checker plugins..
+[controller_server-17] [INFO] [1795198652.849404533] [executor.controller_server]: Controller frequency set to 12.0000Hz
+[controller_server-17] [INFO] [1795198652.849447665] [executor.local_costmap.local_costmap]: Configuring
+[gz-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="writer"]/joint[@name="front_left_wheel_joint"]/axis/use_parent_model_frame:/tmp/team4-ultimate-stale-gt-03/install/share/living_map_sim/models/writer/model.sdf:L256]: XML Element[use_parent_model_frame], child of element[axis], not defined in SDF. Copying[use_parent_model_frame] as children of [axis].
+[controller_server-22] [INFO] [1795198652.910752453] [firebot.controller_server]: Created progress_checker : progress_checker of type nav2_controller::SimpleProgressChecker
+[controller_server-22] [INFO] [1795198652.923091111] [firebot.controller_server]: Controller Server has progress_checker  progress checkers available.
+[controller_server-22] [INFO] [1795198652.923611107] [firebot.controller_server]: Created goal checker : goal_checker of type nav2_controller::SimpleGoalChecker
+[controller_server-22] [INFO] [1795198652.924206838] [firebot.controller_server]: Controller Server has goal_checker  goal checkers available.
+[controller_server-22] [INFO] [1795198652.925375056] [firebot.controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-17] [INFO] [1795198652.938168510] [executor.local_costmap.local_costmap]: Using plugin "obstacle_layer"
+[controller_server-17] [INFO] [1795198652.952644089] [executor.local_costmap.local_costmap]: Subscribed to Topics: scan
+[controller_server-22] [INFO] [1795198653.018172410] [firebot.controller_server]: Controller Server has FollowPath  controllers available.
+[controller_server-17] [INFO] [1795198653.023041123] [executor.local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[controller_server-17] [INFO] [1795198653.023073695] [executor.local_costmap.local_costmap]: Using plugin "inflation_layer"
+[controller_server-17] [INFO] [1795198653.040293460] [executor.local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[controller_server-12] [INFO] [1795198653.044707710] [writer.controller_server]: Created progress_checker : progress_checker of type nav2_controller::SimpleProgressChecker
+[event_sensor-31] [INFO] [1795198653.048040988] [living_map.event_sensor]: Loaded 6 simulated events from /tmp/team4-ultimate-stale-gt-03/install/share/living_map_bringup/config/events.yaml
+[controller_server-12] [INFO] [1795198653.064811031] [writer.controller_server]: Controller Server has progress_checker  progress checkers available.
+[controller_server-12] [INFO] [1795198653.066378088] [writer.controller_server]: Created goal checker : goal_checker of type nav2_controller::SimpleGoalChecker
+[radio-34] [INFO] [1795198653.073071271] [living_map.radio]: Radio mesh ready: 9 RF-blocking walls, 8 dB per wall, gateway at (-1.5,0.0)
+[controller_server-12] [INFO] [1795198653.084059895] [writer.controller_server]: Controller Server has goal_checker  goal checkers available.
+[controller_server-12] [INFO] [1795198653.086116948] [writer.controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[lifecycle_manager-26] [INFO] [1795198653.142865361] [firebot.lifecycle_manager_navigation]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-23] [INFO] [1795198653.143666074] [firebot.planner_server]: Configuring
+[planner_server-23] [INFO] [1795198653.143701034] [firebot.global_costmap.global_costmap]: Configuring
+[controller_server-12] [INFO] [1795198653.174679929] [writer.controller_server]: Controller Server has FollowPath  controllers available.
+[planner_server-23] [INFO] [1795198653.203636012] [firebot.global_costmap.global_costmap]: Using plugin "static_layer"
+[controller_server-17] [INFO] [1795198653.213742816] [executor.controller_server]: Created progress_checker : progress_checker of type nav2_controller::SimpleProgressChecker
+[planner_server-23] [INFO] [1795198653.213936232] [firebot.global_costmap.global_costmap]: Subscribing to the map topic (/firebot/navigation_map) with transient local durability
+[controller_server-17] [INFO] [1795198653.216317713] [executor.controller_server]: Controller Server has progress_checker  progress checkers available.
+[controller_server-17] [INFO] [1795198653.216791949] [executor.controller_server]: Created goal checker : goal_checker of type nav2_controller::SimpleGoalChecker
+[planner_server-23] [INFO] [1795198653.219428978] [firebot.global_costmap.global_costmap]: Subscribing to updates
+[controller_server-17] [INFO] [1795198653.221255458] [executor.controller_server]: Controller Server has goal_checker  goal checkers available.
+[controller_server-17] [INFO] [1795198653.222599359] [executor.controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[planner_server-23] [INFO] [1795198653.225422078] [firebot.global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-23] [INFO] [1795198653.225501554] [firebot.global_costmap.global_costmap]: Using plugin "obstacle_layer"
+[planner_server-23] [INFO] [1795198653.228581683] [firebot.global_costmap.global_costmap]: Subscribed to Topics: scan
+[planner_server-23] [INFO] [1795198653.241903137] [firebot.global_costmap.global_costmap]: Initialized plugin "obstacle_layer"
+[planner_server-23] [INFO] [1795198653.241957655] [firebot.global_costmap.global_costmap]: Using plugin "inflation_layer"
+[beacon_manager-32] [INFO] [1795198653.243029336] [living_map.beacons]: Persistent beacon manager ready; restored 1 memories; dispenser holds 29 beacons
+[planner_server-23] [INFO] [1795198653.247971633] [firebot.global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[controller_server-17] [INFO] [1795198653.257502226] [executor.controller_server]: Controller Server has FollowPath  controllers available.
+[lifecycle_manager-16] [INFO] [1795198653.268186995] [writer.lifecycle_manager_navigation]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-13] [INFO] [1795198653.268650368] [writer.planner_server]: Configuring
+[planner_server-13] [INFO] [1795198653.268676872] [writer.global_costmap.global_costmap]: Configuring
+[planner_server-13] [INFO] [1795198653.309486108] [writer.global_costmap.global_costmap]: Using plugin "static_layer"
+[lifecycle_manager-21] [INFO] [1795198653.318913406] [executor.lifecycle_manager_navigation]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-18] [INFO] [1795198653.320282255] [executor.planner_server]: Configuring
+[planner_server-18] [INFO] [1795198653.320369396] [executor.global_costmap.global_costmap]: Configuring
+[planner_server-13] [INFO] [1795198653.322688325] [writer.global_costmap.global_costmap]: Subscribing to the map topic (/map) with transient local durability
+[planner_server-13] [INFO] [1795198653.328936625] [writer.global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-13] [INFO] [1795198653.328976361] [writer.global_costmap.global_costmap]: Using plugin "obstacle_layer"
+[planner_server-13] [INFO] [1795198653.334891300] [writer.global_costmap.global_costmap]: Subscribed to Topics: scan
+[planner_server-13] [INFO] [1795198653.345927559] [writer.global_costmap.global_costmap]: Initialized plugin "obstacle_layer"
+[planner_server-13] [INFO] [1795198653.345998324] [writer.global_costmap.global_costmap]: Using plugin "entrance_layer"
+[planner_server-18] [INFO] [1795198653.349817533] [executor.global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-23] [INFO] [1795198653.349950062] [firebot.planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner::NavfnPlanner
+[planner_server-23] [INFO] [1795198653.349982352] [firebot.planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-13] [INFO] [1795198653.349999297] [writer.global_costmap.global_costmap]: Subscribing to the map topic (/writer/entrance_mask) with transient local durability
+[planner_server-13] [INFO] [1795198653.351607545] [writer.global_costmap.global_costmap]: Initialized plugin "entrance_layer"
+[planner_server-13] [INFO] [1795198653.351641301] [writer.global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-23] [INFO] [1795198653.353076544] [firebot.planner_server]: Planner Server has GridBased  planners available.
+[planner_server-13] [INFO] [1795198653.353419325] [writer.global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-18] [INFO] [1795198653.357372822] [executor.global_costmap.global_costmap]: Subscribing to the map topic (/executor/navigation_map) with transient local durability
+[planner_server-18] [INFO] [1795198653.361698692] [executor.global_costmap.global_costmap]: Subscribing to updates
+[planner_server-18] [INFO] [1795198653.365960608] [executor.global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-18] [INFO] [1795198653.366003980] [executor.global_costmap.global_costmap]: Using plugin "obstacle_layer"
+[planner_server-18] [INFO] [1795198653.368807140] [executor.global_costmap.global_costmap]: Subscribed to Topics: scan
+[planner_server-18] [INFO] [1795198653.378433942] [executor.global_costmap.global_costmap]: Initialized plugin "obstacle_layer"
+[planner_server-18] [INFO] [1795198653.378472918] [executor.global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-18] [INFO] [1795198653.380345527] [executor.global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[lifecycle_manager-26] [INFO] [1795198653.393957821] [firebot.lifecycle_manager_navigation]: [34m[1mConfiguring behavior_server[0m[0m
+[behavior_server-24] [INFO] [1795198653.394541735] [firebot.behavior_server]: Configuring
+[behavior_server-24] [INFO] [1795198653.406322986] [firebot.behavior_server]: Creating behavior plugin spin of type nav2_behaviors::Spin
+[behavior_server-24] [INFO] [1795198653.408567192] [firebot.behavior_server]: Creating behavior plugin backup of type nav2_behaviors::BackUp
+[behavior_server-24] [INFO] [1795198653.410562121] [firebot.behavior_server]: Creating behavior plugin wait of type nav2_behaviors::Wait
+[behavior_server-24] [INFO] [1795198653.422450300] [firebot.behavior_server]: Configuring spin
+[planner_server-13] [INFO] [1795198653.434743969] [writer.planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner::NavfnPlanner
+[planner_server-13] [INFO] [1795198653.434791829] [writer.planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-18] [INFO] [1795198653.437188834] [executor.planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner::NavfnPlanner
+[planner_server-18] [INFO] [1795198653.437231703] [executor.planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-13] [INFO] [1795198653.438209021] [writer.planner_server]: Created global planner plugin GridBasedDijkstra of type nav2_navfn_planner::NavfnPlanner
+[planner_server-13] [INFO] [1795198653.438248063] [writer.planner_server]: Configuring plugin GridBasedDijkstra of type NavfnPlanner
+[planner_server-13] [INFO] [1795198653.439690332] [writer.planner_server]: Planner Server has GridBased GridBasedDijkstra  planners available.
+[planner_server-18] [INFO] [1795198653.439797609] [executor.planner_server]: Planner Server has GridBased  planners available.
+[behavior_server-24] [INFO] [1795198653.448477537] [firebot.behavior_server]: Configuring backup
+[behavior_server-24] [INFO] [1795198653.470285343] [firebot.behavior_server]: Configuring wait
+[lifecycle_manager-16] [INFO] [1795198653.471529025] [writer.lifecycle_manager_navigation]: [34m[1mConfiguring behavior_server[0m[0m
+[behavior_server-14] [INFO] [1795198653.472488141] [writer.behavior_server]: Configuring
+[command_post-37] [INFO] [1795198653.473474070] [living_map.command_post]: Command Post available on http://localhost:8081
+[lifecycle_manager-21] [INFO] [1795198653.475637850] [executor.lifecycle_manager_navigation]: [34m[1mConfiguring behavior_server[0m[0m
+[behavior_server-19] [INFO] [1795198653.476688033] [executor.behavior_server]: Configuring
+[lifecycle_manager-26] [INFO] [1795198653.486284171] [firebot.lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-25] [INFO] [1795198653.487565187] [firebot.bt_navigator]: Configuring
+[behavior_server-19] [INFO] [1795198653.489633011] [executor.behavior_server]: Creating behavior plugin spin of type nav2_behaviors::Spin
+[behavior_server-14] [INFO] [1795198653.489638691] [writer.behavior_server]: Creating behavior plugin spin of type nav2_behaviors::Spin
+[behavior_server-14] [INFO] [1795198653.491337366] [writer.behavior_server]: Creating behavior plugin backup of type nav2_behaviors::BackUp
+[behavior_server-19] [INFO] [1795198653.492015093] [executor.behavior_server]: Creating behavior plugin backup of type nav2_behaviors::BackUp
+[behavior_server-14] [INFO] [1795198653.493301604] [writer.behavior_server]: Creating behavior plugin wait of type nav2_behaviors::Wait
+[behavior_server-19] [INFO] [1795198653.493804911] [executor.behavior_server]: Creating behavior plugin wait of type nav2_behaviors::Wait
+[bt_navigator-25] [INFO] [1795198653.500488853] [firebot.bt_navigator]: Creating navigator id navigate_to_pose of type nav2_bt_navigator::NavigateToPoseNavigator
+[behavior_server-19] [INFO] [1795198653.504033463] [executor.behavior_server]: Configuring spin
+[behavior_server-14] [INFO] [1795198653.504928410] [writer.behavior_server]: Configuring spin
+[bt_navigator-25] [WARN] [1795198653.505649232] [firebot.bt_navigator]: Error_code parameters were not set. Using default values of: follow_path_error_code compute_path_error_code
+[bt_navigator-25] Make sure these match your BT and there are not other sources of error codes youreported to your application
+[behavior_server-19] [INFO] [1795198653.531976525] [executor.behavior_server]: Configuring backup
+[behavior_server-19] [INFO] [1795198653.548312336] [executor.behavior_server]: Configuring wait
+[behavior_server-14] [INFO] [1795198653.550166989] [writer.behavior_server]: Configuring backup
+[lifecycle_manager-21] [INFO] [1795198653.562002106] [executor.lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-20] [INFO] [1795198653.562931734] [executor.bt_navigator]: Configuring
+[behavior_server-14] [INFO] [1795198653.564998805] [writer.behavior_server]: Configuring wait
+[bt_navigator-20] [INFO] [1795198653.574543367] [executor.bt_navigator]: Creating navigator id navigate_to_pose of type nav2_bt_navigator::NavigateToPoseNavigator
+[lifecycle_manager-16] [INFO] [1795198653.578434378] [writer.lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-20] [WARN] [1795198653.578787694] [executor.bt_navigator]: Error_code parameters were not set. Using default values of: follow_path_error_code compute_path_error_code
+[bt_navigator-20] Make sure these match your BT and there are not other sources of error codes youreported to your application
+[bt_navigator-15] [INFO] [1795198653.578955778] [writer.bt_navigator]: Configuring
+[bt_navigator-15] [INFO] [1795198653.589794882] [writer.bt_navigator]: Creating navigator id navigate_to_pose of type nav2_bt_navigator::NavigateToPoseNavigator
+[bt_navigator-15] [WARN] [1795198653.595121957] [writer.bt_navigator]: Error_code parameters were not set. Using default values of: follow_path_error_code compute_path_error_code
+[bt_navigator-15] Make sure these match your BT and there are not other sources of error codes youreported to your application
+[bt_navigator-25] [INFO] [1795198653.633234042] [firebot.bt_navigator]: Creating navigator id navigate_through_poses of type nav2_bt_navigator::NavigateThroughPosesNavigator
+[bt_navigator-20] [INFO] [1795198653.683314529] [executor.bt_navigator]: Creating navigator id navigate_through_poses of type nav2_bt_navigator::NavigateThroughPosesNavigator
+[lifecycle_manager-26] [INFO] [1795198653.695355798] [firebot.lifecycle_manager_navigation]: [34m[1mActivating controller_server[0m[0m
+[controller_server-22] [INFO] [1795198653.695791362] [firebot.controller_server]: Activating
+[controller_server-22] [INFO] [1795198653.695840096] [firebot.local_costmap.local_costmap]: Activating
+[controller_server-22] [INFO] [1795198653.695852404] [firebot.local_costmap.local_costmap]: Checking transform
+[controller_server-22] [INFO] [1795198653.695915471] [firebot.local_costmap.local_costmap]: Timed out waiting for transform from firebot/base_link to firebot/odom to become available, tf error: Could not find a connection between 'firebot/odom' and 'firebot/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[bt_navigator-15] [INFO] [1795198653.700344525] [writer.bt_navigator]: Creating navigator id navigate_through_poses of type nav2_bt_navigator::NavigateThroughPosesNavigator
+[lifecycle_manager-21] [INFO] [1795198653.743646044] [executor.lifecycle_manager_navigation]: [34m[1mActivating controller_server[0m[0m
+[controller_server-17] [INFO] [1795198653.744016544] [executor.controller_server]: Activating
+[controller_server-17] [INFO] [1795198653.744059272] [executor.local_costmap.local_costmap]: Activating
+[controller_server-17] [INFO] [1795198653.744071189] [executor.local_costmap.local_costmap]: Checking transform
+[controller_server-17] [INFO] [1795198653.744129125] [executor.local_costmap.local_costmap]: Timed out waiting for transform from executor/base_link to executor/odom to become available, tf error: Could not find a connection between 'executor/odom' and 'executor/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[lifecycle_manager-16] [INFO] [1795198653.760093529] [writer.lifecycle_manager_navigation]: [34m[1mActivating controller_server[0m[0m
+[controller_server-12] [INFO] [1795198653.760474300] [writer.controller_server]: Activating
+[controller_server-12] [INFO] [1795198653.760496844] [writer.local_costmap.local_costmap]: Activating
+[controller_server-12] [INFO] [1795198653.760501066] [writer.local_costmap.local_costmap]: Checking transform
+[controller_server-12] [INFO] [1795198653.760533630] [writer.local_costmap.local_costmap]: Timed out waiting for transform from writer/base_link to writer/odom to become available, tf error: Could not find a connection between 'writer/odom' and 'writer/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-22] [INFO] [1795198654.195969677] [firebot.local_costmap.local_costmap]: Timed out waiting for transform from firebot/base_link to firebot/odom to become available, tf error: Could not find a connection between 'firebot/odom' and 'firebot/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-17] [INFO] [1795198654.244755437] [executor.local_costmap.local_costmap]: Timed out waiting for transform from executor/base_link to executor/odom to become available, tf error: Could not find a connection between 'executor/odom' and 'executor/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-12] [INFO] [1795198654.260634538] [writer.local_costmap.local_costmap]: Timed out waiting for transform from writer/base_link to writer/odom to become available, tf error: Could not find a connection between 'writer/odom' and 'writer/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[sim_guard-2] [INFO] [1795198654.438766518] [living_map.sim_guard]: Simulation clock is running; guard done
+[controller_server-22] [INFO] [1795198654.696001513] [firebot.local_costmap.local_costmap]: Timed out waiting for transform from firebot/base_link to firebot/odom to become available, tf error: Could not find a connection between 'firebot/odom' and 'firebot/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-17] [INFO] [1795198654.744166309] [executor.local_costmap.local_costmap]: Timed out waiting for transform from executor/base_link to executor/odom to become available, tf error: Could not find a connection between 'executor/odom' and 'executor/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-12] [INFO] [1795198654.760616394] [writer.local_costmap.local_costmap]: Timed out waiting for transform from writer/base_link to writer/odom to become available, tf error: Could not find a connection between 'writer/odom' and 'writer/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-22] [INFO] [1795198655.196003015] [firebot.local_costmap.local_costmap]: Timed out waiting for transform from firebot/base_link to firebot/odom to become available, tf error: Could not find a connection between 'firebot/odom' and 'firebot/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-17] [INFO] [1795198655.244172893] [executor.local_costmap.local_costmap]: Timed out waiting for transform from executor/base_link to executor/odom to become available, tf error: Could not find a connection between 'executor/odom' and 'executor/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-12] [INFO] [1795198655.260616141] [writer.local_costmap.local_costmap]: Timed out waiting for transform from writer/base_link to writer/odom to become available, tf error: Could not find a connection between 'writer/odom' and 'writer/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-22] [INFO] [1795198655.695938526] [firebot.local_costmap.local_costmap]: Timed out waiting for transform from firebot/base_link to firebot/odom to become available, tf error: Could not find a connection between 'firebot/odom' and 'firebot/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-17] [INFO] [1795198655.744176804] [executor.local_costmap.local_costmap]: Timed out waiting for transform from executor/base_link to executor/odom to become available, tf error: Could not find a connection between 'executor/odom' and 'executor/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[controller_server-12] [INFO] [1795198655.760587468] [writer.local_costmap.local_costmap]: Timed out waiting for transform from writer/base_link to writer/odom to become available, tf error: Could not find a connection between 'writer/odom' and 'writer/base_link' because they are not part of the same tree.Tf has two or more unconnected trees.
+[gz-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="writer"]/joint[@name="front_left_wheel_joint"]/axis/use_parent_model_frame:<data-string>:L265]: XML Element[use_parent_model_frame], child of element[axis], not defined in SDF. Copying[use_parent_model_frame] as children of [axis].
+[async_slam_toolbox_node-11] Registering sensor: [Custom Described Lidar]
+[controller_server-22] [INFO] [1795198656.196015223] [firebot.local_costmap.local_costmap]: start
+[gateway-35] [INFO] [1795198656.240996944] [living_map.gateway]: B001 seq=1 CRC valid [ENTRANCE] local=(0.00,0.00)
+[executor-39] [INFO] [1795198656.242921441] [living_map.firebot]: Imported memory B001 mission=1 type=0
+[controller_server-17] [INFO] [1795198656.244247067] [executor.local_costmap.local_costmap]: start
+[controller_server-12] [INFO] [1795198656.260664571] [writer.local_costmap.local_costmap]: start
+[controller_server-22] [INFO] [1795198656.349218718] [firebot.controller_server]: Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-22] [INFO] [1795198656.349268205] [firebot.controller_server]: Creating bond (controller_server) to lifecycle manager.
+[controller_server-17] [INFO] [1795198656.396240210] [executor.controller_server]: Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-17] [INFO] [1795198656.396328296] [executor.controller_server]: Creating bond (controller_server) to lifecycle manager.
+[controller_server-12] [INFO] [1795198656.412848120] [writer.controller_server]: Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-12] [INFO] [1795198656.412897952] [writer.controller_server]: Creating bond (controller_server) to lifecycle manager.
+[lifecycle_manager-26] [INFO] [1795198656.458636835] [firebot.lifecycle_manager_navigation]: Server controller_server connected with bond.
+[lifecycle_manager-26] [INFO] [1795198656.458677327] [firebot.lifecycle_manager_navigation]: [34m[1mActivating planner_server[0m[0m
+[planner_server-23] [INFO] [1795198656.459086842] [firebot.planner_server]: Activating
+[planner_server-23] [INFO] [1795198656.459116239] [firebot.global_costmap.global_costmap]: Activating
+[planner_server-23] [INFO] [1795198656.459121351] [firebot.global_costmap.global_costmap]: Checking transform
+[planner_server-23] [INFO] [1795198656.459226381] [firebot.global_costmap.global_costmap]: start
+[lifecycle_manager-21] [INFO] [1795198656.509510032] [executor.lifecycle_manager_navigation]: Server controller_server connected with bond.
+[lifecycle_manager-21] [INFO] [1795198656.509608866] [executor.lifecycle_manager_navigation]: [34m[1mActivating planner_server[0m[0m
+[planner_server-18] [INFO] [1795198656.510296987] [executor.planner_server]: Activating
+[planner_server-18] [INFO] [1795198656.510326632] [executor.global_costmap.global_costmap]: Activating
+[planner_server-18] [INFO] [1795198656.510331993] [executor.global_costmap.global_costmap]: Checking transform
+[planner_server-18] [INFO] [1795198656.510447286] [executor.global_costmap.global_costmap]: start
+[lifecycle_manager-16] [INFO] [1795198656.524492552] [writer.lifecycle_manager_navigation]: Server controller_server connected with bond.
+[lifecycle_manager-16] [INFO] [1795198656.524534620] [writer.lifecycle_manager_navigation]: [34m[1mActivating planner_server[0m[0m
+[planner_server-13] [INFO] [1795198656.524979461] [writer.planner_server]: Activating
+[planner_server-13] [INFO] [1795198656.525057619] [writer.global_costmap.global_costmap]: Activating
+[planner_server-13] [INFO] [1795198656.525072138] [writer.global_costmap.global_costmap]: Checking transform
+[planner_server-13] [INFO] [1795198656.525299780] [writer.global_costmap.global_costmap]: start
+[planner_server-13] [INFO] [1795198656.758235621] [writer.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 280 X 195 at 0.050000 m/pix
+[controller_server-12] [INFO] [1795198656.760001901] [writer.local_costmap.local_costmap]: StaticLayer: Resizing static layer to 280 X 195 at 0.050000 m/pix
+[planner_server-23] [WARN] [1795198656.792807137] [nav2_costmap_2d]: Robot is out of bounds of the costmap
+[planner_server-23] [WARN] [1795198656.792865068] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [INFO] [1795198656.811477533] [firebot.planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-23] [INFO] [1795198656.813959472] [firebot.planner_server]: Creating bond (planner_server) to lifecycle manager.
+[planner_server-18] [WARN] [1795198656.844041033] [nav2_costmap_2d]: Robot is out of bounds of the costmap
+[planner_server-18] [WARN] [1795198656.844098044] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [INFO] [1795198656.862883785] [executor.planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-18] [INFO] [1795198656.866255861] [executor.planner_server]: Creating bond (planner_server) to lifecycle manager.
+[planner_server-13] [INFO] [1795198656.877773350] [writer.planner_server]: Activating plugin GridBasedDijkstra of type NavfnPlanner
+[planner_server-13] [INFO] [1795198656.877817665] [writer.planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-13] [INFO] [1795198656.880586401] [writer.planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-26] [INFO] [1795198656.926867501] [firebot.lifecycle_manager_navigation]: Server planner_server connected with bond.
+[lifecycle_manager-26] [INFO] [1795198656.926941404] [firebot.lifecycle_manager_navigation]: [34m[1mActivating behavior_server[0m[0m
+[behavior_server-24] [INFO] [1795198656.927561386] [firebot.behavior_server]: Activating
+[behavior_server-24] [INFO] [1795198656.927595831] [firebot.behavior_server]: Activating spin
+[behavior_server-24] [INFO] [1795198656.927603955] [firebot.behavior_server]: Activating backup
+[behavior_server-24] [INFO] [1795198656.927609866] [firebot.behavior_server]: Activating wait
+[behavior_server-24] [INFO] [1795198656.927619052] [firebot.behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[lifecycle_manager-21] [INFO] [1795198656.977600785] [executor.lifecycle_manager_navigation]: Server planner_server connected with bond.
+[lifecycle_manager-21] [INFO] [1795198656.977643434] [executor.lifecycle_manager_navigation]: [34m[1mActivating behavior_server[0m[0m
+[behavior_server-19] [INFO] [1795198656.978098443] [executor.behavior_server]: Activating
+[behavior_server-19] [INFO] [1795198656.978128167] [executor.behavior_server]: Activating spin
+[behavior_server-19] [INFO] [1795198656.978135490] [executor.behavior_server]: Activating backup
+[behavior_server-19] [INFO] [1795198656.978140929] [executor.behavior_server]: Activating wait
+[behavior_server-19] [INFO] [1795198656.978149802] [executor.behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[lifecycle_manager-16] [INFO] [1795198656.998763268] [writer.lifecycle_manager_navigation]: Server planner_server connected with bond.
+[lifecycle_manager-16] [INFO] [1795198656.998805055] [writer.lifecycle_manager_navigation]: [34m[1mActivating behavior_server[0m[0m
+[behavior_server-14] [INFO] [1795198656.999250754] [writer.behavior_server]: Activating
+[behavior_server-14] [INFO] [1795198656.999280577] [writer.behavior_server]: Activating spin
+[behavior_server-14] [INFO] [1795198656.999289938] [writer.behavior_server]: Activating backup
+[behavior_server-14] [INFO] [1795198656.999297360] [writer.behavior_server]: Activating wait
+[behavior_server-14] [INFO] [1795198656.999334056] [writer.behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[lifecycle_manager-26] [INFO] [1795198657.037356424] [firebot.lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[lifecycle_manager-26] [INFO] [1795198657.037428065] [firebot.lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-25] [INFO] [1795198657.038187236] [firebot.bt_navigator]: Activating
+[lifecycle_manager-21] [INFO] [1795198657.089344964] [executor.lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[lifecycle_manager-21] [INFO] [1795198657.089416807] [executor.lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-20] [INFO] [1795198657.090101074] [executor.bt_navigator]: Activating
+[lifecycle_manager-16] [INFO] [1795198657.114657848] [writer.lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[lifecycle_manager-16] [INFO] [1795198657.114739145] [writer.lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-15] [INFO] [1795198657.115449702] [writer.bt_navigator]: Activating
+[planner_server-23] [WARN] [1795198657.127174020] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198657.177444130] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[bt_navigator-25] [INFO] [1795198657.252122203] [firebot.bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[bt_navigator-20] [INFO] [1795198657.296396613] [executor.bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[bt_navigator-15] [INFO] [1795198657.350111669] [writer.bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[lifecycle_manager-26] [INFO] [1795198657.365959832] [firebot.lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[lifecycle_manager-26] [INFO] [1795198657.366002460] [firebot.lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-26] [INFO] [1795198657.366007872] [firebot.lifecycle_manager_navigation]: [34m[1mCreating bond timer...[0m[0m
+[lifecycle_manager-21] [INFO] [1795198657.410696048] [executor.lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[lifecycle_manager-21] [INFO] [1795198657.410736521] [executor.lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-21] [INFO] [1795198657.410742024] [executor.lifecycle_manager_navigation]: [34m[1mCreating bond timer...[0m[0m
+[planner_server-23] [WARN] [1795198657.459383235] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[lifecycle_manager-16] [INFO] [1795198657.461589100] [writer.lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[lifecycle_manager-16] [INFO] [1795198657.461638405] [writer.lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-16] [INFO] [1795198657.461644549] [writer.lifecycle_manager_navigation]: [34m[1mCreating bond timer...[0m[0m
+[planner_server-18] [WARN] [1795198657.510636928] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[frontier_explorer-30] [INFO] [1795198657.688876319] [writer.frontier_explorer]: Explorer state SEARCHING
+[frontier_explorer-30] [INFO] [1795198657.720416560] [writer.frontier_explorer]: Frontier selected x=0.94 y=0.13 cells=1076 score=30.89 raw=2319 clusters=173 blocked_zones=0
+[planner_server-23] [WARN] [1795198657.792790811] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198657.843968077] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[bt_navigator-15] [INFO] [1795198657.937770178] [writer.bt_navigator]: Begin navigating from current location (0.00, 0.00) to (0.94, 0.13)
+[controller_server-12] [INFO] [1795198657.959319969] [writer.controller_server]: Received a goal, begin computing control effort.
+[controller_server-12] [WARN] [1795198657.959372949] [writer.controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded goal_checker . This warning will appear once.
+[controller_server-12] [WARN] [1795198657.959422564] [writer.controller_server]: No progress checker was specified in parameter 'current_progress_checker'. Server will use only plugin loaded progress_checker . This warning will appear once.
+[parameter_bridge-3] [INFO] [1795198657.960058859] [ros_gz_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[planner_server-23] [WARN] [1795198658.126087491] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198658.177378726] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198658.459396227] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[async_slam_toolbox_node-11] [INFO] [1795198658.508217346] [slam_toolbox]: Message Filter dropping message: frame 'writer/laser' at time 2.500 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-13] [INFO] [1795198658.508307864] [writer.global_costmap.global_costmap]: Message Filter dropping message: frame 'writer/laser' at time 2.500 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[controller_server-12] [INFO] [1795198658.508658664] [writer.local_costmap.local_costmap]: Message Filter dropping message: frame 'writer/laser' at time 2.500 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[planner_server-18] [WARN] [1795198658.510625943] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[frontier_explorer-30] [WARN] [1795198658.598872252] [writer.frontier_explorer]: No fresh Writer LiDAR scan; requesting active-goal cancellation
+[frontier_explorer-30] [WARN] [1795198658.599254768] [writer.frontier_explorer]: Active Writer goal cancellation requested: LiDAR data stale
+[frontier_explorer-30] [INFO] [1795198658.600491970] [writer.frontier_explorer]: Explorer state NAVIGATING
+[controller_server-12] [INFO] [1795198658.626213996] [writer.controller_server]: Cancellation was successful. Stopping the robot.
+[controller_server-12] [INFO] [1795198658.626262558] [writer.controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+[bt_navigator-15] [INFO] [1795198658.626611545] [writer.bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+[bt_navigator-15] [INFO] [1795198658.626827149] [writer.bt_navigator]: Goal canceled
+[frontier_explorer-30] [INFO] [1795198658.627975833] [writer.frontier_explorer]: frontier goal at (0.94,0.13) cancelled externally (LiDAR data stale); not counted as failure
+[frontier_explorer-30] [INFO] [1795198658.629120856] [writer.frontier_explorer]: Explorer state SEARCHING
+[controller_server-12] [WARN] [1795198658.760855485] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 0.58 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198658.792708586] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198658.843993542] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198658.858989240] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 0.68 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198658.885863982] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 0.70 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198659.010820366] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 0.83 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198659.126058850] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198659.135867455] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 0.95 seconds, and it should be updated every 0.50 seconds.
+[planner_server-18] [WARN] [1795198659.177322193] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198659.192148974] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 1.01 seconds, and it should be updated every 0.50 seconds.
+[executor-38] [INFO] [1795198659.244489375] [living_map.executor]: Imported memory B001 mission=1 type=0
+[controller_server-12] [WARN] [1795198659.260862353] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 1.08 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198659.385850009] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 1.20 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198659.459445201] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198659.510629734] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198659.510874325] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 1.33 seconds, and it should be updated every 0.50 seconds.
+[planner_server-13] [WARN] [1795198659.525501823] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 1.34 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198659.636005239] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 1.45 seconds, and it should be updated every 0.50 seconds.
+[frontier_explorer-30] [WARN] [1795198659.700545285] [writer.frontier_explorer]: No fresh map transform or odometry pose; waiting before selecting a goal
+[controller_server-12] [WARN] [1795198659.761111513] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 1.57 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198659.792767082] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198659.792824297] [firebot.global_costmap.global_costmap]: Can't update static costmap layer, no map received
+[planner_server-18] [WARN] [1795198659.843962294] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198659.844022996] [executor.global_costmap.global_costmap]: Can't update static costmap layer, no map received
+[planner_server-13] [WARN] [1795198659.858778833] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 1.66 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198659.885854882] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 1.69 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198660.010891369] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 1.82 seconds, and it should be updated every 0.50 seconds.
+[frontier_explorer-30] [WARN] [1795198660.101813749] [writer.frontier_explorer]: Battery reserve reached: returning to the entrance
+[planner_server-23] [WARN] [1795198660.126073156] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198660.135844396] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 1.94 seconds, and it should be updated every 0.50 seconds.
+[planner_server-18] [WARN] [1795198660.177326745] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198660.192155221] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 2.00 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198660.260851604] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 2.07 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198660.385842638] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 2.19 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198660.459371856] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198660.510631880] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198660.510828715] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 2.32 seconds, and it should be updated every 0.50 seconds.
+[planner_server-13] [WARN] [1795198660.525473404] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 2.33 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198660.635895315] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 2.44 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198660.760906816] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 2.56 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198660.792724161] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198660.843947527] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198660.858884743] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 2.66 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198660.885867905] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 2.69 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198661.010870173] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 2.81 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198661.126063394] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198661.135866021] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 2.94 seconds, and it should be updated every 0.50 seconds.
+[planner_server-18] [WARN] [1795198661.177326964] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198661.192137764] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 3.00 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198661.260926609] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 3.06 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198661.385848766] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 3.19 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198661.459364066] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198661.510693831] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198661.510857640] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 3.31 seconds, and it should be updated every 0.50 seconds.
+[planner_server-13] [WARN] [1795198661.525488948] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 3.33 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198661.635880324] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 3.44 seconds, and it should be updated every 0.50 seconds.
+[frontier_explorer-30] [INFO] [1795198661.712766358] [writer.frontier_explorer]: Explorer state RETURNING
+[controller_server-12] [WARN] [1795198661.760936826] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 3.56 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198661.792765663] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198661.843985635] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198661.858837458] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 3.66 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198661.885890782] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 3.69 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198662.010939875] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 3.81 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198662.126067504] [nav2_costmap_2d]: Robot is out of bounds of the costmap
+[planner_server-23] [WARN] [1795198662.126102869] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198662.136019739] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 3.94 seconds, and it should be updated every 0.50 seconds.
+[planner_server-18] [WARN] [1795198662.177319030] [nav2_costmap_2d]: Robot is out of bounds of the costmap
+[planner_server-18] [WARN] [1795198662.177352484] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198662.192136072] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 4.00 seconds, and it should be updated every 0.50 seconds.
+[writer-27] [WARN] [1795198662.225182677] [living_map.writer]: No fresh /writer/odom: stuck detection paused until odometry returns
+[controller_server-12] [WARN] [1795198662.260854108] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 4.06 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198662.385911316] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 4.19 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198662.459404107] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198662.510655625] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198662.510826347] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 4.31 seconds, and it should be updated every 0.50 seconds.
+[planner_server-13] [WARN] [1795198662.525474100] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 4.33 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198662.636224209] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 4.44 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198662.760804396] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 4.56 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198662.792781447] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198662.843986563] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198662.858851898] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 4.66 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198662.885845867] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 4.69 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198663.010957687] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 4.81 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198663.126104428] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198663.126182626] [firebot.global_costmap.global_costmap]: Can't update static costmap layer, no map received
+[controller_server-12] [WARN] [1795198663.135843685] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 4.94 seconds, and it should be updated every 0.50 seconds.
+[planner_server-18] [WARN] [1795198663.177317559] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198663.177367153] [executor.global_costmap.global_costmap]: Can't update static costmap layer, no map received
+[planner_server-13] [WARN] [1795198663.192091540] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 4.99 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198663.260808742] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 5.06 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198663.385858686] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 5.18 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198663.459396623] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198663.510650463] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198663.510846772] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 5.31 seconds, and it should be updated every 0.50 seconds.
+[planner_server-13] [WARN] [1795198663.525505775] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 5.32 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198663.635878399] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 5.43 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198663.760849253] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 5.56 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198663.792777171] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198663.843958906] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198663.858787793] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 5.66 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198663.885861826] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 5.68 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198664.010874444] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 5.81 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198664.126064312] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198664.135840913] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 5.93 seconds, and it should be updated every 0.50 seconds.
+[planner_server-18] [WARN] [1795198664.177326714] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-13] [WARN] [1795198664.192154556] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 5.99 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198664.260849449] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 6.06 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198664.385857880] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 6.18 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198664.459406385] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198664.510630328] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[controller_server-12] [WARN] [1795198664.510873616] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 6.31 seconds, and it should be updated every 0.50 seconds.
+[planner_server-13] [WARN] [1795198664.525478044] [writer.global_costmap.global_costmap]: The /writer/scan observation buffer has not been updated for 6.32 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198664.635870973] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 6.43 seconds, and it should be updated every 0.50 seconds.
+[controller_server-12] [WARN] [1795198664.760804621] [writer.local_costmap.local_costmap]: The /writer/scan observation buffer has not been updated for 6.56 seconds, and it should be updated every 0.50 seconds.
+[planner_server-23] [WARN] [1795198664.792748738] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[async_slam_toolbox_node-11] [INFO] [1795198664.835884145] [slam_toolbox]: Message Filter dropping message: frame 'writer/laser' at time 2.600 for reason 'discarding message because the queue is full'
+[planner_server-18] [WARN] [1795198664.843989145] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198665.126062388] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198665.177345246] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198665.459408454] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198665.510681196] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[bt_navigator-15] [INFO] [1795198665.739689151] [writer.bt_navigator]: Begin navigating from current location (0.12, 0.01) to (0.00, 0.00)
+[controller_server-12] [INFO] [1795198665.760717938] [writer.controller_server]: Received a goal, begin computing control effort.
+[controller_server-12] [INFO] [1795198665.760897425] [writer.controller_server]: Reached the goal!
+[bt_navigator-15] [INFO] [1795198665.780057341] [writer.bt_navigator]: Goal succeeded
+[frontier_explorer-30] [INFO] [1795198665.781065802] [writer.frontier_explorer]: Writer is back at the entrance with the full map
+[frontier_explorer-30] [INFO] [1795198665.781412328] [writer.frontier_explorer]: Explorer state HOME
+[planner_server-23] [WARN] [1795198665.792710504] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198665.843968725] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198666.126067185] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198666.177346026] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198666.459382656] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198666.459427276] [firebot.global_costmap.global_costmap]: Can't update static costmap layer, no map received
+[planner_server-18] [WARN] [1795198666.510626443] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198666.510682411] [executor.global_costmap.global_costmap]: Can't update static costmap layer, no map received
+[planner_server-23] [WARN] [1795198666.792740560] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198666.843932303] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198667.126072090] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198667.177302761] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-23] [WARN] [1795198667.459370735] [nav2_costmap_2d]: Robot is out of bounds of the costmap
+[planner_server-23] [WARN] [1795198667.459412604] [firebot.global_costmap.global_costmap]: Sensor origin at (-1.70, 2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[planner_server-18] [WARN] [1795198667.510635130] [nav2_costmap_2d]: Robot is out of bounds of the costmap
+[planner_server-18] [WARN] [1795198667.510675733] [executor.global_costmap.global_costmap]: Sensor origin at (-1.70, -2.00) is out of map bounds (0.00, 0.00) to (49.96, 29.96). The costmap cannot raytrace for it.
+[static_transform_publisher-10] [INFO] [1795198667.584247109] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[controller_server-12] [INFO] [1795198667.584260231] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[controller_server-12] [INFO] [1795198667.584314246] [writer.controller_server]: Running Nav2 LifecycleNode rcl preshutdown (controller_server)
+[controller_server-12] [INFO] [1795198667.585194572] [writer.controller_server]: Deactivating
+[controller_server-12] [INFO] [1795198667.585244961] [writer.controller_server]: Deactivating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-12] [INFO] [1795198667.585278492] [writer.local_costmap.local_costmap]: Deactivating
+[bt_navigator-25] [INFO] [1795198667.584269456] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bt_navigator-25] [INFO] [1795198667.584351121] [firebot.bt_navigator]: Running Nav2 LifecycleNode rcl preshutdown (bt_navigator)
+[bt_navigator-25] [INFO] [1795198667.584437693] [firebot.bt_navigator]: Deactivating
+[bt_navigator-25] [INFO] [1795198667.584477166] [firebot.bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[controller_server-22] [INFO] [1795198667.584272527] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[controller_server-22] [INFO] [1795198667.584331742] [firebot.controller_server]: Running Nav2 LifecycleNode rcl preshutdown (controller_server)
+[controller_server-22] [INFO] [1795198667.585224981] [firebot.controller_server]: Deactivating
+[controller_server-22] [INFO] [1795198667.585266232] [firebot.controller_server]: Deactivating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-22] [INFO] [1795198667.585296611] [firebot.local_costmap.local_costmap]: Deactivating
+[static_transform_publisher-6] [INFO] [1795198667.584274497] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[controller_server-17] [INFO] [1795198667.584277466] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[controller_server-17] [INFO] [1795198667.584331666] [executor.controller_server]: Running Nav2 LifecycleNode rcl preshutdown (controller_server)
+[controller_server-17] [INFO] [1795198667.584378412] [executor.controller_server]: Deactivating
+[controller_server-17] [INFO] [1795198667.584390673] [executor.controller_server]: Deactivating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-17] [INFO] [1795198667.584406741] [executor.local_costmap.local_costmap]: Deactivating
+[static_transform_publisher-9] [INFO] [1795198667.584295043] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[static_transform_publisher-8] [INFO] [1795198667.584456440] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bt_navigator-20] [INFO] [1795198667.584460754] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bt_navigator-20] [INFO] [1795198667.584512325] [executor.bt_navigator]: Running Nav2 LifecycleNode rcl preshutdown (bt_navigator)
+[bt_navigator-20] [INFO] [1795198667.584556046] [executor.bt_navigator]: Deactivating
+[bt_navigator-20] [INFO] [1795198667.584571379] [executor.bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[bt_navigator-15] [INFO] [1795198667.585184547] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bt_navigator-15] [INFO] [1795198667.585248535] [writer.bt_navigator]: Running Nav2 LifecycleNode rcl preshutdown (bt_navigator)
+[bt_navigator-15] [INFO] [1795198667.585298890] [writer.bt_navigator]: Deactivating
+[bt_navigator-15] [INFO] [1795198667.585332260] [writer.bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[lifecycle_manager-16] [INFO] [1795198667.585182607] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-16] [INFO] [1795198667.585266180] [writer.lifecycle_manager_navigation]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_navigation)
+[lifecycle_manager-16] [INFO] [1795198667.585303996] [writer.lifecycle_manager_navigation]: [34m[1mTerminating bond timer...[0m[0m
+[behavior_server-24] [INFO] [1795198667.585205837] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[behavior_server-24] [INFO] [1795198667.585262788] [firebot.behavior_server]: Running Nav2 LifecycleNode rcl preshutdown (behavior_server)
+[behavior_server-24] [INFO] [1795198667.585305031] [firebot.behavior_server]: Deactivating
+[behavior_server-24] [INFO] [1795198667.585325160] [firebot.behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[lifecycle_manager-21] [INFO] [1795198667.585258400] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-21] [INFO] [1795198667.585313963] [executor.lifecycle_manager_navigation]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_navigation)
+[lifecycle_manager-21] [INFO] [1795198667.585342691] [executor.lifecycle_manager_navigation]: [34m[1mTerminating bond timer...[0m[0m
+[behavior_server-14] [INFO] [1795198667.585281553] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[behavior_server-14] [INFO] [1795198667.585371694] [writer.behavior_server]: Running Nav2 LifecycleNode rcl preshutdown (behavior_server)
+[behavior_server-14] [INFO] [1795198667.585427028] [writer.behavior_server]: Deactivating
+[behavior_server-14] [INFO] [1795198667.585453779] [writer.behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[async_slam_toolbox_node-11] [INFO] [1795198667.585541558] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[clock_throttle-4] [INFO] [1795198667.586066229] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-3] [INFO] [1795198667.587185535] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-26] [INFO] [1795198667.587215691] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-26] [INFO] [1795198667.587291010] [firebot.lifecycle_manager_navigation]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_navigation)
+[lifecycle_manager-26] [INFO] [1795198667.587319879] [firebot.lifecycle_manager_navigation]: [34m[1mTerminating bond timer...[0m[0m
+[static_transform_publisher-7] [INFO] [1795198667.587664657] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[planner_server-23] [INFO] [1795198667.587854709] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[planner_server-23] [INFO] [1795198667.587933540] [firebot.planner_server]: Running Nav2 LifecycleNode rcl preshutdown (planner_server)
+[planner_server-23] [INFO] [1795198667.587973479] [firebot.planner_server]: Deactivating
+[planner_server-23] [INFO] [1795198667.587991729] [firebot.global_costmap.global_costmap]: Deactivating
+[behavior_server-19] [INFO] [1795198667.587922012] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[behavior_server-19] [INFO] [1795198667.587997147] [executor.behavior_server]: Running Nav2 LifecycleNode rcl preshutdown (behavior_server)
+[behavior_server-19] [INFO] [1795198667.588075979] [executor.behavior_server]: Deactivating
+[behavior_server-19] [INFO] [1795198667.588112449] [executor.behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[planner_server-13] [INFO] [1795198667.588185477] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[planner_server-13] [INFO] [1795198667.588225576] [writer.planner_server]: Running Nav2 LifecycleNode rcl preshutdown (planner_server)
+[planner_server-13] [INFO] [1795198667.588259716] [writer.planner_server]: Deactivating
+[planner_server-13] [INFO] [1795198667.588277482] [writer.global_costmap.global_costmap]: Deactivating
+[bt_navigator-25] [INFO] [1795198667.595035400] [firebot.bt_navigator]: Cleaning up
+[bt_navigator-15] [INFO] [1795198667.595858448] [writer.bt_navigator]: Cleaning up
+[behavior_server-14] [INFO] [1795198667.595902713] [writer.behavior_server]: Cleaning up
+[behavior_server-24] [INFO] [1795198667.597182539] [firebot.behavior_server]: Cleaning up
+[planner_server-18] [INFO] [1795198667.598050424] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[planner_server-18] [INFO] [1795198667.598216302] [executor.planner_server]: Running Nav2 LifecycleNode rcl preshutdown (planner_server)
+[planner_server-18] [INFO] [1795198667.598278798] [executor.planner_server]: Deactivating
+[planner_server-18] [INFO] [1795198667.598301213] [executor.global_costmap.global_costmap]: Deactivating
+[behavior_server-19] [INFO] [1795198667.598606016] [executor.behavior_server]: Cleaning up
+[async_slam_toolbox_node-11] Unregistering sensor: Custom Described Lidar
+[behavior_server-14] [INFO] [1795198667.605036946] [writer.behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[bt_navigator-20] [INFO] [1795198667.606005310] [executor.bt_navigator]: Cleaning up
+[behavior_server-24] [INFO] [1795198667.612354187] [firebot.behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[controller_server-17] [INFO] [1795198667.624124609] [executor.controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[behavior_server-19] [INFO] [1795198667.628813453] [executor.behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[controller_server-12] [INFO] [1795198667.636841435] [writer.controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[controller_server-17] [INFO] [1795198667.641320651] [executor.controller_server]: Cleaning up
+[controller_server-17] [INFO] [1795198667.641361496] [executor.controller_server]: Cleaning up controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-17] [INFO] [1795198667.641425877] [executor.local_costmap.local_costmap]: Cleaning up
+[controller_server-12] [INFO] [1795198667.648438443] [writer.controller_server]: Cleaning up
+[controller_server-12] [INFO] [1795198667.648492400] [writer.controller_server]: Cleaning up controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-12] [INFO] [1795198667.651183011] [writer.local_costmap.local_costmap]: Cleaning up
+[lifecycle_manager-21] [INFO] [1795198667.694433302] [executor.lifecycle_manager_navigation]: Destroying lifecycle_manager_navigation
+[controller_server-22] [INFO] [1795198667.696948090] [firebot.controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[lifecycle_manager-16] [INFO] [1795198667.700668672] [writer.lifecycle_manager_navigation]: Destroying lifecycle_manager_navigation
+[controller_server-22] [INFO] [1795198667.707406665] [firebot.controller_server]: Cleaning up
+[controller_server-22] [INFO] [1795198667.707534360] [firebot.controller_server]: Cleaning up controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-22] [INFO] [1795198667.707603881] [firebot.local_costmap.local_costmap]: Cleaning up
+[behavior_server-14] [INFO] [1795198667.712262779] [writer.behavior_server]: Destroying
+[beacon_visualizer-33] Traceback (most recent call last):
+[beacon_visualizer-33]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_beacons/visualizer.py", line 97, in main
+[beacon_visualizer-33]     rclpy.spin(node)
+[beacon_visualizer-33]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[beacon_visualizer-33]     executor.spin_once()
+[beacon_visualizer-33]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[beacon_visualizer-33]     self._spin_once_impl(timeout_sec)
+[beacon_visualizer-33]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[beacon_visualizer-33]     handler, entity, node = self.wait_for_ready_callbacks(
+[beacon_visualizer-33]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[beacon_visualizer-33]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[beacon_visualizer-33]     return next(self._cb_iter)
+[beacon_visualizer-33]            ^^^^^^^^^^^^^^^^^^^
+[beacon_visualizer-33]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[beacon_visualizer-33]     raise ExternalShutdownException()
+[beacon_visualizer-33] rclpy.executors.ExternalShutdownException
+[beacon_visualizer-33] 
+[beacon_visualizer-33] During handling of the above exception, another exception occurred:
+[beacon_visualizer-33] 
+[beacon_visualizer-33] Traceback (most recent call last):
+[beacon_visualizer-33]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_beacons/beacon_visualizer", line 33, in <module>
+[beacon_visualizer-33]     sys.exit(load_entry_point('living-map-beacons==0.1.0', 'console_scripts', 'beacon_visualizer')())
+[beacon_visualizer-33]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[beacon_visualizer-33]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_beacons/visualizer.py", line 100, in main
+[beacon_visualizer-33]     rclpy.shutdown()
+[beacon_visualizer-33]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 134, in shutdown
+[beacon_visualizer-33]     _shutdown(context=context)
+[beacon_visualizer-33]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/utilities.py", line 82, in shutdown
+[beacon_visualizer-33]     context.shutdown()
+[beacon_visualizer-33]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py", line 129, in shutdown
+[beacon_visualizer-33]     self.__context.shutdown()
+[beacon_visualizer-33] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:333
+[behavior_server-24] [INFO] [1795198667.728763718] [firebot.behavior_server]: Destroying
+[behavior_server-19] [INFO] [1795198667.744032732] [executor.behavior_server]: Destroying
+[entrance_boundary-29] Traceback (most recent call last):
+[entrance_boundary-29]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_writer/entrance_boundary", line 33, in <module>
+[entrance_boundary-29]     sys.exit(load_entry_point('living-map-writer==0.1.1', 'console_scripts', 'entrance_boundary')())
+[entrance_boundary-29]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[entrance_boundary-29]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_writer/entrance_boundary.py", line 40, in main
+[entrance_boundary-29]     rclpy.spin(node)
+[entrance_boundary-29]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[entrance_boundary-29]     executor.spin_once()
+[entrance_boundary-29]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[entrance_boundary-29]     self._spin_once_impl(timeout_sec)
+[entrance_boundary-29]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[entrance_boundary-29]     handler, entity, node = self.wait_for_ready_callbacks(
+[entrance_boundary-29]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[entrance_boundary-29]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[entrance_boundary-29]     return next(self._cb_iter)
+[entrance_boundary-29]            ^^^^^^^^^^^^^^^^^^^
+[entrance_boundary-29]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[entrance_boundary-29]     raise ExternalShutdownException()
+[entrance_boundary-29] rclpy.executors.ExternalShutdownException
+[lifecycle_manager-26] [INFO] [1795198667.752027982] [firebot.lifecycle_manager_navigation]: Destroying lifecycle_manager_navigation
+[frontier_explorer-30] Traceback (most recent call last):
+[frontier_explorer-30]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_writer/frontier_explorer", line 33, in <module>
+[frontier_explorer-30]     sys.exit(load_entry_point('living-map-writer==0.1.1', 'console_scripts', 'frontier_explorer')())
+[frontier_explorer-30]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[frontier_explorer-30]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_writer/frontier_node.py", line 776, in main
+[frontier_explorer-30]     rclpy.spin(node)
+[frontier_explorer-30]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[frontier_explorer-30]     executor.spin_once()
+[frontier_explorer-30]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[frontier_explorer-30]     self._spin_once_impl(timeout_sec)
+[frontier_explorer-30]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[frontier_explorer-30]     handler, entity, node = self.wait_for_ready_callbacks(
+[frontier_explorer-30]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[frontier_explorer-30]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[frontier_explorer-30]     return next(self._cb_iter)
+[frontier_explorer-30]            ^^^^^^^^^^^^^^^^^^^
+[frontier_explorer-30]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[frontier_explorer-30]     raise ExternalShutdownException()
+[frontier_explorer-30] rclpy.executors.ExternalShutdownException
+[INFO] [parameter_bridge-3]: process has finished cleanly [pid 177924]
+[command_post-37] Traceback (most recent call last):
+[command_post-37]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_command_post/command_post", line 33, in <module>
+[command_post-37]     sys.exit(load_entry_point('living-map-command-post==0.1.0', 'console_scripts', 'command_post')())
+[command_post-37]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[command_post-37]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_command_post/node.py", line 126, in main
+[command_post-37]     rclpy.spin(node)
+[command_post-37]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[command_post-37]     executor.spin_once()
+[command_post-37]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[command_post-37]     self._spin_once_impl(timeout_sec)
+[command_post-37]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[command_post-37]     handler, entity, node = self.wait_for_ready_callbacks(
+[command_post-37]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[command_post-37]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[command_post-37]     return next(self._cb_iter)
+[command_post-37]            ^^^^^^^^^^^^^^^^^^^
+[command_post-37]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[command_post-37]     raise ExternalShutdownException()
+[command_post-37] rclpy.executors.ExternalShutdownException
+[controller_server-17] [INFO] [1795198667.774440809] [executor.controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[INFO] [static_transform_publisher-6]: process has finished cleanly [pid 177927]
+[beacon_manager-32] Traceback (most recent call last):
+[beacon_manager-32]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_beacons/node.py", line 436, in main
+[beacon_manager-32]     rclpy.spin(node)
+[beacon_manager-32]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[beacon_manager-32]     executor.spin_once()
+[beacon_manager-32]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[beacon_manager-32]     self._spin_once_impl(timeout_sec)
+[beacon_manager-32]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[beacon_manager-32]     handler, entity, node = self.wait_for_ready_callbacks(
+[beacon_manager-32]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[beacon_manager-32]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[beacon_manager-32]     return next(self._cb_iter)
+[beacon_manager-32]            ^^^^^^^^^^^^^^^^^^^
+[beacon_manager-32]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[beacon_manager-32]     raise ExternalShutdownException()
+[beacon_manager-32] rclpy.executors.ExternalShutdownException
+[beacon_manager-32] 
+[beacon_manager-32] During handling of the above exception, another exception occurred:
+[beacon_manager-32] 
+[beacon_manager-32] Traceback (most recent call last):
+[beacon_manager-32]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_beacons/beacon_manager", line 33, in <module>
+[beacon_manager-32]     sys.exit(load_entry_point('living-map-beacons==0.1.0', 'console_scripts', 'beacon_manager')())
+[beacon_manager-32]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[beacon_manager-32]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_beacons/node.py", line 439, in main
+[beacon_manager-32]     rclpy.shutdown()
+[beacon_manager-32]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 134, in shutdown
+[beacon_manager-32]     _shutdown(context=context)
+[beacon_manager-32]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/utilities.py", line 82, in shutdown
+[beacon_manager-32]     context.shutdown()
+[beacon_manager-32]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py", line 129, in shutdown
+[beacon_manager-32]     self.__context.shutdown()
+[beacon_manager-32] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:333
+[event_sensor-31] Traceback (most recent call last):
+[event_sensor-31]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_events/node.py", line 181, in main
+[event_sensor-31]     rclpy.spin(node)
+[event_sensor-31]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[event_sensor-31]     executor.spin_once()
+[event_sensor-31]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[event_sensor-31]     self._spin_once_impl(timeout_sec)
+[event_sensor-31]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[event_sensor-31]     handler, entity, node = self.wait_for_ready_callbacks(
+[event_sensor-31]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[event_sensor-31]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[event_sensor-31]     return next(self._cb_iter)
+[event_sensor-31]            ^^^^^^^^^^^^^^^^^^^
+[event_sensor-31]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[event_sensor-31]     raise ExternalShutdownException()
+[event_sensor-31] rclpy.executors.ExternalShutdownException
+[event_sensor-31] 
+[event_sensor-31] During handling of the above exception, another exception occurred:
+[event_sensor-31] 
+[event_sensor-31] Traceback (most recent call last):
+[event_sensor-31]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_events/event_sensor", line 33, in <module>
+[event_sensor-31]     sys.exit(load_entry_point('living-map-events==0.1.1', 'console_scripts', 'event_sensor')())
+[event_sensor-31]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[event_sensor-31]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_events/node.py", line 184, in main
+[event_sensor-31]     rclpy.shutdown()
+[event_sensor-31]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 134, in shutdown
+[event_sensor-31]     _shutdown(context=context)
+[event_sensor-31]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/utilities.py", line 82, in shutdown
+[event_sensor-31]     context.shutdown()
+[event_sensor-31]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py", line 129, in shutdown
+[event_sensor-31]     self.__context.shutdown()
+[event_sensor-31] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:333
+[INFO] [static_transform_publisher-10]: process has finished cleanly [pid 177937]
+[radio-34] Traceback (most recent call last):
+[radio-34]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_radio/radio", line 33, in <module>
+[radio-34]     sys.exit(load_entry_point('living-map-radio==0.1.1', 'console_scripts', 'radio')())
+[radio-34]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[radio-34]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_radio/node.py", line 234, in main
+[radio-34]     rclpy.spin(node)
+[radio-34]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[radio-34]     executor.spin_once()
+[radio-34]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[radio-34]     self._spin_once_impl(timeout_sec)
+[radio-34]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[radio-34]     handler, entity, node = self.wait_for_ready_callbacks(
+[radio-34]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[radio-34]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[radio-34]     return next(self._cb_iter)
+[radio-34]            ^^^^^^^^^^^^^^^^^^^
+[radio-34]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[radio-34]     raise ExternalShutdownException()
+[radio-34] rclpy.executors.ExternalShutdownException
+[controller_server-17] [INFO] [1795198667.792457598] [executor.local_costmap.local_costmap]: Destroying
+[planner_server-23] [INFO] [1795198667.797412763] [firebot.planner_server]: Deactivating plugin GridBased of type NavfnPlanner
+[planner_server-23] [INFO] [1795198667.797480225] [firebot.planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[INFO] [static_transform_publisher-9]: process has finished cleanly [pid 177934]
+[INFO] [clock_throttle-4]: process has finished cleanly [pid 177925]
+[link_sim-36] Traceback (most recent call last):
+[link_sim-36]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_link_sim/link_sim", line 33, in <module>
+[INFO] [static_transform_publisher-7]: process has finished cleanly [pid 177928]
+[INFO] [static_transform_publisher-8]: process has finished cleanly [pid 177929]
+[link_sim-36]     sys.exit(load_entry_point('living-map-link-sim==0.1.0', 'console_scripts', 'link_sim')())
+[link_sim-36]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[link_sim-36]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_link_sim/node.py", line 76, in main
+[link_sim-36]     rclpy.spin(node)
+[link_sim-36]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[link_sim-36]     executor.spin_once()
+[link_sim-36]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[link_sim-36]     self._spin_once_impl(timeout_sec)
+[link_sim-36]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[link_sim-36]     handler, entity, node = self.wait_for_ready_callbacks(
+[link_sim-36]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[link_sim-36]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[link_sim-36]     return next(self._cb_iter)
+[link_sim-36]            ^^^^^^^^^^^^^^^^^^^
+[link_sim-36]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[link_sim-36]     raise ExternalShutdownException()
+[link_sim-36] rclpy.executors.ExternalShutdownException
+[planner_server-23] [INFO] [1795198667.807653338] [firebot.planner_server]: Cleaning up
+[writer-27] Traceback (most recent call last):
+[writer-27]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_writer/writer", line 33, in <module>
+[controller_server-12] [INFO] [1795198667.817291078] [writer.controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[writer-27]     sys.exit(load_entry_point('living-map-writer==0.1.1', 'console_scripts', 'writer')())
+[writer-27]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[writer-27]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_writer/node.py", line 295, in main
+[writer-27]     rclpy.shutdown()
+[writer-27]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 134, in shutdown
+[writer-27]     _shutdown(context=context)
+[writer-27]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/utilities.py", line 82, in shutdown
+[writer-27]     context.shutdown()
+[writer-27]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py", line 129, in shutdown
+[writer-27]     self.__context.shutdown()
+[writer-27] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:333
+[controller_server-22] [INFO] [1795198667.819838095] [firebot.controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[executor-38] Traceback (most recent call last):
+[executor-38]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_executor/node.py", line 1013, in main
+[executor-38]     rclpy.spin(node)
+[executor-38]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[executor-38]     executor.spin_once()
+[executor-38]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[executor-38]     self._spin_once_impl(timeout_sec)
+[executor-38]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[executor-38]     handler, entity, node = self.wait_for_ready_callbacks(
+[executor-38]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[executor-38]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[executor-38]     return next(self._cb_iter)
+[executor-38]            ^^^^^^^^^^^^^^^^^^^
+[executor-38]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[executor-38]     raise ExternalShutdownException()
+[executor-38] rclpy.executors.ExternalShutdownException
+[executor-38] 
+[executor-38] During handling of the above exception, another exception occurred:
+[executor-38] 
+[executor-38] Traceback (most recent call last):
+[executor-38]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_executor/executor", line 33, in <module>
+[executor-38]     sys.exit(load_entry_point('living-map-executor==0.1.1', 'console_scripts', 'executor')())
+[executor-38]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[executor-38]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_executor/node.py", line 1016, in main
+[executor-38]     rclpy.shutdown()
+[executor-38]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 134, in shutdown
+[executor-38]     _shutdown(context=context)
+[executor-38]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/utilities.py", line 82, in shutdown
+[executor-38]     context.shutdown()
+[executor-38]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py", line 129, in shutdown
+[executor-38]     self.__context.shutdown()
+[executor-38] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:333
+[gateway-35] Traceback (most recent call last):
+[gateway-35]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_gateway/gateway", line 33, in <module>
+[gateway-35]     sys.exit(load_entry_point('living-map-gateway==0.1.1', 'console_scripts', 'gateway')())
+[gateway-35]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[gateway-35]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_gateway/node.py", line 506, in main
+[gateway-35]     rclpy.spin(node)
+[gateway-35]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[gateway-35]     executor.spin_once()
+[gateway-35]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[gateway-35]     self._spin_once_impl(timeout_sec)
+[gateway-35]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[gateway-35]     handler, entity, node = self.wait_for_ready_callbacks(
+[gateway-35]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[gateway-35]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[gateway-35]     return next(self._cb_iter)
+[gateway-35]            ^^^^^^^^^^^^^^^^^^^
+[gateway-35]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[gateway-35]     raise ExternalShutdownException()
+[gateway-35] rclpy.executors.ExternalShutdownException
+[controller_server-17] [INFO] [1795198667.831829575] [executor.controller_server]: Destroying
+[controller_server-22] [INFO] [1795198667.833788861] [firebot.local_costmap.local_costmap]: Destroying
+[controller_server-12] [INFO] [1795198667.836601428] [writer.local_costmap.local_costmap]: Destroying
+[planner_server-23] [INFO] [1795198667.838183347] [firebot.global_costmap.global_costmap]: Cleaning up
+[planner_server-18] [INFO] [1795198667.845039946] [executor.planner_server]: Deactivating plugin GridBased of type NavfnPlanner
+[planner_server-18] [INFO] [1795198667.845104861] [executor.planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[planner_server-18] [INFO] [1795198667.855288236] [executor.planner_server]: Cleaning up
+[planner_server-13] [INFO] [1795198667.859333152] [writer.planner_server]: Deactivating plugin GridBasedDijkstra of type NavfnPlanner
+[planner_server-13] [INFO] [1795198667.859381760] [writer.planner_server]: Deactivating plugin GridBased of type NavfnPlanner
+[planner_server-13] [INFO] [1795198667.859398612] [writer.planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[planner_server-23] [INFO] [1795198667.862343673] [firebot.planner_server]: Cleaning up plugin GridBased of type NavfnPlanner
+[planner_server-23] [INFO] [1795198667.862853901] [firebot.planner_server]: Destroying plugin GridBased of type NavfnPlanner
+[scan_frames-28] Traceback (most recent call last):
+[scan_frames-28]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_writer/scan_frames.py", line 74, in main
+[scan_frames-28]     rclpy.spin(node)
+[scan_frames-28]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[scan_frames-28]     executor.spin_once()
+[scan_frames-28]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[scan_frames-28]     self._spin_once_impl(timeout_sec)
+[scan_frames-28]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[scan_frames-28]     handler, entity, node = self.wait_for_ready_callbacks(
+[scan_frames-28]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[scan_frames-28]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[scan_frames-28]     return next(self._cb_iter)
+[scan_frames-28]            ^^^^^^^^^^^^^^^^^^^
+[scan_frames-28]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[scan_frames-28]     raise ExternalShutdownException()
+[scan_frames-28] rclpy.executors.ExternalShutdownException
+[scan_frames-28] 
+[scan_frames-28] During handling of the above exception, another exception occurred:
+[scan_frames-28] 
+[scan_frames-28] Traceback (most recent call last):
+[scan_frames-28]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_writer/scan_frames", line 33, in <module>
+[scan_frames-28]     sys.exit(load_entry_point('living-map-writer==0.1.1', 'console_scripts', 'scan_frames')())
+[scan_frames-28]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[scan_frames-28]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_writer/scan_frames.py", line 77, in main
+[scan_frames-28]     rclpy.shutdown()
+[scan_frames-28]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 134, in shutdown
+[scan_frames-28]     _shutdown(context=context)
+[scan_frames-28]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/utilities.py", line 82, in shutdown
+[scan_frames-28]     context.shutdown()
+[scan_frames-28]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py", line 129, in shutdown
+[scan_frames-28]     self.__context.shutdown()
+[scan_frames-28] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:333
+[executor-39] Traceback (most recent call last):
+[executor-39]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_executor/node.py", line 1013, in main
+[executor-39]     rclpy.spin(node)
+[executor-39]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+[executor-39]     executor.spin_once()
+[executor-39]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+[executor-39]     self._spin_once_impl(timeout_sec)
+[executor-39]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+[executor-39]     handler, entity, node = self.wait_for_ready_callbacks(
+[executor-39]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[executor-39]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+[executor-39]     return next(self._cb_iter)
+[executor-39]            ^^^^^^^^^^^^^^^^^^^
+[executor-39]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 785, in _wait_for_ready_callbacks
+[executor-39]     raise ExternalShutdownException()
+[executor-39] rclpy.executors.ExternalShutdownException
+[executor-39] 
+[executor-39] During handling of the above exception, another exception occurred:
+[executor-39] 
+[executor-39] Traceback (most recent call last):
+[executor-39]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_executor/executor", line 33, in <module>
+[executor-39]     sys.exit(load_entry_point('living-map-executor==0.1.1', 'console_scripts', 'executor')())
+[executor-39]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[executor-39]   File "/tmp/team4-ultimate-stale-gt-03/install/lib/python3.12/site-packages/living_map_executor/node.py", line 1016, in main
+[executor-39]     rclpy.shutdown()
+[executor-39]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 134, in shutdown
+[executor-39]     _shutdown(context=context)
+[executor-39]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/utilities.py", line 82, in shutdown
+[executor-39]     context.shutdown()
+[executor-39]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py", line 129, in shutdown
+[executor-39]     self.__context.shutdown()
+[executor-39] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:333
+[planner_server-13] [INFO] [1795198667.869692816] [writer.planner_server]: Cleaning up
+[INFO] [lifecycle_manager-21]: process has finished cleanly [pid 177971]
+[controller_server-12] [INFO] [1795198667.879693867] [writer.controller_server]: Destroying
+[controller_server-22] [INFO] [1795198667.881967533] [firebot.controller_server]: Destroying
+[planner_server-18] [INFO] [1795198667.893502903] [executor.global_costmap.global_costmap]: Cleaning up
+[INFO] [lifecycle_manager-16]: process has finished cleanly [pid 177945]
+[planner_server-18] [INFO] [1795198667.911160602] [executor.planner_server]: Cleaning up plugin GridBased of type NavfnPlanner
+[planner_server-18] [INFO] [1795198667.911324473] [executor.planner_server]: Destroying plugin GridBased of type NavfnPlanner
+[planner_server-13] [INFO] [1795198667.912011855] [writer.global_costmap.global_costmap]: Cleaning up
+[INFO] [behavior_server-24]: process has finished cleanly [pid 177996]
+[INFO] [behavior_server-14]: process has finished cleanly [pid 177941]
+[INFO] [lifecycle_manager-26]: process has finished cleanly [pid 178002]
+[planner_server-13] [INFO] [1795198667.929474470] [writer.planner_server]: Cleaning up plugin GridBasedDijkstra of type NavfnPlanner
+[planner_server-13] [INFO] [1795198667.930236155] [writer.planner_server]: Cleaning up plugin GridBased of type NavfnPlanner
+[planner_server-13] [INFO] [1795198667.930297045] [writer.planner_server]: Destroying plugin GridBasedDijkstra of type NavfnPlanner
+[planner_server-13] [INFO] [1795198667.930308614] [writer.planner_server]: Destroying plugin GridBased of type NavfnPlanner
+[planner_server-23] [INFO] [1795198667.934937993] [firebot.planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[INFO] [behavior_server-19]: process has finished cleanly [pid 177954]
+[INFO] [async_slam_toolbox_node-11]: process has finished cleanly [pid 177938]
+[planner_server-23] [INFO] [1795198667.947095874] [firebot.global_costmap.global_costmap]: Destroying
+[planner_server-18] [INFO] [1795198667.958792267] [executor.planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[ERROR] [beacon_visualizer-33]: process has died [pid 178042, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_beacons/beacon_visualizer --ros-args --params-file /tmp/launch_params_khhj07dj'].
+[planner_server-18] [INFO] [1795198667.969442747] [executor.global_costmap.global_costmap]: Destroying
+[planner_server-23] [INFO] [1795198667.972525194] [firebot.planner_server]: Destroying
+[planner_server-13] [INFO] [1795198667.973242614] [writer.planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[ERROR] [entrance_boundary-29]: process has died [pid 178020, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_writer/entrance_boundary --ros-args --params-file /tmp/team4-ultimate-stale-gt-03/install/share/living_map_bringup/config/nav2/writer.yaml --params-file /tmp/launch_params_bd9m6j18'].
+[bt_navigator-15] [INFO] [1795198667.979217741] [writer.bt_navigator]: Completed Cleaning up
+[bt_navigator-15] [INFO] [1795198667.979273318] [writer.bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[planner_server-13] [INFO] [1795198667.981059492] [writer.global_costmap.global_costmap]: Destroying
+[bt_navigator-20] [INFO] [1795198667.986595272] [executor.bt_navigator]: Completed Cleaning up
+[bt_navigator-20] [INFO] [1795198667.986655029] [executor.bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[bt_navigator-25] [INFO] [1795198667.988652968] [firebot.bt_navigator]: Completed Cleaning up
+[bt_navigator-25] [INFO] [1795198667.988726085] [firebot.bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[planner_server-18] [INFO] [1795198667.990421228] [executor.planner_server]: Destroying
+[planner_server-13] [INFO] [1795198667.998719281] [writer.planner_server]: Destroying
+[bt_navigator-15] [INFO] [1795198667.999772258] [writer.bt_navigator]: Destroying
+[bt_navigator-20] [INFO] [1795198668.000060996] [executor.bt_navigator]: Destroying
+[bt_navigator-25] [INFO] [1795198668.003442955] [firebot.bt_navigator]: Destroying
+[INFO] [controller_server-17]: process has finished cleanly [pid 177946]
+[ERROR] [beacon_manager-32]: process has died [pid 178028, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_beacons/beacon_manager --ros-args --params-file /tmp/launch_params_su69pd37'].
+[INFO] [controller_server-12]: process has finished cleanly [pid 177939]
+[ERROR] [radio-34]: process has died [pid 178044, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_radio/radio --ros-args --params-file /tmp/launch_params_cmx0b6p5'].
+[INFO] [controller_server-22]: process has finished cleanly [pid 177986]
+[ERROR] [gateway-35]: process has died [pid 178046, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_gateway/gateway --ros-args --params-file /tmp/launch_params_hwr6d1_h'].
+[ERROR] [writer-27]: process has died [pid 178003, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_writer/writer --ros-args --params-file /tmp/launch_params_5sbjhy3c'].
+[ERROR] [frontier_explorer-30]: process has died [pid 178023, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_writer/frontier_explorer --ros-args --params-file /tmp/team4-ultimate-stale-gt-03/install/share/living_map_bringup/config/nav2/writer.yaml --params-file /tmp/launch_params_foksdhrg'].
+[ERROR] [event_sensor-31]: process has died [pid 178024, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_events/event_sensor --ros-args --params-file /tmp/launch_params_xhbbacbx'].
+[ERROR] [command_post-37]: process has died [pid 178067, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_command_post/command_post --ros-args --params-file /tmp/launch_params_aek5dvpe'].
+[ERROR] [link_sim-36]: process has died [pid 178048, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_link_sim/link_sim --ros-args --params-file /tmp/launch_params_yd12h4lt'].
+[ERROR] [executor-38]: process has died [pid 178076, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_executor/executor --ros-args --params-file /tmp/launch_params_8xy5rl6l'].
+[INFO] [planner_server-23]: process has finished cleanly [pid 177993]
+[ERROR] [executor-39]: process has died [pid 178079, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_executor/executor --ros-args -r __node:=firebot --params-file /tmp/launch_params__t7753w0'].
+[INFO] [planner_server-18]: process has finished cleanly [pid 177947]
+[INFO] [bt_navigator-15]: process has finished cleanly [pid 177942]
+[ERROR] [scan_frames-28]: process has died [pid 178017, exit code 1, cmd '/tmp/team4-ultimate-stale-gt-03/install/lib/living_map_writer/scan_frames --ros-args --params-file /tmp/launch_params_2l5_f6kj'].
+[INFO] [planner_server-13]: process has finished cleanly [pid 177940]
+[INFO] [bt_navigator-20]: process has finished cleanly [pid 177968]
+[INFO] [bt_navigator-25]: process has finished cleanly [pid 178001]
+[INFO] [sim_guard-2]: process has finished cleanly [pid 177923]
+[nav2_guard-5] [INFO] [1795198669.277376503] [living_map.nav2_guard]: All Nav2 stacks active; guard done
+[nav2_guard-5] Failed to publish log message to rosout: publisher's context is invalid, at ./src/rcl/publisher.c:423
+[INFO] [nav2_guard-5]: process has finished cleanly [pid 177926]
+[INFO] [gz-1]: process has finished cleanly [pid 177922]
+[INFO] [gz-1]: process started with pid [178801]
+[gz-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="writer"]/joint[@name="front_left_wheel_joint"]/axis/use_parent_model_frame:/tmp/team4-ultimate-stale-gt-03/install/share/living_map_sim/models/writer/model.sdf:L256]: XML Element[use_parent_model_frame], child of element[axis], not defined in SDF. Copying[use_parent_model_frame] as children of [axis].
+[gz-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="writer"]/joint[@name="front_left_wheel_joint"]/axis/use_parent_model_frame:<data-string>:L265]: XML Element[use_parent_model_frame], child of element[axis], not defined in SDF. Copying[use_parent_model_frame] as children of [axis].

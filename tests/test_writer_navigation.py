@@ -120,10 +120,11 @@ def test_stale_localization_cancels_active_goal_without_assuming_it_stopped():
     e = SimpleNamespace(
         active_goal={"x": 8.0, "y": 9.0, "watchdog_reason": None,
                      "cancel_reason": None},
+        goal_handle=Mock(), busy=True, navigation_uncertain=False,
         map_pose=lambda: None, angular_z=0.0, feedback_distance=4.0,
         feedback_recoveries=0, watchdog=Mock(), counts=Counter(),
         scan_is_fresh=lambda now: True, _cancel=Mock(), _publish_summary=Mock(),
-        get_logger=lambda: Mock(),
+        get_parameter=lambda _: SimpleNamespace(value=3.0), get_logger=lambda: Mock(),
     )
 
     FrontierExplorer._update_watchdog(e, 12.0)
@@ -137,15 +138,36 @@ def test_stale_lidar_cancels_active_goal_and_does_not_assume_stop():
     e = SimpleNamespace(
         active_goal={"x": 8.0, "y": 9.0, "watchdog_reason": None,
                      "cancel_reason": None},
+        goal_handle=Mock(), busy=True, navigation_uncertain=False,
         map_pose=lambda: (1.0, 2.0), angular_z=0.0, feedback_distance=4.0,
         feedback_recoveries=0, watchdog=Mock(), counts=Counter(),
         scan_is_fresh=lambda now: False, _cancel=Mock(), _publish_summary=Mock(),
-        get_logger=lambda: Mock(),
+        get_parameter=lambda _: SimpleNamespace(value=3.0), get_logger=lambda: Mock(),
     )
     FrontierExplorer._update_watchdog(e, 12.0)
     e.watchdog.update.assert_not_called()
     e._cancel.assert_called_once_with("LiDAR data stale")
     assert e.counts["watchdog_scan_unavailable"] == 1
+
+
+@pytest.mark.parametrize("pose,scan_fresh,expected_reason", [
+    (None, True, "localization unavailable"),
+    ((1.0, 2.0), False, "LiDAR data stale"),
+])
+def test_fast_safety_monitor_cancels_active_goal_when_inputs_stale(
+        pose, scan_fresh, expected_reason):
+    e = SimpleNamespace(
+        busy=True, active_goal={"cancel_reason": None, "watchdog_reason": None},
+        goal_handle=Mock(), navigation_uncertain=False, counts=Counter(),
+        _now_s=lambda: 10.0, map_pose=lambda: pose,
+        scan_is_fresh=lambda _now: scan_fresh, stale_scan_reported=False,
+        get_logger=lambda: Mock(), _cancel=Mock(), _publish_summary=Mock(),
+    )
+
+    FrontierExplorer._monitor_navigation_safety(e)
+
+    e._cancel.assert_called_once_with(expected_reason)
+    assert e.busy
 
 
 def test_out_of_order_odometry_does_not_replace_the_last_accepted_fallback():
@@ -244,9 +266,13 @@ def test_cancel_service_response_does_not_clear_busy_before_terminal_result():
         active_goal={"x": 1.0, "y": 2.0, "kind": "frontier",
                      "watchdog_reason": None, "cancel_reason": None},
         goal_handle=Mock(), cancel_future=None, busy=True,
+        navigation_uncertain=False, navigation_uncertain_reason=None,
+        counts=Counter(),
         get_logger=lambda: Mock(), _publish_summary=Mock(), _publish_state=Mock(),
     )
     e._on_cancel_response = lambda future: FrontierExplorer._on_cancel_response(e, future)
+    e._latch_navigation_uncertain = lambda reason: (
+        FrontierExplorer._latch_navigation_uncertain(e, reason))
     e.goal_handle.cancel_goal_async.return_value = cancel_future
     FrontierExplorer._cancel(e, "test stale input")
     assert e.active_goal["cancel_response"] == "pending"
@@ -254,6 +280,112 @@ def test_cancel_service_response_does_not_clear_busy_before_terminal_result():
     cancel_future.set_result(SimpleNamespace(goals_canceling=[]))
     assert e.active_goal["cancel_response"] == "not_confirmed"
     assert e.busy
+    assert e.navigation_uncertain
+
+
+def test_missing_cancel_terminal_result_times_out_without_clearing_active_goal(
+        monkeypatch):
+    now = [10.0]
+    monkeypatch.setattr("living_map_writer.frontier_node.time.monotonic",
+                        lambda: now[0])
+    e = SimpleNamespace(
+        active_goal={"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": "stale LiDAR",
+                     "cancel_sent_at": 10.0, "action_timeout_reported": False},
+        goal_handle=Mock(), busy=True, navigation_uncertain=False,
+        navigation_uncertain_reason=None, counts=Counter(),
+        get_parameter=lambda _: SimpleNamespace(value=3.0),
+        get_logger=lambda: Mock(), _publish_summary=Mock(), _publish_state=Mock(),
+    )
+    e._latch_navigation_uncertain = lambda reason: (
+        FrontierExplorer._latch_navigation_uncertain(e, reason))
+
+    now[0] = 12.9
+    FrontierExplorer._update_watchdog(e, 100.0)
+    assert not e.navigation_uncertain
+    assert e.busy
+
+    now[0] = 13.1
+    FrontierExplorer._update_watchdog(e, 100.0)
+    assert e.navigation_uncertain
+    assert e.busy
+    assert e.active_goal is not None
+    assert e.active_goal["action_timeout_reported"]
+    assert e.counts["navigation_result_unknown"] == 1
+
+    FrontierExplorer._update_watchdog(e, 101.0)
+    assert e.counts["navigation_result_unknown"] == 1
+
+
+def test_steady_action_deadline_monitor_latches_without_ros_clock_reads(monkeypatch):
+    now = [50.0]
+    monkeypatch.setattr("living_map_writer.frontier_node.time.monotonic",
+                        lambda: now[0])
+    e = SimpleNamespace(
+        active_goal={"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "cancel_reason": "stale LiDAR", "cancel_sent_at": 50.0,
+                     "action_timeout_reported": False},
+        goal_handle=Mock(), busy=True, navigation_uncertain=False,
+        navigation_uncertain_reason=None, counts=Counter(),
+        get_parameter=lambda _: SimpleNamespace(value=3.0),
+        get_logger=lambda: Mock(), _publish_summary=Mock(), _publish_state=Mock(),
+    )
+    e._latch_navigation_uncertain = lambda reason: (
+        FrontierExplorer._latch_navigation_uncertain(e, reason))
+
+    # This callback uses time.monotonic directly and never reads ROS/sim time.
+    now[0] = 53.1
+    FrontierExplorer._monitor_action_response_deadlines(e)
+
+    assert e.navigation_uncertain
+    assert e.busy
+    assert e.active_goal is not None
+    assert "terminal action result" in e.navigation_uncertain_reason
+
+
+def test_missing_goal_acceptance_response_times_out_conservatively(monkeypatch):
+    now = [20.0]
+    monkeypatch.setattr("living_map_writer.frontier_node.time.monotonic",
+                        lambda: now[0])
+    e = SimpleNamespace(
+        active_goal={"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": None,
+                     "goal_response_started_at": 20.0,
+                     "action_timeout_reported": False},
+        goal_handle=None, busy=True, navigation_uncertain=False,
+        navigation_uncertain_reason=None, counts=Counter(),
+        get_parameter=lambda _: SimpleNamespace(value=3.0),
+        get_logger=lambda: Mock(), _publish_summary=Mock(), _publish_state=Mock(),
+    )
+    e._latch_navigation_uncertain = lambda reason: (
+        FrontierExplorer._latch_navigation_uncertain(e, reason))
+
+    now[0] = 23.1
+    FrontierExplorer._update_watchdog(e, 100.0)
+
+    assert e.navigation_uncertain
+    assert e.busy
+    assert e.active_goal is not None
+    assert "acceptance response timed out" in e.navigation_uncertain_reason
+
+
+def test_late_terminal_result_resolves_cancel_uncertainty_without_failure():
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.navigation_uncertain = True
+    e.navigation_uncertain_reason = "cancel response timed out"
+    e.active_goal = {"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": "stale LiDAR"}
+
+    FrontierExplorer._done(e, _completed(5), 1.0, 2.0, "frontier")
+
+    assert not e.busy
+    assert e.active_goal is None
+    assert not e.navigation_uncertain
+    assert e.navigation_uncertain_reason is None
+    assert e.counts["navigation_uncertainty_resolved"] == 1
+    assert e.counts["frontier_failed"] == 0
+    assert policy.summary(100.0)["failure_zones"] == 0
 
 
 @pytest.mark.parametrize("result", [RuntimeError("lost result"), 2, 3, 99])

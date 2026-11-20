@@ -1,0 +1,116 @@
+branch=phase2/reliability-optimization-20261120
+head=66b23b9fc2fe6b85c32614bbed24361e8eb93204
+started=2026-11-20T19:15:44+01:00
+ros_distro=jazzy
+seed=none (deterministic fault timing)
+simulation_assumptions=0.5s pose age; 0.35s scan age; 0.5s costmap timeout; 10Hz scan; bridge paused by SIGSTOP
+ground_truth_topic=/model/writer/pose; source=Gazebo model pose publisher; frame=world
+Starting >>> living_map_dashboard
+--- stderr: living_map_dashboard
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_dashboard [1.51s]
+Starting >>> living_map_interfaces
+--- stderr: living_map_interfaces
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_interfaces [7.99s]
+Starting >>> living_map_link_sim
+--- stderr: living_map_link_sim
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_link_sim [1.02s]
+Starting >>> living_map_sim
+--- stderr: living_map_sim
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_sim [1.17s]
+Starting >>> living_map_beacons
+--- stderr: living_map_beacons
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_beacons [1.05s]
+Starting >>> living_map_command_post
+--- stderr: living_map_command_post
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_command_post [0.95s]
+Starting >>> living_map_events
+--- stderr: living_map_events
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_events [1.06s]
+Starting >>> living_map_writer
+--- stderr: living_map_writer
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_writer [1.09s]
+Starting >>> living_map_executor
+--- stderr: living_map_executor
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_executor [1.48s]
+Starting >>> living_map_gateway
+--- stderr: living_map_gateway
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_gateway [1.20s]
+Starting >>> living_map_radio
+--- stderr: living_map_radio
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_radio [1.73s]
+Starting >>> living_map_bringup
+--- stderr: living_map_bringup
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_bringup [7.79s]
+
+Summary: 12 packages finished [28.2s]
+  12 packages had stderr output: living_map_beacons living_map_bringup living_map_command_post living_map_dashboard living_map_events living_map_executor living_map_gateway living_map_interfaces living_map_link_sim living_map_radio living_map_sim living_map_writer
+FAIL: ground-truth pose recorder produced no samples
+Evidence: /home/iyed/LivingMap-Team4/docs/results/evidence/team4-ultimate-validation-20261120/stale-ground-truth/runs/stale-inputs-20261120-191544

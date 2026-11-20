@@ -1,0 +1,10 @@
+[WARN] [1795197918.988911710] [writer_action_fault_server.action_server]: Failed to send cancel response (the client may have gone away)
+[WARN] [1795197918.989453315] [writer_action_fault_server.action_server]: Failed to send cancel response (the client may have gone away)
+Traceback (most recent call last):
+  File "/home/iyed/LivingMap-Team4/scripts/validate_nav2_action_faults_ros.py", line 299, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/iyed/LivingMap-Team4/scripts/validate_nav2_action_faults_ros.py", line 218, in main
+    "cancel_future_done": ctl.cancel_future.done(),
+                          ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'done'

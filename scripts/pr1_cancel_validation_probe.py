@@ -13,6 +13,7 @@ import time
 import rclpy
 from action_msgs.srv import CancelGoal
 from geometry_msgs.msg import Quaternion
+from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from rosgraph_msgs.msg import Clock
 from rclpy.qos import (QoSProfile, DurabilityPolicy, ReliabilityPolicy,
@@ -246,6 +247,26 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
         last_xy = xy
         odom_samples += 1
 
+    def on_world_odom(message: Odometry) -> None:
+        # Gazebo's OdometryPublisher uses the world frame and runs independently
+        # of the Writer ROS scan/odometry adapter that is fault-injected below.
+        pose = message.pose.pose
+        emit("gazebo_world_odom", {
+            "stamp_s": (message.header.stamp.sec
+                        + message.header.stamp.nanosec / 1e9),
+            "frame_id": message.header.frame_id,
+            "child_frame_id": message.child_frame_id,
+            "x": float(pose.position.x), "y": float(pose.position.y),
+            "yaw": _yaw(pose.orientation),
+        })
+
+    def on_cmd_vel(message: Twist) -> None:
+        emit("writer_cmd_vel", {
+            "linear_x": float(message.linear.x),
+            "linear_y": float(message.linear.y),
+            "angular_z": float(message.angular.z),
+        })
+
     node.create_subscription(Clock, "/clock", on_clock, 10)
     node.create_subscription(String, "/living_map/writer_explorer_state",
                              on_state, _qos_state())
@@ -254,6 +275,10 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
     node.create_subscription(String, "/living_map/writer_exploration_summary",
                              on_summary, _qos_state())
     node.create_subscription(Odometry, "/writer/odom", on_odom,
+                             qos_profile_sensor_data)
+    node.create_subscription(Odometry, "/writer/world_odom", on_world_odom,
+                             qos_profile_sensor_data)
+    node.create_subscription(Twist, "/writer/cmd_vel", on_cmd_vel,
                              qos_profile_sensor_data)
     try:
         while rclpy.ok():
@@ -271,6 +296,14 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
                     if match:
                         emit("frontier_selected", {"x": float(match.group(1)),
                                                     "y": float(match.group(2))})
+                if "Active Writer goal cancellation requested:" in line:
+                    emit("goal_cancel_requested", {
+                        "log_line": line.rstrip(),
+                    })
+                if "frontier goal at (" in line and "cancelled externally" in line:
+                    emit("goal_cancel_terminal_logged", {
+                        "log_line": line.rstrip(),
+                    })
                 if "frontier goal at (" in line and "cancelled externally" in line:
                     match = re.search(r"frontier goal at \(([-+0-9.eE]+),([-+0-9.eE]+)\) cancelled externally \(([^)]*)\)", line)
                     if match:
@@ -278,6 +311,19 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
                                                      "y": float(match.group(2)),
                                                      "reason": match.group(3)})
             if time.monotonic() - last_health >= 0.5:
+                try:
+                    map_to_odom = tf_buffer.lookup_transform(
+                        "map", "writer/odom", Time())
+                except TransformException:
+                    emit("map_to_odom_unavailable")
+                else:
+                    emit("map_to_odom", {
+                        "stamp_s": (map_to_odom.header.stamp.sec
+                                    + map_to_odom.header.stamp.nanosec / 1e9),
+                        "x": float(map_to_odom.transform.translation.x),
+                        "y": float(map_to_odom.transform.translation.y),
+                        "yaw": _yaw(map_to_odom.transform.rotation),
+                    })
                 emit("health", {"state": state, "stuck": stuck,
                                  "minimum_footprint_x": minimum_footprint_x,
                                  "minimum_uncertain_footprint_x": minimum_uncertain_footprint_x,

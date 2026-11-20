@@ -1,0 +1,73 @@
+{
+  "evidence_source": "/model/writer/pose (Gazebo model state), cross-checked against /writer/world_odom",
+  "fault_interval": {
+    "bridge_paused_sim_s": 3.012,
+    "bridge_resumed_sim_s": 10.472,
+    "cancel_observation_uncertainty_s": 0.15,
+    "cancel_request_observed_sim_s": 3.302,
+    "cancel_terminal_observed_sim_s": 3.342,
+    "command_messages_during_outage": 5,
+    "displacement_m": 0.166384396454057,
+    "ground_truth_samples": 220,
+    "interpretation": "Observed motion occurred during the stale-input outage. The ground-truth trace records residual movement after cancellation/zero cmd_vel; no nonzero cmd_vel was observed after the settled cancellation window. Cancellation does not imply instantaneous or hardware-guaranteed stopping.",
+    "map_center_end_before_recovery_m": [
+      0.3103958879634021,
+      0.041460596262925684,
+      0.21051936023827617
+    ],
+    "map_center_start_at_pause_m": [
+      0.14648268163952238,
+      0.012890888948953216,
+      0.14029712393860405
+    ],
+    "motion_pause_to_cancel_request_m": 0.12329654270156858,
+    "motion_terminal_result_to_recovery_m": 0.02508853282461837,
+    "motion_terminal_to_150ms_after_m": 0.02508852647335751,
+    "nearest_cancel_pose_sim_s": 3.298,
+    "nearest_terminal_pose_sim_s": 3.332,
+    "nonzero_commands_after_cancel_settled_window": 0,
+    "yaw_change_rad": 0.07022223629967211
+  },
+  "footprint_bound": {
+    "circumradius_m": 0.4883646178829912,
+    "configured_footprint": "[[0.35, 0.32], [0.35, -0.32], [-0.35, -0.32], [-0.35, 0.32]]",
+    "conservative_continuous_lower_x_m": -0.5791646178527097,
+    "continuous_containment": true,
+    "entrance_x_m": -1.0,
+    "max_linear_speed_m_s": 1.2,
+    "padding_m": 0.01,
+    "translation_uncertainty_m": 0.05,
+    "yaw_uncertainty_covered": "all headings by circumradius"
+  },
+  "frames": {
+    "initial_nav_pose_confirmed": true,
+    "map_registration": "Writer spawn pose maps to map (0,0,0); launch Nav2 start pose and map->odom TF checked",
+    "max_map_to_odom_component_abs": 9.605113492810882e-16,
+    "max_map_to_odom_translation_m": 5.276687802389543e-16,
+    "world": "world",
+    "world_to_map_translation_m": [
+      11.0,
+      -0.0
+    ],
+    "world_to_map_yaw_rad": -0.0
+  },
+  "limitations": [
+    "Simulation evidence only; configured motion limits and the 5 cm allowance are assumptions, not Team 1 measured hardware limits.",
+    "The ROS observer records cancel log events within an approximately 0.15 s polling window.",
+    "Nav2 cancel and zero cmd_vel do not prove a physical motor stop; a hardware lease/acknowledgment contract is required."
+  ],
+  "result": "PASS",
+  "sampled_ground_truth": {
+    "end_sim_s": 19.448,
+    "max_sample_gap_s": 0.03400000000000247,
+    "min_sample_gap_s": 0.03399999999999892,
+    "samples": 572,
+    "start_sim_s": 0.034
+  },
+  "scenario": "stale_input_gazebo_world_pose_swept_footprint_audit",
+  "world_odom_crosscheck": {
+    "matched_sim_stamps": 572,
+    "max_position_residual_m": 0.0,
+    "max_yaw_residual_rad": 7.337739638124674e-08
+  }
+}

@@ -18,16 +18,22 @@ cd "$ROOT"
 [[ "$(git branch --show-current)" == "$EXPECTED_BRANCH" ]] || die "unexpected branch"
 [[ -f /opt/ros/jazzy/setup.bash ]] || die "ROS 2 Jazzy is unavailable"
 [[ -f "$SLAM_OVERLAY/local_setup.bash" ]] || die "validated SLAM overlay missing: $SLAM_OVERLAY"
-for tool in colcon timeout setsid pgrep rg; do need "$tool"; done
+for tool in colcon timeout setsid pgrep rg gz; do need "$tool"; done
 pgrep -f '^gz sim server$' >/dev/null 2>&1 && die "Gazebo is already active; preserving the existing process"
 mkdir -p "$EVIDENCE_BASE"
 [[ ! -e "$RUN_ROOT" ]] || die "refusing to reuse evidence path"
 mkdir "$RUN_ROOT"
 mkdir -p "$TMP_ROOT"/{build,install,logs}
 
-LAUNCH_PID="" OBSERVER_PID="" SCAN_PID=""
+LAUNCH_PID="" OBSERVER_PID="" SCAN_PID="" POSE_PID=""
 cleanup() {
   set +e
+  if [[ -n "$POSE_PID" ]]; then
+    kill -INT -- "-$POSE_PID" 2>/dev/null
+    for _ in {1..10}; do kill -0 "$POSE_PID" 2>/dev/null || break; sleep .2; done
+    kill -TERM -- "-$POSE_PID" 2>/dev/null
+    wait "$POSE_PID" 2>/dev/null
+  fi
   if [[ -n "$SCAN_PID" ]]; then kill -CONT "$SCAN_PID" 2>/dev/null; fi
   if [[ -n "$OBSERVER_PID" ]]; then
     kill -INT "$OBSERVER_PID" 2>/dev/null
@@ -45,7 +51,7 @@ cleanup() {
     fi
     wait "$LAUNCH_PID" 2>/dev/null
   fi
-  LAUNCH_PID="" OBSERVER_PID="" SCAN_PID=""
+  LAUNCH_PID="" OBSERVER_PID="" SCAN_PID="" POSE_PID=""
   set -e
 }
 trap cleanup EXIT
@@ -65,7 +71,8 @@ export GZ_SIM_RESOURCE_PATH="$ROOT/src/living_map_sim/models${GZ_SIM_RESOURCE_PA
 {
   printf 'branch=%s\nhead=%s\nstarted=%s\nros_distro=%s\nseed=none (deterministic fault timing)\n' \
     "$EXPECTED_BRANCH" "$(git rev-parse HEAD)" "$(date -Is)" "${ROS_DISTRO:-unknown}"
-  printf 'simulation_assumptions=0.5s pose and scan age; Gazebo 10Hz scan; bridge paused by SIGSTOP\n'
+  printf 'simulation_assumptions=0.5s pose age; 0.35s scan age; 0.5s costmap timeout; 10Hz scan; bridge paused by SIGSTOP\n'
+  printf 'ground_truth_topic=/model/writer/pose; source=Gazebo model pose publisher; frame=world\n'
 } | tee "$RUN_ROOT/manifest.txt"
 
 timeout 600s colcon --log-base "$TMP_ROOT/logs" build --base-paths src \
@@ -89,6 +96,24 @@ python3 "$HELPER" observe --output "$RUN_ROOT/observations.jsonl" \
   --launch-log "$RUN_ROOT/launch.log" --config "$ROOT/config/nav2/writer.yaml" \
   >"$RUN_ROOT/observer.log" 2>&1 &
 OBSERVER_PID=$!
+
+# Gazebo's model pose publisher is independent of the paused ROS odometry/scan
+# bridge. Preserve raw simulation-stamped ground truth for outage analysis.
+pose_topic_ready=false
+for _ in {1..90}; do
+  if timeout 3s gz topic -l 2>/dev/null | rg -Fxq '/model/writer/pose'; then
+    pose_topic_ready=true
+    break
+  fi
+  kill -0 "$LAUNCH_PID" 2>/dev/null || die "Gazebo exited before ground-truth topic discovery"
+  sleep 1
+done
+[[ "$pose_topic_ready" == true ]] || die "Gazebo Writer ground-truth pose topic unavailable"
+setsid timeout 360s gz topic -e -t /model/writer/pose \
+  >"$RUN_ROOT/ground-truth-pose.txt" 2>&1 &
+POSE_PID=$!
+sleep 1
+kill -0 "$POSE_PID" 2>/dev/null || die "ground-truth pose recorder exited during startup"
 
 selected_before=0
 for _ in {1..150}; do
@@ -121,13 +146,21 @@ for _ in {1..1800}; do
     active_goal=true
     selected_before="$(rg -c 'Frontier selected x=' "$RUN_ROOT/launch.log" 2>/dev/null || true)"
     kill -STOP "$SCAN_PID"
+paused_sim_s="$(python3 - "$RUN_ROOT/observations.jsonl" <<'PY'
+import json, sys
+from pathlib import Path
+events=[json.loads(line) for line in Path(sys.argv[1]).read_text().splitlines()]
+values=[event.get("sim_s") for event in events if event.get("sim_s") is not None]
+print(values[-1] if values else "unknown")
+PY
+)"
     break
   fi
   kill -0 "$LAUNCH_PID" 2>/dev/null || die "Gazebo exited before an active Nav2 goal"
   sleep 0.05
 done
 [[ "$active_goal" == true ]] || die "Nav2 did not activate an accepted goal within 90 s"
-printf 'scan_frames_pid=%s\npaused_at=%s\n' "$SCAN_PID" "$(date -Is)" \
+printf 'scan_frames_pid=%s\npaused_at=%s\npaused_sim_s=%s\n' "$SCAN_PID" "$(date -Is)" "$paused_sim_s" \
   | tee "$RUN_ROOT/fault-injection.txt"
 
 cancel_seen=false
@@ -148,7 +181,16 @@ selected_during="$(rg -c 'Frontier selected x=' "$RUN_ROOT/launch.log" 2>/dev/nu
   || die "exploration selected a new frontier while localization/sensor data were absent"
 kill -CONT "$SCAN_PID"
 SCAN_PID=""
-printf 'resumed_at=%s\n' "$(date -Is)" | tee -a "$RUN_ROOT/fault-injection.txt"
+resumed_sim_s="$(python3 - "$RUN_ROOT/observations.jsonl" <<'PY'
+import json, sys
+from pathlib import Path
+events=[json.loads(line) for line in Path(sys.argv[1]).read_text().splitlines()]
+values=[event.get("sim_s") for event in events if event.get("sim_s") is not None]
+print(values[-1] if values else "unknown")
+PY
+)"
+printf 'resumed_at=%s\nresumed_sim_s=%s\n' "$(date -Is)" "$resumed_sim_s" \
+  | tee -a "$RUN_ROOT/fault-injection.txt"
 
 home=false
 for _ in {1..180}; do

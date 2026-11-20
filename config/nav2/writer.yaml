@@ -187,8 +187,15 @@
     # SIMULATION ASSUMPTION only: 5 x 10 Hz pose samples. Team 1 must set the
     # deployed bound from measured localization/encoder update rates.
     odom_fallback_max_age_s: 0.5
-    # SIMULATION ASSUMPTION only: 5 x 10 Hz LiDAR scans. Team 1 must calibrate.
-    scan_max_age_s: 0.5
+    # SIMULATION ASSUMPTION only: 3.5 x 10 Hz LiDAR periods. This allows the
+    # 10 Hz Writer safety timer to request cancellation before the 0.5 s Nav2
+    # costmap observation timeout. Team 1 must calibrate from deployed data.
+    scan_max_age_s: 0.35
+    # Wall-clock fail-safe for unresolved ROS action acceptance/cancellation.
+    # Timeout latches NAVIGATION_UNCERTAIN and blocks new goals; it does not
+    # assert that the base stopped. Team 1 must confirm deployed action/motor
+    # acknowledgment behavior before treating this as hardware acceptance.
+    action_response_timeout_s: 3.0
     # Task 6 frontier lifecycle. A failed goal gets a bounded number of
     # attempts, an exponential cooldown, then an expiry. Time or substantial
     # map growth re-arms the zone a bounded number of times; a region is never

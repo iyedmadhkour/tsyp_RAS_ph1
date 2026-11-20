@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import asyncio
 import json
+import mimetypes
 from pathlib import Path
 from typing import List, Literal
 
 from fastapi import FastAPI, WebSocket, HTTPException
 
 from .demo import DemoError
-from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from pydantic import BaseModel, Field
 
 
@@ -64,27 +64,45 @@ def _dashboard_dir() -> Path | None:
 def create_app(state, send_mission, demo=None, restart=None, scenario=None, set_link=None) -> FastAPI:
     app = FastAPI(title="LivingMap Command Post")
     web = _dashboard_dir()
-    if web:
-        app.mount("/static", StaticFiles(directory=str(web)), name="static")
+    dashboard_html = (web / "index.html").read_text(encoding="utf-8") if web else None
 
     @app.get("/")
-    def root():
-        if web:
-            return FileResponse(str(web / "index.html"))
+    async def root():
+        if dashboard_html is not None:
+            return HTMLResponse(dashboard_html)
         return JSONResponse({"service": "LivingMap Command Post", "dashboard": "assets not found"}, status_code=503)
 
     @app.get("/harness")
-    def harness():
+    async def harness():
         """Simulation harness view: scenario setup, fault injection and link control."""
-        if web:
-            return FileResponse(str(web / "index.html"))
+        if dashboard_html is not None:
+            return HTMLResponse(dashboard_html)
         return JSONResponse({"service": "LivingMap simulation harness", "dashboard": "assets not found"},
                             status_code=503)
 
+    @app.get("/static/{asset_path:path}")
+    async def static_asset(asset_path: str):
+        """Serve the small dashboard assets without a framework worker thread."""
+        if web is None:
+            raise HTTPException(404, "Dashboard assets are unavailable")
+        root_path = web.resolve()
+        try:
+            path = (root_path / asset_path).resolve(strict=True)
+            path.relative_to(root_path)
+        except (OSError, ValueError):
+            raise HTTPException(404, "Dashboard asset not found") from None
+        if not path.is_file():
+            raise HTTPException(404, "Dashboard asset not found")
+        media_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+        return Response(path.read_bytes(), media_type=media_type,
+                        headers={"Cache-Control": "no-cache"})
+
     @app.post("/api/harness/link")
-    def harness_link(payload: LinkRequest):
+    async def harness_link(payload: LinkRequest):
         if set_link is None:
             raise HTTPException(503, "Link control unavailable")
+        # These callbacks only enqueue a ROS service request/update state; they
+        # are deliberately kept on the ASGI loop to avoid a thread-pool handoff.
         if not set_link(payload.up, payload.restore_after_s):
             raise HTTPException(409, "Link control service is not ready")
         return {"accepted": True, "message": "Link restored" if payload.up else (
@@ -98,28 +116,30 @@ def create_app(state, send_mission, demo=None, restart=None, scenario=None, set_
         return data
 
     @app.get("/api/state")
-    def api_state():
+    async def api_state():
         return snapshot()
 
     @app.post("/api/demo")
-    def demo_action(payload: DemoRequest):
+    async def demo_action(payload: DemoRequest):
         if demo is None:
             raise HTTPException(503, "Demo controller unavailable")
         try:
-            demo.request(payload.action, outcome=payload.outcome, beacon_id=payload.beacon_id)
+            demo.request(payload.action, outcome=payload.outcome,
+                         beacon_id=payload.beacon_id)
         except DemoError as exc:
             raise HTTPException(409, str(exc)) from exc
         return {"accepted": True, "action": payload.action}
 
     @app.post("/api/demo/restart")
-    def restart_demo(payload: RestartRequest):
+    async def restart_demo(payload: RestartRequest):
         if restart is None:
             raise HTTPException(409, "Demo restart unavailable")
         try:
             if payload.events is None:
                 accepted = restart(payload.mode, payload.speed)
             else:
-                accepted = restart(payload.mode, payload.speed, [e.model_dump() for e in payload.events])
+                accepted = restart(payload.mode, payload.speed,
+                                   [e.model_dump() for e in payload.events])
         except ValueError as exc:
             raise HTTPException(422, str(exc)) from exc
         if not accepted:
@@ -127,7 +147,7 @@ def create_app(state, send_mission, demo=None, restart=None, scenario=None, set_
         return {"accepted": True, "message": "Restarting the simulation. The dashboard will reconnect automatically."}
 
     @app.get("/api/scenario")
-    def get_scenario():
+    async def get_scenario():
         if scenario is None:
             raise HTTPException(503, "Scenario configuration unavailable")
         return scenario()

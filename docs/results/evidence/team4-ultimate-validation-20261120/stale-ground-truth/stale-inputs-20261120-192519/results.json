@@ -1,0 +1,18 @@
+{
+  "home_after_fresh_inputs": true,
+  "limitation": "Gazebo bridge was paused; motor stopping remains hardware-contract dependent.",
+  "physical_stop_guaranteed": false,
+  "result": "PASS",
+  "scenario": "stale_scan_and_localization_bridge_pause",
+  "stale_cancel_requested": true,
+  "swept_boundary_during_observed_intervals": {
+    "entrance_x_m": -1.0,
+    "map_transform_missing_samples": 14,
+    "minimum_uncertain_swept_x_m": -0.41000201003347003,
+    "odom_gap_count_over_0_5s": 1,
+    "status": "INCONCLUSIVE",
+    "unmapped_motion_samples": 1
+  },
+  "watchdog_pose_unavailable_count": 0,
+  "watchdog_scan_unavailable_count": 1
+}

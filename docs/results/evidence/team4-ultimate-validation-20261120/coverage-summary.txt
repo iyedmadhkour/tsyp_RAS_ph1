@@ -1,0 +1,32 @@
+Name                                                           Stmts   Miss Branch BrPart  Cover
+------------------------------------------------------------------------------------------------
+src/living_map_beacons/living_map_beacons/node.py                279    100     74     12    66%
+src/living_map_beacons/living_map_beacons/placement.py            72      1     30      2    97%
+src/living_map_beacons/living_map_beacons/protocol.py             91      3     24      3    95%
+src/living_map_beacons/living_map_beacons/store.py                90     22     26      5    75%
+src/living_map_command_post/living_map_command_post/demo.py      288     32    164     26    85%
+src/living_map_command_post/living_map_command_post/state.py      28      4     10      1    82%
+src/living_map_command_post/living_map_command_post/web.py       129     31     46     11    75%
+src/living_map_executor/living_map_executor/graph.py              71      3     41      3    95%
+src/living_map_executor/living_map_executor/route.py             106      6     59      5    92%
+src/living_map_gateway/living_map_gateway/forward.py              30      1     10      1    95%
+src/living_map_gateway/living_map_gateway/map_codec.py            16      1     10      1    92%
+src/living_map_gateway/living_map_gateway/state.py               111     24     70      6    72%
+src/living_map_link_sim/living_map_link_sim/model.py              56      3     18      4    91%
+src/living_map_radio/living_map_radio/mesh.py                    164     15     75      3    90%
+src/living_map_radio/living_map_radio/walls.py                    29      2     12      3    88%
+src/living_map_writer/living_map_writer/demo_fallback.py          95     75     24      0    17%
+src/living_map_writer/living_map_writer/entrance.py               26      4     18      4    82%
+src/living_map_writer/living_map_writer/entrance_boundary.py      31     14      5      1    53%
+src/living_map_writer/living_map_writer/frontier.py              116      4     77      3    96%
+src/living_map_writer/living_map_writer/frontier_node.py         544    199    174     35    62%
+src/living_map_writer/living_map_writer/frontier_policy.py       158      3     50      4    97%
+src/living_map_writer/living_map_writer/goal_watchdog.py         126      9     48      4    93%
+src/living_map_writer/living_map_writer/node.py                  217     75     50      4    68%
+src/living_map_writer/living_map_writer/progress.py              210      0     92      1    99%
+src/living_map_writer/living_map_writer/sortie.py                 52      2     16      4    91%
+src/living_map_writer/living_map_writer/swept_footprint.py        46      4     28      4    89%
+------------------------------------------------------------------------------------------------
+TOTAL                                                           3439    637   1333    150    81%
+
+16 files skipped due to complete coverage.
