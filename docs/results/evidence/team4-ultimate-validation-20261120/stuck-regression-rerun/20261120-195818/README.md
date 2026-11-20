@@ -1,9 +1,11 @@
 # STUCK regression rerun
 
 This bounded rerun was executed on `phase2/reliability-optimization-20261120`
-at checkpoint `0f79291f1bcddaa750462de7b7ac425eaa540b8e` with ROS 2 Jazzy.
-The script built and resolved the Writer and detector from this isolated run's
-build/install overlays.
+at HEAD `d8038360847442b578946f3fe5f3d2bb9efff024` with ROS 2 Jazzy. The
+script's `manifest.txt` records `0f79291f1bcddaa750462de7b7ac425eaa540b8e`
+as its required ancestor/base commit, not the tested HEAD. The script built
+and resolved the Writer and detector from this isolated run's build/install
+overlays.
 
 | Check | Result | Evidence |
 | --- | --- | --- |
