@@ -385,8 +385,48 @@ class BeaconManager(Node):
     def rebroadcast_all(self) -> None:
         # Models physical beacon persistence / periodic advertising independently
         # of Writer lifetime.
+        self.repair_predecessor_links()
         for packet in list(self.items.values()):
             self._publish_frame(encode(packet))
+
+    def repair_predecessor_links(self) -> None:
+        """Reconcile durable successor records into missing predecessor links.
+
+        A new beacon is saved before its predecessor is rewritten so a failed
+        second write never loses a drop. The successor's `previous_beacon_id`
+        is therefore the durable repair record, including across a restart.
+        Repair only an empty link with one unambiguous child; never overwrite a
+        different successor or guess between branches.
+        """
+        successors: dict[int, list[BeaconPacket]] = {}
+        for packet in self.items.values():
+            if packet.previous_beacon_id in self.items:
+                successors.setdefault(packet.previous_beacon_id, []).append(packet)
+
+        for previous_id, children in successors.items():
+            previous = self.items[previous_id]
+            if len(children) != 1:
+                self.get_logger().warning(
+                    f"Cannot repair B{previous_id:03d} successor link: "
+                    f"{len(children)} durable successors are ambiguous")
+                continue
+            child = children[0]
+            if previous.next_beacon_id == child.beacon_id:
+                continue
+            if previous.next_beacon_id != 0:
+                self.get_logger().warning(
+                    f"Cannot repair B{previous_id:03d} successor link: already points to "
+                    f"B{previous.next_beacon_id:03d}, not B{child.beacon_id:03d}")
+                continue
+            try:
+                self._link_predecessor(previous_id, child)
+            except (OSError, ValueError) as exc:
+                self.get_logger().warning(
+                    f"Predecessor link repair B{previous_id:03d}->B{child.beacon_id:03d} "
+                    f"will retry: {exc}")
+            else:
+                self.get_logger().info(
+                    f"Repaired predecessor link B{previous_id:03d}->B{child.beacon_id:03d}")
 
 
 def main() -> None:

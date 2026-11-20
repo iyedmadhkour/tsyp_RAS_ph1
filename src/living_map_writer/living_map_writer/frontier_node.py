@@ -318,6 +318,21 @@ class FrontierExplorer(Node):
                         f"({zone.x:.2f},{zone.y:.2f}); attempt {zone.attempts}/"
                         f"{self.policy.cfg.max_attempts}")
                 return
+            expiry = self.policy.earliest_expiry_s(now, covering)
+            if expiry is not None:
+                # Keep the sortie active while a bounded exhausted-zone
+                # re-arm is pending. Otherwise the empty-frontier threshold
+                # would send the Writer HOME long before the 120 s expiry.
+                self.sortie.wait_for_retry()
+                key = round(expiry, 1)
+                if key != self.last_wait_log_key:
+                    self.last_wait_log_key = key
+                    wait_s = max(0.0, expiry - now)
+                    self.get_logger().info(
+                        f"Waiting {wait_s:.0f} s for exhausted frontier memory "
+                        f"to expire; re-arm is bounded to "
+                        f"{self.policy.cfg.max_rearms} per zone")
+                return
             code = "FRONTIERS_EXHAUSTED"
         else:
             without_memory = self._choose(robot_x, robot_y, (), ())

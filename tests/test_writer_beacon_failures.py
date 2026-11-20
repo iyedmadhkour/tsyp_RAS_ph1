@@ -24,7 +24,8 @@ def manager(existing=False):
                         _openings=lambda point: 0, get_logger=Mock(return_value=Mock()),
                         get_parameter=lambda key: SimpleNamespace(value=params[key]))
     for name in ["_duplicate", "_store_and_send", "_link_predecessor", "_deploy",
-                 "_reuse_navigation_beacon", "_deploy_event", "_record_event"]:
+                 "_reuse_navigation_beacon", "_deploy_event", "_record_event",
+                 "repair_predecessor_links"]:
         setattr(e, name, MethodType(getattr(BeaconManager, name), e))
     return e
 
@@ -101,7 +102,7 @@ def test_rejected_relay_can_retry_without_spending_success_cooldown():
     assert e.policy.last_relay_at == 100.5
 
 
-def test_failed_predecessor_update_does_not_undo_or_duplicate_durable_drop():
+def test_failed_predecessor_update_is_repaired_from_durable_successor_record():
     e = manager(existing=True)
     e.writer_pose = (3., 0.)
     e.store.save.side_effect = [None, OSError("predecessor rewrite failed")]
@@ -113,8 +114,25 @@ def test_failed_predecessor_update_does_not_undo_or_duplicate_durable_drop():
     assert any("predecessor link update failed" in str(c)
                for c in e.get_logger().error.call_args_list)
     e.store.save.side_effect = None
+    BeaconManager.repair_predecessor_links(e)
+    assert e.items[1].next_beacon_id == 2
+    assert e.items[1].sequence == 3 and e.seq == 3
+    e.store.save.assert_called_with(e.items)
     assert not deploy(e, request(5.)).success  # Duplicate event: no second puck.
     assert len(e.items) == 2
+
+
+def test_predecessor_repair_does_not_guess_when_successor_is_ambiguous():
+    e = manager(existing=True)
+    e.items[2] = BeaconPacket(beacon_id=2, sequence=2, previous_beacon_id=1)
+    e.items[3] = BeaconPacket(beacon_id=3, sequence=3, previous_beacon_id=1)
+
+    BeaconManager.repair_predecessor_links(e)
+
+    assert e.items[1].next_beacon_id == 0
+    e.store.save.assert_not_called()
+    assert any("ambiguous" in str(c)
+               for c in e.get_logger().warning.call_args_list)
 
 
 def test_invalid_wire_value_is_rejected_before_persistence():

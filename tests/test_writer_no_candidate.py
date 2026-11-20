@@ -68,15 +68,42 @@ def test_cooling_failure_waits_instead_of_completing():
     assert node.last_wait_log_key is not None
 
 
-def test_exhausted_zone_completes_with_frontiers_exhausted_code():
+def test_rearmable_exhausted_zone_waits_for_expiry_then_reactivates():
     node = explorer()
     x, y, _ = selected(node)
     for now in (100.0, 101.0, 102.0):
         node.policy.note_failure(x, y, now, 50.0)
     assert node.policy.zones[0].exhausted
 
-    node._no_candidate(103.0, 1.0, 1.0, (), {})
+    for now in (103.0, 105.0, 107.0, 109.0, 150.0, 200.0, 221.9):
+        node._no_candidate(now, 1.0, 1.0, (), {})
+        assert node.sortie.phase == "EXPLORING"
+        assert node.sortie.empty_ticks == 0
+
+    expiry = node.policy.zones[0].exhausted_until
+    assert expiry == 222.0
+    node.policy.refresh(expiry, 50.0)
+    node._no_candidate(expiry, 1.0, 1.0, (), {})
+    zone = node.policy.zones[0]
+    assert not zone.exhausted and zone.rearms == 1 and zone.attempts == 0
+    assert zone.cooldown_until == expiry + node.policy.cfg.base_cooldown_s
     assert node.sortie.phase == "EXPLORING"
+
+    # Once the short post-rearm cooldown elapses, the original candidate is
+    # selectable again by the same geometric selector used in tick().
+    reactivated = node._choose(1.0, 1.0, node.policy.blacklist(expiry + 15.0), ())
+    assert reactivated is not None
+    assert node.sortie.phase == "EXPLORING"
+
+
+def test_finally_exhausted_zone_still_completes_the_sortie():
+    node = explorer(FrontierPolicy(FrontierPolicyConfig(zone_radius_m=10.0,
+                                                        max_rearms=0)))
+    x, y, _ = selected(node)
+    for now in (100.0, 101.0, 102.0):
+        node.policy.note_failure(x, y, now, 50.0)
+
+    node._no_candidate(103.0, 1.0, 1.0, (), {})
     node._no_candidate(105.0, 1.0, 1.0, (), {})
 
     assert node.sortie.phase == "RETURNING"

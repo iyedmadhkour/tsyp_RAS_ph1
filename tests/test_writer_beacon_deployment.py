@@ -22,7 +22,8 @@ def manager(capacity=1, items=None):
     def store(packet):
         e.items[packet.beacon_id] = packet
     e._store_and_send = Mock(side_effect=store)
-    for name in ["_duplicate", "_reuse_navigation_beacon", "_deploy_event", "_record_event"]:
+    for name in ["_duplicate", "_reuse_navigation_beacon", "_deploy_event", "_record_event",
+                 "repair_predecessor_links"]:
         setattr(e, name, MethodType(getattr(BeaconManager, name), e))
     return e
 

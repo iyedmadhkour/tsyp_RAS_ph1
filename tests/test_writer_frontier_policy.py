@@ -67,6 +67,20 @@ def test_attempts_are_bounded_then_expire_and_rearm_only_twice():
     assert p.blacklist(600.0)
 
 
+def test_earliest_expiry_ignores_finally_exhausted_zones():
+    p = policy(max_rearms=1)
+    for now in (0.0, 16.0, 47.0):
+        p.note_failure(3.0, 4.0, now=now, known_area_m2=50.0)
+
+    assert p.earliest_expiry_s(100.0) == 167.0
+    p.refresh(167.0, 50.0)
+    assert p.earliest_expiry_s(167.0) is None  # cooldown is active, not exhausted
+
+    for now in (183.0, 199.0, 230.0):
+        p.note_failure(3.0, 4.0, now=now, known_area_m2=50.0)
+    assert p.earliest_expiry_s(230.0) is None  # re-arm budget consumed
+
+
 def test_substantial_map_growth_rearms_an_exhausted_zone():
     p = policy()
     for now in (0.0, 1.0, 2.0):

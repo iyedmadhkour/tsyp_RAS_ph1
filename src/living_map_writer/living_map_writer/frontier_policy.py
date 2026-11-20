@@ -27,6 +27,7 @@ Archived missions show the same upper-passage frontier being re-attempted
 from __future__ import annotations
 
 from collections import Counter
+from collections.abc import Iterable
 from dataclasses import dataclass
 import math
 
@@ -216,6 +217,15 @@ class FrontierPolicy:
     def earliest_retry_s(self, now: float) -> float | None:
         times = [zone.cooldown_until for zone in self.zones
                  if not zone.exhausted and zone.cooldown_until > now]
+        return min(times) if times else None
+
+    def earliest_expiry_s(self, now: float,
+                          zones: Iterable[FailureZone] | None = None) -> float | None:
+        """Return the next time-based re-arm, optionally scoped to relevant zones."""
+        candidates = self.zones if zones is None else zones
+        times = [zone.exhausted_until for zone in candidates
+                 if zone.exhausted and zone.rearms < self.cfg.max_rearms
+                 and zone.exhausted_until > now]
         return min(times) if times else None
 
     def summary(self, now: float | None = None) -> dict:
