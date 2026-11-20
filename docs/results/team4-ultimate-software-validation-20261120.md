@@ -3,9 +3,7 @@
 Date: 2026-11-20
 Branch: `phase2/reliability-optimization-20261120`
 Starting checkpoint: `66b23b9fc2fe6b85c32614bbed24361e8eb93204`
-Acceptance: **PARTIAL overall; newly closed stale-outage boundary evidence is
-PASS within the recorded Gazebo model and motion assumptions.** All work is
-local. No hardware was connected and no GitHub operation was performed.
+Acceptance: **PASS for the bounded software/Gazebo regression suite; PARTIAL for system acceptance because physical hardware validation remains outstanding.** The final watchdog recovery, fresh full suite and action fault evidence are recorded in `docs/results/team4-final-gazebo-recovery-20261120.md`. All work is local. No hardware was connected and no GitHub operation was performed.
 
 ## Results from this continuation
 
@@ -87,32 +85,37 @@ path. The three targeted request tests passed and the full suite passed
 506/506. Detailed diagnosis is at
 `docs/results/evidence/team4-ultimate-validation-20261120/asgi-worker-diagnosis.md`.
 
-### Final STUCK/watchdog regression rerun — PARTIAL
+### Final STUCK/watchdog regression recovery — PASS in isolated Gazebo cases
 
-After the steady-clock deadline change, the isolated STUCK harness was rerun at
+The initial failure remains preserved at
 `docs/results/evidence/team4-ultimate-validation-20261120/stuck-regression-rerun/20261120-195818/`.
-The 12-package Jazzy build and all 165 focused detector, wiring, watchdog, and
-navigation tests passed. Normal navigation returned HOME with translation,
-rotation, zero-command intervals, and 42.75 m odometry path; the detector did
-not report false STUCK. The static-base scenario logged 455 forward command
-samples, 1,770 odometry samples with zero displacement, and emitted STUCK.
+Bag analysis found that the scenario did not reach its watchdog path: `/clock`
+had only 93 samples from 77.712–78.632 s while Writer odometry advanced from
+0.238–161.704 s, and no Writer velocity commands were recorded. The harness
+reused ROS/Gazebo domains between sequential cases and did not gate the watchdog
+case on map, scan, odometry, costmap and lifecycle readiness. The map/costmap
+warnings were setup symptoms rather than evidence of a production geometry or
+watchdog defect.
 
-The third scenario timed out after its 210 s bound without emitting a
-watchdog-cancel or STUCK event. Its Writer state and STUCK topic logs were
-empty; Nav2 repeatedly reported no map on its static costmaps and the robot
-outside the costmap. Thus this rerun did not exercise the watchdog path and is
-not a pass. Previous independent watchdog-then-STUCK runs at
-`docs/results/evidence/team4-phase2-validation-20261120/stuck/` and
-`docs/results/evidence/team4-phase2-advanced-20261120/stuck-regression-20261120/`
-remain valid recorded passes. The new timeout reduces confidence in repeatable
-setup; it does not by itself establish a production regression. No production
-code changed during this rerun.
+The isolated rerun at
+`docs/results/evidence/team4-ultimate-validation-20261120/final-gazebo-recovery-isolated/20261120-213332/`
+uses per-case ROS domains/Gazebo partitions, process-group cleanup, explicit
+sensor/map/costmap/lifecycle readiness, and pre-enabled observers. All three
+bounded scenarios passed: normal navigation reached HOME without false STUCK;
+forward immobilization emitted STUCK with 453 forward commands and zero
+odometry movement; watchdog cancellation/retry was followed by independent
+physical STUCK with 872 rotation-command samples and zero odometry movement.
+Each case had a fresh monotonic simulation clock. This verifies Gazebo
+regression behavior only and does not prove physical motor stopping.
+
+The recovery changes and detailed command, timing, test and hardware limits are
+in `docs/results/team4-final-gazebo-recovery-20261120.md`.
 
 ## Final regression and build
 
-- Full test suite: **506 passed, 0 failed, 0 skipped, 0 deselected** in 9.04 s
-  under coverage measurement.
-  Evidence: `docs/results/evidence/team4-ultimate-validation-20261120/pytest-final.log`.
+- Full test suite: **506 passed, 0 failed, 0 skipped, 0 deselected** in 8.89 s
+  in the final recovery run (earlier full run also passed 506/506).
+  Evidence: `docs/results/evidence/team4-ultimate-validation-20261120/final-gazebo-recovery-isolated/20261120-213332/final-checks/pytest-full.log`.
 - Coverage rerun with statement and branch measurement: **81% statement**
   (3,439 statements, 637 missed); **1,333 branches, 150 missed**. This is an
   audit metric, not a safety claim. The Writer frontier node, dashboard API,
@@ -122,10 +125,10 @@ code changed during this rerun.
   `/tmp/team4-ultimate-stale-deadline/`; no errors. Existing unused
   `CATKIN_INSTALL_INTO_PREFIX_ROOT` CMake warnings and disabled Python bytecode
   notices remain. Evidence: `stale-ground-truth/stale-inputs-20261120-194933/build.log`.
-- Relevant bounded Gazebo stale-input/HOME scenario: **PASS**, with the
-  independent continuous-boundary result described above. The separate
-  same-zone, STUCK/watchdog, SLAM and frontier-lifecycle results remain in the
-  previous evidence directory and are unaffected by this command-post change.
+- Isolated Gazebo regression scenarios: normal/HOME, forward STUCK and
+  watchdog-then-STUCK **PASS**. Stale-input cancellation/HOME and independent
+  ground-truth boundary audit **PASS** within recorded assumptions. See the
+  final recovery report for exact logs, residual movement and pose-fault limits.
 - Incomplete earlier test and Gazebo attempts remain preserved in separate
   evidence files/directories and are not counted as passes.
 

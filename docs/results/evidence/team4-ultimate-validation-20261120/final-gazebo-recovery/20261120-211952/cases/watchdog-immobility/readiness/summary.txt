@@ -1,0 +1,6 @@
+Waiting for a usable SLAM map, Writer scan/odometry, and active Writer Nav2 stack.
+map_scan_odom_ready=true
+writer_nav2_active=true
+exploration_enabled=true
+frontier_goal_ready=true
+setup_status=PASS

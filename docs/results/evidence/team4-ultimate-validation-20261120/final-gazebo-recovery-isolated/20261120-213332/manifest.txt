@@ -1,0 +1,8 @@
+branch=phase2/reliability-optimization-20261120
+commit=0f79291f1bcddaa750462de7b7ac425eaa540b8e
+ros_distro=jazzy
+ros_domain_base=190
+started=2026-11-20T21:33:33+01:00
+run_root=/home/iyed/LivingMap-Team4/docs/results/evidence/team4-ultimate-validation-20261120/final-gazebo-recovery-isolated/20261120-213332
+complete=true
+finished=2026-11-20T21:40:51+01:00

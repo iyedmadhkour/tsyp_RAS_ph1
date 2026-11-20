@@ -1,0 +1,16 @@
+cmd_translation_samples=0
+cmd_rotation_samples=872
+cmd_zero_samples=37
+odom_samples=2002
+odom_path_length_m=0.00
+odom_start_to_end_m=0.00
+odom_max_deviation_m=0.00
+odom_yaw_range_rad=0.0000
+command_stamp_ns_first=1795207145328314175
+command_stamp_ns_last=1795207223037089731
+odom_stamp_ns_first=1795207132349543876
+odom_stamp_ns_last=1795207236172791006
+clock_samples=6852
+clock_sim_first_s=0.002
+clock_sim_last_s=68.512
+clock_backwards_jumps=0

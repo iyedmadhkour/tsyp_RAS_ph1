@@ -1,0 +1,2 @@
+ros_domain_id=190
+gz_partition=livingmap-team4-190-0

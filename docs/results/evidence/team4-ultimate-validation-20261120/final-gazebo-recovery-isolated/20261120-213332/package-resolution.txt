@@ -1,0 +1,2 @@
+Writer node: /home/iyed/LivingMap-Team4/docs/results/evidence/team4-ultimate-validation-20261120/final-gazebo-recovery-isolated/20261120-213332/build/living_map_writer/living_map_writer/node.py
+STUCK detector: /home/iyed/LivingMap-Team4/docs/results/evidence/team4-ultimate-validation-20261120/final-gazebo-recovery-isolated/20261120-213332/build/living_map_writer/living_map_writer/progress.py
