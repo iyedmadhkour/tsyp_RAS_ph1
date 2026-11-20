@@ -191,6 +191,21 @@
     # 10 Hz Writer safety timer to request cancellation before the 0.5 s Nav2
     # costmap observation timeout. Team 1 must calibrate from deployed data.
     scan_max_age_s: 0.35
+    # Independent pose-motion integrity reference. In Gazebo this is the
+    # physics-derived world_odom stream, distinct from scan_frames' /writer/odom
+    # output. A hardware profile must provide an independently sourced,
+    # frame-axis-aligned odometry reference or keep goal dispatch blocked.
+    pose_integrity_required: true
+    pose_integrity_reference_topic: /writer/world_odom
+    pose_integrity_axes_aligned: true
+    # Simulation assumptions reuse the existing 5 cm entrance allowance and
+    # 0.02 rad STUCK yaw-noise bound; Team 1 must validate deployed values.
+    pose_integrity_position_tolerance_m: 0.05
+    pose_integrity_yaw_tolerance_rad: 0.02
+    # SIMULATION pairing allowance for asynchronously delivered Gazebo
+    # messages. Team 1 must confirm the deployed timestamp/skew contract.
+    pose_integrity_max_stamp_skew_s: 0.05
+    pose_integrity_reference_max_age_s: 0.5
     # Wall-clock fail-safe for unresolved ROS action acceptance/cancellation.
     # Timeout latches NAVIGATION_UNCERTAIN and blocks new goals; it does not
     # assert that the base stopped. Team 1 must confirm deployed action/motor

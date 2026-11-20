@@ -564,8 +564,8 @@ def _explorer_for_result(policy, sortie=None):
     )
     explorer._goal_failed = lambda x, y, kind, reason="aborted": (
         FrontierExplorer._goal_failed(explorer, x, y, kind, reason))
-    explorer._latch_navigation_uncertain = lambda reason: (
-        FrontierExplorer._latch_navigation_uncertain(explorer, reason))
+    explorer._latch_navigation_uncertain = lambda reason, **kwargs: (
+        FrontierExplorer._latch_navigation_uncertain(explorer, reason, **kwargs))
     return explorer
 
 
@@ -618,6 +618,39 @@ def test_watchdog_cancellation_is_recorded_as_a_frontier_failure():
     assert policy.zones[0].attempts == 1
     assert e.counts["frontier_failed"] == 1
     assert e.sortie.phase == "EXPLORING"
+
+
+def test_pose_integrity_fault_remains_latched_after_terminal_cancel_result():
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.navigation_uncertain = True
+    e.navigation_uncertain_reason = "pose integrity disagreement"
+    e.pose_integrity_fault = True
+    e.active_goal = {"x": 3.0, "y": 4.0, "kind": "frontier",
+                     "watchdog_reason": None,
+                     "cancel_reason": "pose integrity disagreement"}
+
+    FrontierExplorer._done(e, _completed(5), 3.0, 4.0, "frontier")
+
+    assert e.navigation_uncertain
+    assert e.pose_integrity_fault
+    assert e.counts["pose_integrity_goal_cancelled"] == 1
+    assert e.counts["navigation_uncertainty_resolved"] == 0
+    assert policy.zones == []  # integrity lockout is not a frontier failure
+
+
+def test_required_independent_pose_reference_fails_closed_before_goal():
+    from living_map_writer.pose_integrity import PoseIntegrityMonitor
+
+    e = SimpleNamespace(
+        pose_integrity_required=True,
+        pose_integrity=PoseIntegrityMonitor(),
+        get_parameter=lambda key: SimpleNamespace(value={
+            "pose_integrity_axes_aligned": True,
+            "pose_integrity_reference_max_age_s": 0.5,
+        }[key]),
+    )
+    assert not FrontierExplorer._pose_integrity_ready(e, 10.0)
 
 
 def test_successful_frontier_goal_records_a_visit_not_a_failure():

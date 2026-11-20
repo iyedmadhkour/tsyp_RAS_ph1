@@ -21,6 +21,13 @@ cd "$ROOT"
 mkdir -p "$EVIDENCE_ROOT"
 [[ ! -e "$RUN" ]] || die "refusing to overwrite evidence"
 mkdir -p "$RUN" "$BUILD" "$INSTALL" "$LOG"
+
+set +u
+source /opt/ros/jazzy/setup.bash
+set -u
+set +u
+source "$SLAM_OVERLAY/local_setup.bash"
+set -u
 for command in colcon timeout setsid pgrep rg gz ros2 python3; do need "$command"; done
 
 LAUNCH_PID= ADAPTER_PID= OBSERVER_PID= POSE_PID= BAG_PID= SCAN_PID=
@@ -50,12 +57,6 @@ trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
-set +u
-source /opt/ros/jazzy/setup.bash
-set -u
-set +u
-source "$SLAM_OVERLAY/local_setup.bash"
-set -u
 export ROS_DOMAIN_ID="$((130 + $$ % 60))"
 export GZ_PARTITION="team4-pose-validation-$STAMP"
 export FASTDDS_BUILTIN_TRANSPORTS=UDPv4 PYTHONDONTWRITEBYTECODE=1
@@ -78,7 +79,7 @@ done
 printf 'branch=%s\nhead=%s\nstarted=%s\nros_domain_id=%s\ngz_partition=%s\n' \
   "$BRANCH" "$(git rev-parse HEAD)" "$(date -Is)" "$ROS_DOMAIN_ID" "$GZ_PARTITION" \
   >"$RUN/manifest.txt"
-printf 'fault_modes=stale,delayed,missing,frozen\npose_age_assumption_s=0.5\nscan_age_assumption_s=0.35\ndelay_s=1.5\n' \
+printf 'fault_modes=stale,delayed,missing,frozen\nspeed_preset=normal\npose_age_assumption_s=0.5\nscan_age_assumption_s=0.35\ndelay_s=1.5\n' \
   >>"$RUN/manifest.txt"
 
 run_phase() {
@@ -90,7 +91,7 @@ run_phase() {
   PHASE_INDEX=$((PHASE_INDEX + 1))
   echo "starting $name" | tee -a "$RUN/progress.txt"
   setsid ros2 launch living_map_bringup demo.launch.py demo_fallback:=false \
-    auto_explore:=false speed:=very_fast rviz:=false >"$d/launch.log" 2>&1 &
+    auto_explore:=false speed:=normal rviz:=false >"$d/launch.log" 2>&1 &
   LAUNCH_PID=$!
 
   # Wait for map/sensors and active Writer lifecycle before replacing scan_frames.
@@ -149,6 +150,12 @@ run_phase() {
   sleep 1
   [[ -f "$d/bag/metadata.yaml" ]] || true
 
+  # Startup is a legitimate stationary pose case: fresh advancing estimates
+  # with no commanded movement must not trip the integrity latch.
+  if rg -q 'pose integrity could not be established' "$d/launch.log"; then
+    die "$name: stationary startup falsely tripped pose integrity"
+  fi
+
   ros2 service call /living_map/writer/set_enabled std_srvs/srv/SetBool '{data: true}' \
     >"$d/enable-response.txt" 2>&1 || die "$name: Writer enable service failed"
   rg -q 'success=True' "$d/enable-response.txt" || die "$name: Writer did not enable"
@@ -160,7 +167,7 @@ run_phase() {
       inject_pose_mode "$mode" "$d"
       [[ "$mode" == missing ]] && python3 "$ROOT/scripts/pr1_cancel_validation_probe.py" request-return \
         >"$d/home-request.json"
-      restore_pose_mode "$d"
+      restore_pose_mode "$mode" "$d"
       if [[ "$mode" != missing ]]; then wait_for_goal "$name after-$mode" "$d"; fi
     done
     printf 'resumed_sim_s=%s\n' "$(current_sim_s "$d/observations.jsonl")" >>"$d/fault-injection.txt"
@@ -168,19 +175,13 @@ run_phase() {
       # The request was made with missing pose; with the stream restored, HOME is now allowed.
       wait_for_state HOME "$d" 180 || die "$name: HOME did not complete after fresh pose recovery"
     fi
-  elif [[ "$mode_set" == frozen ]]; then
-    timeout 10s ros2 param set /living_map/pose_fault_frames writer_mode frozen \
-      >"$d/param-frozen.log" 2>&1 || die "failed to enable frozen pose fault"
-    local frozen_ready=false
-    for _ in {1..100}; do
-      if rg -q 'POSE_FAULT_MODE=frozen' "$d/pose-adapter.log"; then frozen_ready=true; break; fi
-      sleep .1
-    done
-    [[ "$frozen_ready" == true ]] || die "pose relay did not confirm frozen mode"
-    printf 'frozen_start_sim_s=%s\n' "$(current_sim_s "$d/observations.jsonl")" >"$d/fault-injection.txt"
-    printf 'mode=frozen start=%s\n' "$(date -Is)" >"$d/mode-timeline.txt"
-    wait_for_state STUCK "$d" 240 || die "$name: frozen fresh-stamped pose did not reach conservative STUCK state"
-    printf 'frozen_end_sim_s=%s\n' "$(current_sim_s "$d/observations.jsonl")" >>"$d/fault-injection.txt"
+  elif [[ "$mode_set" == frozen || "$mode_set" == frozen-rotation ]]; then
+    if [[ "$mode_set" == frozen-rotation ]]; then
+      local rotation_detail
+      rotation_detail="$(wait_for_rotation "$name" "$d" 180)"
+      printf 'pre_fault_rotation=%s\n' "$rotation_detail" | tee -a "$d/mode-timeline.txt"
+    fi
+    inject_frozen_pose_and_recover "$name" "$d" "$return_home"
   fi
 
   write_phase_summary "$name" "$mode_set" "$d" "$expected"
@@ -213,27 +214,35 @@ wait_for_goal() {
 inject_pose_mode() {
   local mode="$1" d="$2"
   printf 'mode=%s start=%s\n' "$mode" "$(date -Is)" | tee -a "$d/mode-timeline.txt"
-  timeout 10s ros2 param set /living_map/pose_fault_frames writer_mode "$mode" \
-    >"$d/param-$mode.log" 2>&1 || die "$mode: failed to set pose fault mode"
-  local cancel_before
+  # Snapshot evidence before changing the relay: a safety callback may latch
+  # synchronously before `ros2 param set` returns.
+  local cancel_before integrity_before
   cancel_before="$(rg -c 'Active Writer goal cancellation requested: localization unavailable' "$d/launch.log" || true)"
   cancel_before="${cancel_before:-0}"
-  local goals_before
-  goals_before="$(rg -c 'Received a goal, begin computing control effort' "$d/launch.log" || true)"
-  goals_before="${goals_before:-0}"
+  integrity_before="$(rg -c 'Navigation locked out; no further goals will be sent: pose integrity could not be established' "$d/launch.log" || true)"
+  integrity_before="${integrity_before:-0}"
+  timeout 10s ros2 param set /living_map/pose_fault_frames writer_mode "$mode" \
+    >"$d/param-$mode.log" 2>&1 || die "$mode: failed to set pose fault mode"
   for _ in {1..50}; do
-    local cancel_now
+    local cancel_now integrity_now
     cancel_now="$(rg -c 'Active Writer goal cancellation requested: localization unavailable' "$d/launch.log" || true)"
     cancel_now="${cancel_now:-0}"
-    if (( cancel_now > cancel_before )); then
-      printf 'cancel_observed=%s\n' "$(date -Is)" | tee -a "$d/mode-timeline.txt"
-      printf 'goals_before=%s\n' "$goals_before" >>"$d/mode-timeline.txt"
+    integrity_now="$(rg -c 'Navigation locked out; no further goals will be sent: pose integrity could not be established' "$d/launch.log" || true)"
+    integrity_now="${integrity_now:-0}"
+    if (( cancel_now > cancel_before || integrity_now > integrity_before )); then
+      if (( integrity_now > integrity_before )); then
+        printf 'pose_integrity_lockout_observed=%s\n' "$(date -Is)" | tee -a "$d/mode-timeline.txt"
+      else
+        printf 'localization_cancel_observed=%s\n' "$(date -Is)" | tee -a "$d/mode-timeline.txt"
+      fi
+      local goals_during goals_after_lockout
+      goals_during="$(goals_after_fault_mode "$mode" "$d")"
+      printf 'goals_after_fault_mode=%s\n' "$goals_during" >>"$d/mode-timeline.txt"
       sleep 4
-      local goals_during
-      goals_during="$(rg -c 'Received a goal, begin computing control effort' "$d/launch.log" || true)"
-      goals_during="${goals_during:-0}"
-      printf 'goals_while_pose_invalid=%s\n' "$goals_during" >>"$d/mode-timeline.txt"
-      (( goals_during == goals_before )) || die "$mode: a new goal was sent while pose was invalid"
+      goals_after_lockout="$(goals_after_fault_mode "$mode" "$d")"
+      printf 'goals_after_lockout_window=%s\n' "$goals_after_lockout" >>"$d/mode-timeline.txt"
+      (( goals_after_lockout == goals_during )) \
+        || die "$mode: a new Nav2 goal was sent after the pose fault was latched"
       return 0
     fi
     sleep .5
@@ -241,14 +250,48 @@ inject_pose_mode() {
   die "$mode: localization-unavailable cancellation was not observed"
 }
 
+goals_after_fault_mode() {
+  python3 - "$1" "$2" <<'PY'
+import re,sys
+from pathlib import Path
+mode,root=sys.argv[1:]
+adapter=(Path(root)/"pose-adapter.log").read_text(errors="replace")
+launch=(Path(root)/"launch.log").read_text(errors="replace")
+match=re.search(r"\[WARN\] \[([0-9.]+)\].*POSE_FAULT_MODE="+re.escape(mode),adapter)
+if not match:
+    raise SystemExit("fault relay activation timestamp not found")
+fault_time=float(match.group(1))
+goals=[float(t) for t in re.findall(
+    r"\[INFO\] \[([0-9.]+)\].*\[writer\.controller_server\]: Received a goal, begin computing control effort",
+    launch)]
+print(sum(t >= fault_time for t in goals))
+PY
+}
+
 restore_pose_mode() {
-  local d="$1"
+  local mode="$1" d="$2"
   local goals_before
   goals_before="$(rg -c 'Received a goal, begin computing control effort' "$d/launch.log" || true)"
   goals_before="${goals_before:-0}"
   timeout 10s ros2 param set /living_map/pose_fault_frames writer_mode pass \
     >>"$d/mode-timeline.txt" 2>&1 || die "pose relay recovery failed"
   printf 'mode=pass restored=%s\n' "$(date -Is)" | tee -a "$d/mode-timeline.txt"
+  if rg -q 'pose integrity could not be established' "$d/launch.log"; then
+    local acked=false
+    for _ in {1..60}; do
+      local response
+      response="$(timeout 4s ros2 service call /writer/ack_pose_integrity_recovery \
+        std_srvs/srv/Trigger '{}' 2>&1 || true)"
+      if [[ "$response" == *'success=True'* ]]; then
+        printf '%s\n' "$response" >"$d/recovery-ack-$mode.log"
+        acked=true
+        break
+      fi
+      printf '%s\n' "$response" >"$d/recovery-ack-$mode-last-attempt.log"
+      sleep .3
+    done
+    [[ "$acked" == true ]] || die "$mode: safe pose-integrity recovery acknowledgment did not become ready"
+  fi
   for _ in {1..90}; do
     local goals_now
     goals_now="$(rg -c 'Received a goal, begin computing control effort' "$d/launch.log" || true)"
@@ -271,6 +314,94 @@ wait_for_state() {
   return 1
 }
 
+wait_for_rotation() {
+  local label="$1" d="$2" limit="$3"
+  for ((i=0; i<limit; i++)); do
+    if python3 - "$d/observations.jsonl" <<'PY'
+import json,sys
+from pathlib import Path
+import math
+events=[]
+for line in Path(sys.argv[1]).read_text().splitlines()[-2500:]:
+    try: event=json.loads(line)
+    except ValueError: continue
+    events.append(event)
+commands=[e for e in events if e.get("event")=="writer_cmd_vel"
+          and e.get("sim_s") is not None
+          and abs(float(e.get("data",{}).get("angular_z",0.0)))>.1
+          and abs(float(e.get("data",{}).get("linear_x",0.0)))<.02]
+poses=[e for e in events if e.get("event")=="gazebo_world_odom"
+       and e.get("sim_s") is not None]
+def delta(a,b): return abs(math.atan2(math.sin(a-b),math.cos(a-b)))
+for command in reversed(commands):
+    ct=float(command["sim_s"])
+    samples=[(float(e["sim_s"]),float(e["data"]["yaw"])) for e in poses
+             if ct<=float(e["sim_s"])<=ct+2.0]
+    if len(samples)>=2 and max(delta(a[1],b[1]) for a in samples for b in samples)>.02:
+        print(f"sim_s={ct:.3f}; yaw_range_rad={max(delta(a[1],b[1]) for a in samples for b in samples):.4f}")
+        raise SystemExit(0)
+raise SystemExit(1)
+PY
+    then return 0; fi
+    kill -0 "$LAUNCH_PID" 2>/dev/null || die "$label: launch exited before a rotation command"
+    sleep 1
+  done
+  die "$label: no in-place rotation command observed within ${limit}s"
+}
+
+inject_frozen_pose_and_recover() {
+  local label="$1" d="$2" return_home="$3"
+  timeout 10s ros2 param set /living_map/pose_fault_frames writer_mode frozen \
+    >"$d/param-frozen.log" 2>&1 || die "$label: failed to enable frozen pose fault"
+  local frozen_ready=false
+  for _ in {1..100}; do
+    if rg -q 'POSE_FAULT_MODE=frozen' "$d/pose-adapter.log"; then frozen_ready=true; break; fi
+    sleep .1
+  done
+  [[ "$frozen_ready" == true ]] || die "$label: pose relay did not confirm frozen mode"
+  printf 'frozen_start_sim_s=%s\n' "$(current_sim_s "$d/observations.jsonl")" >"$d/fault-injection.txt"
+  printf 'mode=frozen start=%s\n' "$(date -Is)" >"$d/mode-timeline.txt"
+  wait_for_state NAVIGATION_UNCERTAIN "$d" 45 \
+    || die "$label: independent pose mismatch did not latch navigation lockout"
+  printf 'lockout_sim_s=%s\n' "$(current_sim_s "$d/observations.jsonl")" >>"$d/fault-injection.txt"
+  printf 'lockout=%s\n' "$(date -Is)" | tee -a "$d/mode-timeline.txt"
+  local goals_locked goals_after
+  goals_locked="$(rg -c 'Frontier selected x=' "$d/launch.log" || true)"
+  goals_locked="${goals_locked:-0}"
+  sleep 4
+  goals_after="$(rg -c 'Frontier selected x=' "$d/launch.log" || true)"
+  goals_after="${goals_after:-0}"
+  printf 'frontier_goals_at_lockout=%s\nfrontier_goals_after_lockout_window=%s\n' \
+    "$goals_locked" "$goals_after" >>"$d/mode-timeline.txt"
+  (( goals_after == goals_locked )) \
+    || die "$label: a new frontier goal was sent while pose-integrity lockout was latched"
+  printf 'frozen_end_sim_s=%s\n' "$(current_sim_s "$d/observations.jsonl")" >>"$d/fault-injection.txt"
+  if [[ "$return_home" == true ]]; then
+    python3 "$ROOT/scripts/pr1_cancel_validation_probe.py" request-return \
+      >"$d/home-request.json" || die "$label: could not request HOME while locked out"
+  fi
+  timeout 10s ros2 param set /living_map/pose_fault_frames writer_mode pass \
+    >>"$d/mode-timeline.txt" 2>&1 || die "$label: could not restore valid pose"
+  printf 'mode=pass restored=%s\n' "$(date -Is)" | tee -a "$d/mode-timeline.txt"
+  local recovered=false
+  for _ in {1..60}; do
+    local response
+    response="$(timeout 4s ros2 service call /writer/ack_pose_integrity_recovery \
+      std_srvs/srv/Trigger '{}' 2>&1 || true)"
+    if [[ "$response" == *'success=True'* ]]; then
+      printf '%s\n' "$response" >"$d/recovery-ack.txt"
+      recovered=true
+      break
+    fi
+    printf '%s\n' "$response" >"$d/recovery-ack-last-attempt.txt"
+    sleep .3
+  done
+  [[ "$recovered" == true ]] || die "$label: explicit recovery criteria/acknowledgment did not become ready"
+  if [[ "$return_home" == true ]]; then
+    wait_for_state HOME "$d" 180 || die "$label: HOME did not complete after acknowledged recovery"
+  fi
+}
+
 write_phase_summary() {
   local name="$1" mode_set="$2" d="$3" expected="$4"
   local json="$d/summary.json"
@@ -280,12 +411,16 @@ from pathlib import Path
 name, modes, expected, root, output = sys.argv[1:]
 log=(Path(root)/"launch.log").read_text(errors="replace")
 cancel=log.count("Active Writer goal cancellation requested: localization unavailable")
+integrity=log.count("Navigation locked out; no further goals will be sent: pose integrity could not be established")
+cancel_requests=log.count("Active Writer goal cancellation requested:")
 result={"scenario":name,"fault_modes":["stale","delayed","missing"] if modes=="all" else [modes],
         "localization_cancel_events":cancel,"expected_terminal_state":expected,
+        "pose_integrity_lockouts":integrity,"cancel_requests":cancel_requests,
         "home_observed":("Explorer state HOME" in log or "Writer is back at the entrance" in log),
         "stuck_observed":"Explorer state STUCK" in log,
         "nav_goal_count":log.count("Received a goal, begin computing control effort"),
-        "simulation_only":True,"result":"PASS" if (cancel>=3 if modes=="all" else True) and (
+        "simulation_only":True,"result":"PASS" if
+        ((cancel + integrity >= 3) if modes=="all" else True) and (
             (expected=="HOME" and ("Explorer state HOME" in log or "Writer is back at the entrance" in log)) or
             (expected=="STUCK" and "Explorer state STUCK" in log)) else "FAIL"}
 Path(output).write_text(json.dumps(result,indent=2,sort_keys=True)+"\n")
@@ -315,7 +450,8 @@ cleanup_phase() {
 }
 
 run_phase stale-recovery all true HOME
-run_phase fresh-stamped-freeze frozen false STUCK
+run_phase fresh-stamped-freeze frozen true HOME
+run_phase fresh-stamped-frozen-rotation frozen-rotation true HOME
 
 python3 "$ROOT/scripts/analyze_phase2_pose_fault_evidence.py" \
   "$RUN" --writer-config "$ROOT/config/nav2/writer.yaml" \

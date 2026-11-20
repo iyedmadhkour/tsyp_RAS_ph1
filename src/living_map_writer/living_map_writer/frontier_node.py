@@ -18,6 +18,7 @@ from rclpy.node import Node
 from rclpy.qos import QoSProfile, DurabilityPolicy
 from rclpy.time import Time
 from std_msgs.msg import Bool, String
+from std_srvs.srv import Trigger
 from tf2_ros import Buffer, TransformException, TransformListener
 
 from .frontier import choose_frontier, frontier_cells
@@ -25,6 +26,8 @@ from .entrance import padded_footprint, rotation_safe_center_x
 from .frontier_policy import FrontierPolicy, FrontierPolicyConfig
 from .goal_watchdog import GoalWatchdog, WatchdogConfig
 from .pose_freshness import pose_stamp_is_fresh
+from .pose_integrity import PoseIntegrityMonitor
+from .progress import yaw_from_quaternion
 from .sortie import Sortie
 
 
@@ -45,6 +48,8 @@ class FrontierExplorer(Node):
         self.last_scan_stamp_s: float | None = None
         self.navigation_uncertain = False
         self.navigation_uncertain_reason: str | None = None
+        self.pose_integrity_fault = False
+        self.pose_integrity_fault_reason: str | None = None
         self.cancel_future = None
         self.angular_z = 0.0
         self.busy = False
@@ -80,6 +85,13 @@ class FrontierExplorer(Node):
         self.declare_parameter("entrance_position_uncertainty_xy", 0.0)
         self.declare_parameter("odom_fallback_max_age_s", 0.5)
         self.declare_parameter("scan_max_age_s", 0.5)
+        self.declare_parameter("pose_integrity_required", True)
+        self.declare_parameter("pose_integrity_reference_topic", "/writer/world_odom")
+        self.declare_parameter("pose_integrity_axes_aligned", True)
+        self.declare_parameter("pose_integrity_max_stamp_skew_s", 0.05)
+        self.declare_parameter("pose_integrity_reference_max_age_s", 0.5)
+        self.declare_parameter("pose_integrity_position_tolerance_m", 0.05)
+        self.declare_parameter("pose_integrity_yaw_tolerance_rad", 0.02)
         self.declare_parameter("action_response_timeout_s", 3.0)
         # Frontier lifecycle (Task 6). See docs/results/team4-task6-exploration.md.
         self.declare_parameter("frontier_zone_radius_m", 1.5)
@@ -141,6 +153,28 @@ class FrontierExplorer(Node):
             reset_jump_m=float(self.get_parameter("nav_watchdog_reset_jump_m").value),
         ))
         self.last_tick_s: float | None = None
+        self.pose_integrity_required = bool(self.get_parameter(
+            "pose_integrity_required").value)
+        if not self.pose_integrity_required:
+            raise RuntimeError(
+                "Writer autonomy requires an independent pose-integrity reference")
+        reference_topic = str(self.get_parameter(
+            "pose_integrity_reference_topic").value).strip()
+        resolved_reference_topic = (self.resolve_topic_name(reference_topic)
+                                    if reference_topic else "")
+        if self.pose_integrity_required and (
+                not resolved_reference_topic
+                or resolved_reference_topic == self.resolve_topic_name("/writer/odom")):
+            raise RuntimeError(
+                "pose integrity requires a distinct independent odometry reference topic")
+        if not bool(self.get_parameter("pose_integrity_axes_aligned").value):
+            raise RuntimeError(
+                "pose-integrity reference axes must be transformed/aligned before use")
+        self.pose_integrity = PoseIntegrityMonitor(
+            float(self.get_parameter("pose_integrity_position_tolerance_m").value),
+            float(self.get_parameter("pose_integrity_yaw_tolerance_rad").value),
+            float(self.get_parameter("pose_integrity_max_stamp_skew_s").value),
+        )
 
         self.nav = ActionClient(self, NavigateToPose, "navigate_to_pose")
         self.tf_buffer = Buffer()
@@ -148,6 +182,10 @@ class FrontierExplorer(Node):
 
         self.create_subscription(OccupancyGrid, "/map", self.on_map, 10)
         self.create_subscription(Odometry, "/writer/odom", self.on_odom, 10)
+        self.pose_integrity_reference_sub = None
+        if reference_topic:
+            self.pose_integrity_reference_sub = self.create_subscription(
+                Odometry, reference_topic, self.on_pose_integrity_reference, 20)
         self.create_subscription(LaserScan, "/writer/scan", self.on_scan, 10)
         state_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.create_subscription(Bool, "/living_map/writer_failed", self.on_failed, state_qos)
@@ -166,6 +204,8 @@ class FrontierExplorer(Node):
         self.action_deadline_clock = Clock(clock_type=ClockType.STEADY_TIME)
         self.create_timer(0.1, self._monitor_action_response_deadlines,
                           clock=self.action_deadline_clock)
+        self.create_service(Trigger, "ack_pose_integrity_recovery",
+                            self.ack_pose_integrity_recovery)
 
     def on_map(self, msg: OccupancyGrid) -> None:
         self.map = msg
@@ -188,6 +228,97 @@ class FrontierExplorer(Node):
         self.odom_fallback = (x, y)
         self.odom_fallback_stamp_s = stamp
         self.angular_z = angular_z
+        yaw = yaw_from_quaternion(
+            msg.pose.pose.orientation.x, msg.pose.pose.orientation.y,
+            msg.pose.pose.orientation.z, msg.pose.pose.orientation.w)
+        if yaw is not None and self.pose_integrity_required:
+            fault = self.pose_integrity.observe_estimate(stamp, x, y, yaw)
+            if fault is not None:
+                self._latch_pose_integrity_fault(fault)
+
+    def on_pose_integrity_reference(self, msg: Odometry) -> None:
+        stamp = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
+        pose = msg.pose.pose
+        yaw = yaw_from_quaternion(pose.orientation.x, pose.orientation.y,
+                                  pose.orientation.z, pose.orientation.w)
+        if yaw is None:
+            return
+        fault = self.pose_integrity.observe_reference(
+            stamp, pose.position.x, pose.position.y, yaw)
+        if fault is not None:
+            self._latch_pose_integrity_fault(fault)
+
+    def _pose_integrity_ready(self, now_s: float) -> bool:
+        if not getattr(self, "pose_integrity_required", False):
+            return True
+        if not bool(self.get_parameter("pose_integrity_axes_aligned").value):
+            return False
+        if self.pose_integrity.fault_reason is not None:
+            return False
+        max_age = float(self.get_parameter(
+            "pose_integrity_reference_max_age_s").value)
+        return self.pose_integrity.paired_fresh(now_s, max_age)
+
+    def _latch_pose_integrity_fault(self, reason: str) -> None:
+        if self.pose_integrity_fault:
+            return
+        self.pose_integrity.latch_fault(reason)
+        self.pose_integrity_fault = True
+        self.pose_integrity_fault_reason = reason
+        self.counts["pose_integrity_faults"] += 1
+        self._latch_navigation_uncertain(
+            f"pose integrity could not be established: {reason}",
+            count_unknown_result=False)
+        if self.busy:
+            self._cancel("pose integrity disagreement")
+        self._publish_summary()
+        self._publish_state()
+
+    def ack_pose_integrity_recovery(self, _request, response):
+        if self.busy:
+            response.success = False
+            response.message = "Cannot acknowledge pose recovery while a Nav2 goal is active."
+            return response
+        now = self._now_s()
+        max_age = float(self.get_parameter(
+            "pose_integrity_reference_max_age_s").value)
+        if not self.pose_integrity_fault:
+            response.success = False
+            response.message = "No pose-integrity fault is latched."
+            return response
+        if not self.pose_integrity.recovery_ready:
+            response.success = False
+            response.message = "Recovery needs two new agreeing pose/reference pairs."
+            return response
+        if not self.pose_integrity.paired_fresh(now, max_age):
+            response.success = False
+            response.message = "Recovery needs a fresh, timestamp-paired pose/reference sample."
+            return response
+        if self.map_pose() is None:
+            response.success = False
+            response.message = "Recovery needs a fresh map-frame Writer pose."
+            return response
+        if not self.scan_is_fresh(now):
+            response.success = False
+            response.message = "Recovery needs a fresh Writer LiDAR scan."
+            return response
+        if not self.pose_integrity.acknowledge_recovery():
+            response.success = False
+            response.message = "Pose integrity monitor rejected recovery acknowledgment."
+            return response
+        self.pose_integrity_fault = False
+        self.pose_integrity_fault_reason = None
+        self.navigation_uncertain = False
+        self.navigation_uncertain_reason = None
+        self.counts["pose_integrity_recovery_acknowledged"] += 1
+        response.success = True
+        response.message = (
+            "Pose sources agree again. Operator must independently verify the base is stopped "
+            "before acknowledging recovery.")
+        self.get_logger().warning(response.message)
+        self._publish_summary()
+        self._publish_state()
+        return response
 
     def on_scan(self, msg: LaserScan) -> None:
         stamp = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
@@ -343,6 +474,20 @@ class FrontierExplorer(Node):
             "active_goal": self.active_goal,
             "navigation_uncertain": self.navigation_uncertain,
             "navigation_uncertain_reason": self.navigation_uncertain_reason,
+            "pose_integrity": {
+                "required": getattr(self, "pose_integrity_required", False),
+                "reference_topic": str(self.get_parameter(
+                    "pose_integrity_reference_topic").value),
+                "reference_fresh_and_paired": self._pose_integrity_ready(now),
+                **self.pose_integrity.diagnostics(
+                    now, float(self.get_parameter(
+                        "pose_integrity_reference_max_age_s").value)),
+                "fault_latched": self.pose_integrity_fault,
+                "fault_reason": self.pose_integrity_fault_reason,
+                "recovery_ready_for_operator_ack": getattr(
+                    self, "pose_integrity", None) is not None
+                    and self.pose_integrity.recovery_ready,
+            },
             "inputs_fresh": {
                 "scan": self.scan_is_fresh(now),
                 "pose": self.map_pose() is not None,
@@ -388,6 +533,16 @@ class FrontierExplorer(Node):
                     self.stale_scan_reported = True
             if (self.last_stale_pose_summary_s is None
                     or now - self.last_stale_pose_summary_s >= 5.0):
+                self._publish_summary()
+                self.last_stale_pose_summary_s = now
+            return
+        if not self._pose_integrity_ready(now):
+            self.counts["pose_integrity_unavailable"] += 1
+            if (self.last_stale_pose_summary_s is None
+                    or now - self.last_stale_pose_summary_s >= 5.0):
+                self.get_logger().warning(
+                    "Waiting for fresh, paired independent pose-integrity reference; "
+                    "no navigation goal will be sent")
                 self._publish_summary()
                 self.last_stale_pose_summary_s = now
             return
@@ -592,7 +747,16 @@ class FrontierExplorer(Node):
         if (self.navigation_uncertain or active.get("watchdog_reason") is not None
                 or active.get("cancel_reason") is not None):
             return
-        FrontierExplorer._cancel_for_stale_inputs(self, self._now_s())
+        now = self._now_s()
+        if FrontierExplorer._cancel_for_stale_inputs(self, now):
+            return
+        if not self._pose_integrity_ready(now):
+            max_age = float(self.get_parameter(
+                "pose_integrity_reference_max_age_s").value)
+            reason = (self.pose_integrity.fault_reason
+                      or self.pose_integrity.freshness_reason(now, max_age)
+                      or "independent pose reference unavailable")
+            self._latch_pose_integrity_fault(reason)
 
     def _update_watchdog(self, now: float) -> None:
         active = getattr(self, "active_goal", None)
@@ -716,12 +880,18 @@ class FrontierExplorer(Node):
         watchdog_reason = active.get("watchdog_reason")
         cancel_reason = active.get("cancel_reason")
         self.active_goal = None
-        if self.navigation_uncertain:
+        integrity_fault = getattr(self, "pose_integrity_fault", False)
+        if self.navigation_uncertain and not integrity_fault:
             # A terminal result for this tracked goal resolves the uncertain
             # Nav2 action state. It does not guarantee that the base stopped.
             self.navigation_uncertain = False
             self.navigation_uncertain_reason = None
             self.counts["navigation_uncertainty_resolved"] += 1
+        if integrity_fault:
+            self.counts["pose_integrity_goal_cancelled"] += 1
+            self._publish_summary()
+            self._publish_state()
+            return
         now = self._now_s()
         if status == 4:
             if kind == "home":
@@ -768,15 +938,18 @@ class FrontierExplorer(Node):
             self._goal_failed(x, y, kind, "aborted")
         self._publish_state()
 
-    def _latch_navigation_uncertain(self, reason: str) -> None:
-        """Stop issuing new goals when Nav2 cannot prove the old goal ended."""
+    def _latch_navigation_uncertain(self, reason: str, *,
+                                   count_unknown_result: bool = True) -> None:
+        """Latch a conservative goal lockout for action or pose-integrity faults."""
         if self.navigation_uncertain:
             return
         self.navigation_uncertain = True
         self.navigation_uncertain_reason = reason
-        self.counts["navigation_result_unknown"] += 1
+        if count_unknown_result:
+            self.counts["navigation_result_unknown"] += 1
+        self.counts["navigation_uncertain_latches"] += 1
         self.get_logger().error(
-            f"Navigation state uncertain; no further goals will be sent: {reason}. "
+            f"Navigation locked out; no further goals will be sent: {reason}. "
             "This does not prove the physical base has stopped.")
         self._publish_summary()
         self._publish_state()
