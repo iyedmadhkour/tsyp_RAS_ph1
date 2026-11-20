@@ -34,6 +34,7 @@ def test_frontier_selection_leaves_room_for_the_padded_robot_to_turn(wall_gap):
     e.enabled = True
     e.failed = False
     e.stuck = False
+    e.navigation_uncertain = False
     e.busy = False
     e.map = grid
     e.sortie = Sortie(budget_s=0)
@@ -46,6 +47,7 @@ def test_frontier_selection_leaves_room_for_the_padded_robot_to_turn(wall_gap):
     e._publish_state = Mock()
     e.nav = Mock()
     e.map_pose = lambda: (2., wall_gap)
+    e.scan_is_fresh = lambda now: True
     e.minimum_goal_x = -1 + radius + .25
     e.frontier_clearance = radius
     e.get_parameter = lambda key: SimpleNamespace(value={
@@ -72,6 +74,12 @@ def test_pose_timestamp_freshness_rejects_old_future_and_nonfinite(stamp, expect
 def test_stale_transform_falls_back_only_to_fresh_odometry():
     from tf2_ros import TransformException
 
+    map_to_odom = SimpleNamespace(
+        header=SimpleNamespace(stamp=SimpleNamespace(sec=10, nanosec=0)),
+        transform=SimpleNamespace(
+            translation=SimpleNamespace(x=5.0, y=-2.0),
+            rotation=SimpleNamespace(x=0.0, y=0.0, z=math.sqrt(.5), w=math.sqrt(.5))),
+    )
     e = SimpleNamespace(
         _now_s=lambda: 10.0,
         get_parameter=lambda _: SimpleNamespace(value=0.5),
@@ -79,8 +87,13 @@ def test_stale_transform_falls_back_only_to_fresh_odometry():
         odom_fallback_stamp_s=9.7, stale_pose_reported=False,
         get_logger=lambda: Mock(),
     )
-    e.tf_buffer.lookup_transform.side_effect = TransformException("missing transform")
-    assert FrontierExplorer.map_pose(e) == (2.0, 3.0)
+    def lookup(target, source, _time):
+        if source == "writer/base_link":
+            raise TransformException("missing base transform")
+        return map_to_odom
+
+    e.tf_buffer.lookup_transform.side_effect = lookup
+    assert FrontierExplorer.map_pose(e) == pytest.approx((2.0, 0.0))
     e.odom_fallback_stamp_s = 9.49
     assert FrontierExplorer.map_pose(e) is None
     assert e.stale_pose_reported
@@ -89,7 +102,8 @@ def test_stale_transform_falls_back_only_to_fresh_odometry():
 def test_stale_localization_does_not_start_a_frontier_goal():
     e = SimpleNamespace(
         _now_s=lambda: 10.0, last_tick_s=None, enabled=True, failed=False,
-        stuck=False, busy=False, map=object(), nav=SimpleNamespace(server_is_ready=lambda: True),
+        stuck=False, navigation_uncertain=False, busy=False, map=object(),
+        nav=SimpleNamespace(server_is_ready=lambda: True), scan_is_fresh=lambda now: True,
         sortie=Sortie(budget_s=600), policy=Mock(), known_area_m2=0.0,
         counts=Counter(), _publish_state=Mock(), map_pose=lambda: None,
         _publish_summary=Mock(), _send_goal=Mock(), get_logger=lambda: Mock(),
@@ -102,20 +116,236 @@ def test_stale_localization_does_not_start_a_frontier_goal():
     e.policy.visited_points.assert_not_called()
 
 
-def test_stale_localization_does_not_break_active_goal_watchdog():
+def test_stale_localization_cancels_active_goal_without_assuming_it_stopped():
     e = SimpleNamespace(
         active_goal={"x": 8.0, "y": 9.0, "watchdog_reason": None,
-                     "cancel_reason": None, "last_watchdog_pose": (2.0, 3.0)},
+                     "cancel_reason": None},
         map_pose=lambda: None, angular_z=0.0, feedback_distance=4.0,
         feedback_recoveries=0, watchdog=Mock(), counts=Counter(),
-        _cancel=Mock(), get_logger=lambda: Mock(),
+        scan_is_fresh=lambda now: True, _cancel=Mock(), _publish_summary=Mock(),
+        get_logger=lambda: Mock(),
     )
-    e.watchdog.update.return_value = None
 
     FrontierExplorer._update_watchdog(e, 12.0)
 
-    e.watchdog.update.assert_called_once_with(12.0, 4.0, 0, 2.0, 3.0, False)
+    e.watchdog.update.assert_not_called()
+    e._cancel.assert_called_once_with("localization unavailable")
     assert e.counts["watchdog_pose_unavailable"] == 1
+
+
+def test_stale_lidar_cancels_active_goal_and_does_not_assume_stop():
+    e = SimpleNamespace(
+        active_goal={"x": 8.0, "y": 9.0, "watchdog_reason": None,
+                     "cancel_reason": None},
+        map_pose=lambda: (1.0, 2.0), angular_z=0.0, feedback_distance=4.0,
+        feedback_recoveries=0, watchdog=Mock(), counts=Counter(),
+        scan_is_fresh=lambda now: False, _cancel=Mock(), _publish_summary=Mock(),
+        get_logger=lambda: Mock(),
+    )
+    FrontierExplorer._update_watchdog(e, 12.0)
+    e.watchdog.update.assert_not_called()
+    e._cancel.assert_called_once_with("LiDAR data stale")
+    assert e.counts["watchdog_scan_unavailable"] == 1
+
+
+def test_out_of_order_odometry_does_not_replace_the_last_accepted_fallback():
+    from nav_msgs.msg import Odometry
+
+    e = object.__new__(FrontierExplorer)
+    e.odom_fallback = (1.0, 2.0)
+    e.odom_fallback_stamp_s = 10.0
+    e.angular_z = 0.0
+    e.counts = Counter()
+    stale = Odometry()
+    stale.header.stamp.sec = 9
+    stale.pose.pose.position.x = 90.0
+    FrontierExplorer.on_odom(e, stale)
+    assert e.odom_fallback == (1.0, 2.0)
+    assert e.odom_fallback_stamp_s == 10.0
+    assert e.counts["odom_out_of_order"] == 1
+
+
+def test_invalid_odometry_position_does_not_replace_the_last_fallback():
+    from nav_msgs.msg import Odometry
+
+    e = object.__new__(FrontierExplorer)
+    e.odom_fallback = (1.0, 2.0)
+    e.odom_fallback_stamp_s = 10.0
+    e.angular_z = 0.0
+    e.counts = Counter()
+    msg = Odometry()
+    msg.header.stamp.sec = 10
+    msg.header.stamp.nanosec = 1
+    msg.pose.pose.position.x = math.nan
+    FrontierExplorer.on_odom(e, msg)
+    assert e.odom_fallback == (1.0, 2.0)
+    assert e.odom_fallback_stamp_s == 10.0
+    assert e.counts["odom_invalid"] == 1
+
+
+def test_out_of_order_lidar_does_not_refresh_frozen_scan_age():
+    from sensor_msgs.msg import LaserScan
+
+    e = object.__new__(FrontierExplorer)
+    e.last_scan_stamp_s = 10.0
+    e.counts = Counter()
+    e.stale_scan_reported = False
+    e.get_parameter = lambda _: SimpleNamespace(value=0.5)
+    old = LaserScan()
+    old.header.stamp.sec = 9
+    FrontierExplorer.on_scan(e, old)
+    assert e.last_scan_stamp_s == 10.0
+    assert e.counts["scan_out_of_order"] == 1
+    assert FrontierExplorer.scan_is_fresh(e, 10.6) is False
+
+
+def test_stale_home_waits_for_fresh_pose_and_lidar():
+    e = SimpleNamespace(
+        _now_s=lambda: 10.0, last_tick_s=None, enabled=True, failed=False,
+        stuck=False, navigation_uncertain=False, busy=False, map=object(),
+        nav=SimpleNamespace(server_is_ready=lambda: True),
+        sortie=Sortie(budget_s=600), policy=Mock(), known_area_m2=0.0,
+        counts=Counter(), _publish_state=Mock(), stale_scan_reported=False,
+        map_pose=lambda: None,
+        scan_is_fresh=lambda now: True, _publish_summary=Mock(),
+        _send_goal=Mock(), get_logger=lambda: Mock(),
+        last_stale_pose_summary_s=None,
+    )
+    e.sortie.start_return("battery reserve reached", "BATTERY_RESERVE")
+    FrontierExplorer.tick(e)
+    e._send_goal.assert_not_called()
+
+    e.map_pose = lambda: (0.0, 0.0)
+    e.scan_is_fresh = lambda now: False
+    FrontierExplorer.tick(e)
+    e._send_goal.assert_not_called()
+
+
+def test_stale_pose_prevents_new_frontier_goal_even_with_fresh_scan():
+    e = SimpleNamespace(
+        _now_s=lambda: 10.0, last_tick_s=None, enabled=True, failed=False,
+        stuck=False, navigation_uncertain=False, busy=False, map=object(),
+        nav=SimpleNamespace(server_is_ready=lambda: True),
+        sortie=Sortie(budget_s=600), policy=Mock(), known_area_m2=0.0,
+        counts=Counter(), _publish_state=Mock(), map_pose=lambda: None,
+        scan_is_fresh=lambda now: True, _publish_summary=Mock(),
+        _send_goal=Mock(), get_logger=lambda: Mock(),
+        last_stale_pose_summary_s=None,
+    )
+    e.sortie.phase = "EXPLORING"
+    FrontierExplorer.tick(e)
+    e._send_goal.assert_not_called()
+    e.policy.visited_points.assert_not_called()
+
+
+def test_cancel_service_response_does_not_clear_busy_before_terminal_result():
+    cancel_future = Future()
+    e = SimpleNamespace(
+        active_goal={"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": None},
+        goal_handle=Mock(), cancel_future=None, busy=True,
+        get_logger=lambda: Mock(), _publish_summary=Mock(), _publish_state=Mock(),
+    )
+    e._on_cancel_response = lambda future: FrontierExplorer._on_cancel_response(e, future)
+    e.goal_handle.cancel_goal_async.return_value = cancel_future
+    FrontierExplorer._cancel(e, "test stale input")
+    assert e.active_goal["cancel_response"] == "pending"
+    assert e.busy
+    cancel_future.set_result(SimpleNamespace(goals_canceling=[]))
+    assert e.active_goal["cancel_response"] == "not_confirmed"
+    assert e.busy
+
+
+@pytest.mark.parametrize("result", [RuntimeError("lost result"), 2, 3, 99])
+def test_unknown_or_nonterminal_nav2_result_latches_without_clearing_active_goal(result):
+    e = _explorer_for_result(FrontierPolicy())
+    e.active_goal = {"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": "stale pose"}
+    future = Future()
+    if isinstance(result, Exception):
+        future.set_exception(result)
+    else:
+        future.set_result(SimpleNamespace(status=result))
+
+    FrontierExplorer._done(e, future, 1.0, 2.0, "frontier")
+
+    assert e.busy
+    assert e.goal_handle is not None
+    assert e.active_goal is not None
+    assert e.navigation_uncertain
+    assert e.counts["navigation_result_unknown"] == 1
+    assert e.counts["frontier_failed"] == 0
+
+
+def test_lost_goal_acceptance_response_does_not_assume_goal_was_rejected():
+    e = _explorer_for_result(FrontierPolicy())
+    e.active_goal = {"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": None}
+    accepted = Future()
+    accepted.set_exception(RuntimeError("acceptance response lost"))
+
+    FrontierExplorer._goal_sent(e, accepted, 1.0, 2.0, "frontier")
+
+    assert e.busy
+    assert e.active_goal is not None
+    assert e.navigation_uncertain
+    assert e.counts["navigation_result_unknown"] == 1
+
+
+def test_stale_input_cancel_latched_during_goal_acceptance_is_sent_when_accepted():
+    cancel_future = Future()
+    handle = Mock(accepted=True)
+    handle.cancel_goal_async.return_value = cancel_future
+    active = {"x": 1.0, "y": 2.0, "kind": "frontier",
+              "watchdog_reason": None, "cancel_reason": "LiDAR data stale"}
+    e = SimpleNamespace(
+        goal_handle=None, active_goal=active, failed=False, stuck=False,
+        enabled=True, navigation_uncertain=False,
+        sortie=SimpleNamespace(phase="EXPLORING"),
+        _on_cancel_response=lambda future: FrontierExplorer._on_cancel_response(e, future),
+        _cancel=lambda reason: FrontierExplorer._cancel(e, reason),
+        get_logger=lambda: Mock(), _publish_summary=Mock(), _publish_state=Mock(),
+    )
+    accepted = Future()
+    accepted.set_result(handle)
+
+    FrontierExplorer._goal_sent(e, accepted, 1.0, 2.0, "frontier")
+
+    handle.cancel_goal_async.assert_called_once()
+    assert active["cancel_reason"] == "LiDAR data stale"
+    assert active["cancel_response"] == "pending"
+    handle.get_result_async.assert_called_once()
+
+
+def test_unconfirmed_cancel_response_is_resolved_by_terminal_canceled_result():
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.active_goal = {"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": "stale LiDAR",
+                     "cancel_response": "not_confirmed"}
+
+    FrontierExplorer._done(e, _completed(5), 1.0, 2.0, "frontier")
+
+    assert not e.busy
+    assert e.active_goal is None
+    assert e.counts["frontier_failed"] == 0
+    assert policy.counts["cancels"] == 1
+    assert policy.summary(100.0)["failure_zones"] == 0
+
+
+def test_cancel_race_with_succeeded_terminal_result_records_success():
+    policy = FrontierPolicy()
+    e = _explorer_for_result(policy)
+    e.active_goal = {"x": 1.0, "y": 2.0, "kind": "frontier",
+                     "watchdog_reason": None, "cancel_reason": "stale LiDAR",
+                     "cancel_response": "accepted"}
+
+    FrontierExplorer._done(e, _completed(4), 1.0, 2.0, "frontier")
+
+    assert not e.busy
+    assert e.counts["frontier_succeeded"] == 1
+    assert e.counts["frontier_failed"] == 0
+    assert policy.summary(100.0)["failure_zones"] == 0
 
 
 def test_transit_doorway_does_not_require_in_place_rotation():
@@ -146,8 +376,13 @@ def test_return_during_pending_goal_acceptance(kind, return_requested, expected_
     """The return callback can run before send_goal_async supplies a handle."""
     e = SimpleNamespace(sortie=Sortie(budget_s=0), goal_handle=None,
                         failed=False, stuck=False, enabled=True, busy=True,
-                        get_logger=lambda: Mock(), _goal_failed=Mock(), _done=Mock())
+                        navigation_uncertain=False,
+                        active_goal={"x": 2.0, "y": 0.0, "kind": kind,
+                                     "watchdog_reason": None, "cancel_reason": None},
+                        get_logger=lambda: Mock(), _publish_summary=Mock(),
+                        _publish_state=Mock(), _goal_failed=Mock(), _done=Mock())
     e._cancel = lambda reason: FrontierExplorer._cancel(e, reason)
+    e._on_cancel_response = lambda future: FrontierExplorer._on_cancel_response(e, future)
     if return_requested:
         FrontierExplorer.on_return_request(e, SimpleNamespace(data=True))
     handle = Mock(accepted=True)
@@ -164,7 +399,13 @@ def test_return_during_pending_goal_acceptance(kind, return_requested, expected_
 def test_pending_goal_acceptance_respects_emergency_and_pause(flag):
     e = SimpleNamespace(sortie=Sortie(), failed=flag == "failed",
                         stuck=flag == "stuck", enabled=flag != "paused",
-                        _done=Mock())
+                        navigation_uncertain=False, goal_handle=None, cancel_future=None,
+                        active_goal={"x": 2.0, "y": 0.0, "kind": "frontier",
+                                     "watchdog_reason": None, "cancel_reason": None},
+                        get_logger=lambda: Mock(), _publish_summary=Mock(),
+                        _publish_state=Mock(), _done=Mock())
+    e._cancel = lambda reason: FrontierExplorer._cancel(e, reason)
+    e._on_cancel_response = lambda future: FrontierExplorer._on_cancel_response(e, future)
     handle = Mock(accepted=True)
     accepted = Future()
     accepted.set_result(handle)
@@ -182,13 +423,17 @@ def _completed(status):
 def _explorer_for_result(policy, sortie=None):
     explorer = SimpleNamespace(
         busy=True, goal_handle=Mock(), failed=False, stuck=False, enabled=True,
-        active_goal=None, sortie=sortie or Sortie(budget_s=0), policy=policy,
+        navigation_uncertain=False, navigation_uncertain_reason=None,
+        cancel_future=None, active_goal=None,
+        sortie=sortie or Sortie(budget_s=0), policy=policy,
         counts=Counter(), watchdog=Mock(), known_area_m2=50.0,
         _now_s=lambda: 100.0, _publish_state=Mock(), _publish_summary=Mock(),
         get_logger=lambda: Mock(),
     )
     explorer._goal_failed = lambda x, y, kind, reason="aborted": (
         FrontierExplorer._goal_failed(explorer, x, y, kind, reason))
+    explorer._latch_navigation_uncertain = lambda reason: (
+        FrontierExplorer._latch_navigation_uncertain(explorer, reason))
     return explorer
 
 
@@ -273,6 +518,7 @@ def test_aborted_frontier_goal_records_a_bounded_failure():
 def test_nav2_server_unavailable_does_not_send_a_goal_or_move_the_sortie():
     e = object.__new__(FrontierExplorer)
     e.enabled, e.failed, e.stuck, e.busy = True, False, False, False
+    e.navigation_uncertain = False
     e.sortie = Sortie(budget_s=0)
     e.last_tick_s = None
     e.known_area_m2 = 0.0
@@ -298,6 +544,8 @@ def test_home_navigation_failures_are_bounded_and_set_return_failed():
                         get_logger=lambda: Mock(), _publish_summary=Mock())
     e._goal_failed = lambda x, y, kind, reason="aborted": (
         FrontierExplorer._goal_failed(e, x, y, kind, reason))
+    e._latch_navigation_uncertain = lambda reason: (
+        FrontierExplorer._latch_navigation_uncertain(e, reason))
 
     FrontierExplorer._goal_failed(e, 0.0, 0.0, "home", "aborted")
     assert sortie.phase == "RETURNING"

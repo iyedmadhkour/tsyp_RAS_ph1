@@ -31,14 +31,22 @@ while IFS= read -r status; do
   case "$path" in
     scripts/validate_pr1_stuck_gazebo.sh|\
     scripts/validate_pr1_external_cancel_gazebo.sh|\
+    scripts/validate_phase2_stale_inputs_gazebo.sh|\
+    scripts/pr1_cancel_validation_probe.py|\
     scripts/benchmark_frontier.py|\
+    scripts/benchmark_frontier_phase2.py|\
+    scripts/evaluate_phase2_localization_noise.py|\
     config/nav2/writer.yaml|\
     src/living_map_writer/living_map_writer/frontier.py|\
     src/living_map_writer/living_map_writer/frontier_node.py|\
+    src/living_map_writer/living_map_writer/swept_footprint.py|\
     src/living_map_writer/living_map_writer/pose_freshness.py|\
     tests/test_frontier.py|\
     tests/test_writer_navigation.py|\
+    tests/test_swept_footprint.py|\
     docs/results/team4-phase2-baseline.md|\
+    docs/results/team4-phase2-advanced-validation-20261120.md|\
+    docs/results/evidence/team4-phase2-advanced-20261120/*|\
     docs/results/evidence/team4-phase2-baseline-20261120/*|\
     src/living_map_writer/living_map_writer/demo_fallback.py|\
     src/living_map_sim/worlds/mine.sdf|\

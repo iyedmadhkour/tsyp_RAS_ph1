@@ -10,6 +10,7 @@ from ament_index_python.packages import get_package_share_directory
 import rclpy
 from nav2_msgs.action import NavigateToPose
 from nav_msgs.msg import OccupancyGrid, Odometry
+from sensor_msgs.msg import LaserScan
 from rclpy.action import ActionClient
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, DurabilityPolicy
@@ -39,6 +40,10 @@ class FrontierExplorer(Node):
         self.map: OccupancyGrid | None = None
         self.odom_fallback = (0.0, 0.0)
         self.odom_fallback_stamp_s: float | None = None
+        self.last_scan_stamp_s: float | None = None
+        self.navigation_uncertain = False
+        self.navigation_uncertain_reason: str | None = None
+        self.cancel_future = None
         self.angular_z = 0.0
         self.busy = False
         self.failed = False
@@ -52,6 +57,7 @@ class FrontierExplorer(Node):
         self.counts: Counter[str] = Counter()
         self.last_wait_log_key: float | None = None
         self.stale_pose_reported = False
+        self.stale_scan_reported = False
         self.last_stale_pose_summary_s: float | None = None
         self.behavior_tree = str(Path(get_package_share_directory("living_map_writer"))
                                  / "behavior_trees" / "navigate_with_planner_fallback.xml")
@@ -71,6 +77,7 @@ class FrontierExplorer(Node):
         self.declare_parameter("goal_tolerance_xy", 0.25)
         self.declare_parameter("entrance_position_uncertainty_xy", 0.0)
         self.declare_parameter("odom_fallback_max_age_s", 0.5)
+        self.declare_parameter("scan_max_age_s", 0.5)
         # Frontier lifecycle (Task 6). See docs/results/team4-task6-exploration.md.
         self.declare_parameter("frontier_zone_radius_m", 1.5)
         self.declare_parameter("frontier_max_attempts", 3)
@@ -138,6 +145,7 @@ class FrontierExplorer(Node):
 
         self.create_subscription(OccupancyGrid, "/map", self.on_map, 10)
         self.create_subscription(Odometry, "/writer/odom", self.on_odom, 10)
+        self.create_subscription(LaserScan, "/writer/scan", self.on_scan, 10)
         state_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.create_subscription(Bool, "/living_map/writer_failed", self.on_failed, state_qos)
         self.create_subscription(Bool, "/living_map/writer_enabled", self.on_enabled, state_qos)
@@ -155,9 +163,36 @@ class FrontierExplorer(Node):
         self.known_area_m2 = sum(1 for value in msg.data if value >= 0) * resolution * resolution
 
     def on_odom(self, msg: Odometry) -> None:
-        self.odom_fallback = (msg.pose.pose.position.x, msg.pose.pose.position.y)
-        self.odom_fallback_stamp_s = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
-        self.angular_z = float(msg.twist.twist.angular.z)
+        stamp = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
+        if (not math.isfinite(stamp)
+                or (self.odom_fallback_stamp_s is not None
+                    and stamp < self.odom_fallback_stamp_s)):
+            self.counts["odom_out_of_order"] += 1
+            return
+        x = float(msg.pose.pose.position.x)
+        y = float(msg.pose.pose.position.y)
+        angular_z = float(msg.twist.twist.angular.z)
+        if not all(math.isfinite(value) for value in (x, y, angular_z)):
+            self.counts["odom_invalid"] += 1
+            return
+        self.odom_fallback = (x, y)
+        self.odom_fallback_stamp_s = stamp
+        self.angular_z = angular_z
+
+    def on_scan(self, msg: LaserScan) -> None:
+        stamp = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
+        if (not math.isfinite(stamp)
+                or (self.last_scan_stamp_s is not None
+                    and stamp < self.last_scan_stamp_s)):
+            self.counts["scan_out_of_order"] += 1
+            return
+        self.last_scan_stamp_s = stamp
+        self.stale_scan_reported = False
+
+    def scan_is_fresh(self, now: float) -> bool:
+        max_age = float(self.get_parameter("scan_max_age_s").value)
+        return (self.last_scan_stamp_s is not None
+                and pose_stamp_is_fresh(now, self.last_scan_stamp_s, max_age))
 
     def map_pose(self) -> tuple[float, float] | None:
         now = self._now_s()
@@ -165,15 +200,34 @@ class FrontierExplorer(Node):
         try:
             transform = self.tf_buffer.lookup_transform("map", "writer/base_link", Time())
             stamp = transform.header.stamp.sec + transform.header.stamp.nanosec / 1e9
-            if pose_stamp_is_fresh(now, stamp, max_age):
+            tx = float(transform.transform.translation.x)
+            ty = float(transform.transform.translation.y)
+            if (pose_stamp_is_fresh(now, stamp, max_age)
+                    and math.isfinite(tx) and math.isfinite(ty)):
                 self.stale_pose_reported = False
-                return transform.transform.translation.x, transform.transform.translation.y
+                return tx, ty
         except TransformException:
             pass
         if (self.odom_fallback_stamp_s is not None
                 and pose_stamp_is_fresh(now, self.odom_fallback_stamp_s, max_age)):
-            self.stale_pose_reported = False
-            return self.odom_fallback
+            try:
+                map_to_odom = self.tf_buffer.lookup_transform("map", "writer/odom", Time())
+                stamp = map_to_odom.header.stamp.sec + map_to_odom.header.stamp.nanosec / 1e9
+                if pose_stamp_is_fresh(now, stamp, max_age):
+                    q = map_to_odom.transform.rotation
+                    yaw = math.atan2(2.0 * (q.w * q.z + q.x * q.y),
+                                     1.0 - 2.0 * (q.y * q.y + q.z * q.z))
+                    c, s = math.cos(yaw), math.sin(yaw)
+                    odom_x, odom_y = self.odom_fallback
+                    tx = float(map_to_odom.transform.translation.x)
+                    ty = float(map_to_odom.transform.translation.y)
+                    map_x = tx + c * odom_x - s * odom_y
+                    map_y = ty + s * odom_x + c * odom_y
+                    if all(math.isfinite(value) for value in (yaw, map_x, map_y)):
+                        self.stale_pose_reported = False
+                        return map_x, map_y
+            except TransformException:
+                pass
         if not self.stale_pose_reported:
             self.get_logger().warning(
                 "No fresh map transform or odometry pose; waiting before selecting a goal")
@@ -181,12 +235,41 @@ class FrontierExplorer(Node):
         return None
 
     def _cancel(self, reason: str) -> None:
-        if self.goal_handle is not None:
-            self.goal_handle.cancel_goal_async()
-            self.get_logger().warning(f"Active Writer goal cancelled: {reason}")
         active = getattr(self, "active_goal", None)
-        if active is not None and active.get("cancel_reason") is None:
+        if active is None:
+            return
+        if active.get("cancel_reason") is None:
             active["cancel_reason"] = reason
+            active["cancel_response"] = "not_requested"
+        if self.goal_handle is None or active.get("cancel_sent"):
+            return
+        active["cancel_sent"] = True
+        active["cancel_response"] = "pending"
+        try:
+            self.cancel_future = self.goal_handle.cancel_goal_async()
+            self.cancel_future.add_done_callback(self._on_cancel_response)
+            self.get_logger().warning(f"Active Writer goal cancellation requested: {reason}")
+        except Exception as exc:
+            active["cancel_response"] = "response_unknown"
+            self.get_logger().error(f"Nav2 cancellation request failed: {exc}")
+            self._publish_summary()
+
+    def _on_cancel_response(self, future) -> None:
+        active = getattr(self, "active_goal", None)
+        if active is None:
+            return
+        try:
+            response = future.result()
+            active["cancel_response"] = (
+                "accepted" if response.goals_canceling else "not_confirmed")
+            active["cancel_goals_reported"] = len(response.goals_canceling)
+        except Exception as exc:
+            active["cancel_response"] = "response_unknown"
+            self.get_logger().error(f"Nav2 cancellation response is unknown: {exc}")
+        # A cancel service response is not proof that the action has stopped.
+        # busy remains true until the terminal action result arrives.
+        self._publish_summary()
+        self._publish_state()
 
     def on_enabled(self, msg: Bool) -> None:
         self.enabled = bool(msg.data)
@@ -214,6 +297,8 @@ class FrontierExplorer(Node):
             state = "HALTED"
         elif self.stuck:
             state = "STUCK"
+        elif self.navigation_uncertain:
+            state = "NAVIGATION_UNCERTAIN"
         elif self.sortie.phase in {"RETURNING", "HOME", "RETURN_FAILED"}:
             state = self.sortie.phase
         elif not self.enabled:
@@ -237,6 +322,12 @@ class FrontierExplorer(Node):
             "frontier_policy": self.policy.summary(now),
             "watchdog": self.watchdog.snapshot(now),
             "active_goal": self.active_goal,
+            "navigation_uncertain": self.navigation_uncertain,
+            "navigation_uncertain_reason": self.navigation_uncertain_reason,
+            "inputs_fresh": {
+                "scan": self.scan_is_fresh(now),
+                "pose": self.map_pose() is not None,
+            },
         }
         self.summary_pub.publish(String(data=json.dumps(payload, sort_keys=True)))
 
@@ -247,7 +338,8 @@ class FrontierExplorer(Node):
         now = self._now_s()
         elapsed = 0.0 if self.last_tick_s is None else max(0.0, now - self.last_tick_s)
         self.last_tick_s = now
-        active = self.enabled and not self.failed and not self.stuck
+        active = (self.enabled and not self.failed and not self.stuck
+                  and not self.navigation_uncertain)
         if active and self.sortie.phase == "EXPLORING":
             self.sortie.spend(elapsed)
         self.policy.refresh(now, self.known_area_m2)
@@ -265,21 +357,27 @@ class FrontierExplorer(Node):
                 "sortie budget spent; keeping the reserve to get home", "BUDGET")
             self._publish_summary()
             self.get_logger().warning("Exploration budget spent: returning to the entrance")
+        pose = self.map_pose()
+        scan_fresh = self.scan_is_fresh(now)
+        if pose is None or not scan_fresh:
+            self.counts["pose_unavailable"] += 1
+            if not scan_fresh:
+                self.counts["scan_unavailable"] += 1
+                if not self.stale_scan_reported:
+                    self.get_logger().warning(
+                        "No fresh Writer LiDAR scan; waiting before sending a navigation goal")
+                    self.stale_scan_reported = True
+            if (self.last_stale_pose_summary_s is None
+                    or now - self.last_stale_pose_summary_s >= 5.0):
+                self._publish_summary()
+                self.last_stale_pose_summary_s = now
+            return
         if self.sortie.phase == "RETURNING":
             self._send_goal(float(self.get_parameter("home_x").value),
                             float(self.get_parameter("home_y").value), "home")
             self._publish_state()
             return
         if self.sortie.phase != "EXPLORING":
-            return
-
-        pose = self.map_pose()
-        if pose is None:
-            self.counts["pose_unavailable"] += 1
-            if (self.last_stale_pose_summary_s is None
-                    or now - self.last_stale_pose_summary_s >= 5.0):
-                self._publish_summary()
-                self.last_stale_pose_summary_s = now
             return
         robot_x, robot_y = pose
         visited = self.policy.visited_points(now, self.known_area_m2)
@@ -424,15 +522,15 @@ class FrontierExplorer(Node):
                 or active.get("cancel_reason") is not None):
             return
         pose = self.map_pose()
-        if pose is not None:
-            active["last_watchdog_pose"] = pose
-        else:
-            # Keep the watchdog operational while localization is temporarily
-            # unavailable. Reusing the last observed position is conservative:
-            # it cannot manufacture progress and lets the bounded watchdog
-            # cancel an unobservable, non-progressing goal.
-            pose = active.get("last_watchdog_pose", (active["x"], active["y"]))
-            self.counts["watchdog_pose_unavailable"] += 1
+        if pose is None or not self.scan_is_fresh(now):
+            self.counts["watchdog_pose_unavailable"] += pose is None
+            self.counts["watchdog_scan_unavailable"] += not self.scan_is_fresh(now)
+            reason = ("localization unavailable" if pose is None
+                      else "LiDAR data stale")
+            self._cancel(reason)
+            self._publish_summary()
+            return
+        active["last_watchdog_pose"] = pose
         robot_x, robot_y = pose
         rotating = abs(self.angular_z) >= 0.15
         verdict = self.watchdog.update(
@@ -455,9 +553,8 @@ class FrontierExplorer(Node):
         try:
             handle = future.result()
         except Exception as exc:
-            self.busy = False
-            self._goal_failed(x, y, kind, "send_failed")
-            self.get_logger().warning(f"{kind} goal send failed: {exc}")
+            self._latch_navigation_uncertain(
+                f"Nav2 goal acceptance response unavailable ({type(exc).__name__})")
             return
 
         self.goal_handle = handle
@@ -465,14 +562,24 @@ class FrontierExplorer(Node):
             self.busy = False
             self._goal_failed(x, y, kind, "rejected")
             return
+        active = getattr(self, "active_goal", None)
+        pending_cancel_reason = (None if active is None
+                                 else active.get("cancel_reason"))
+        # A reserve request is the reason to go HOME; it must not cancel an
+        # already accepted HOME goal while its action response is in flight.
+        pending_cancel_required = not (
+            kind == "home"
+            and pending_cancel_reason == "battery reserve reached; heading home")
         # A battery-return request may arrive while send_goal_async is pending,
-        # before _cancel has a handle. Cancel that frontier once it is accepted.
-        if (self.failed or self.stuck or not self.enabled
+        # before _cancel has a handle. Also honor stale-sensor cancellation
+        # latched while goal acceptance was unresolved.
+        if (pending_cancel_reason is not None and pending_cancel_required
+                or self.failed or self.stuck or not self.enabled
+                or self.navigation_uncertain
                 or (kind == "frontier" and self.sortie.phase != "EXPLORING")):
-            handle.cancel_goal_async()
-            active = getattr(self, "active_goal", None)
             if active is not None and active.get("cancel_reason") is None:
                 active["cancel_reason"] = "pending goal stopped"
+            self._cancel(pending_cancel_reason or "pending goal stopped")
         handle.get_result_async().add_done_callback(
             lambda result_future: self._done(result_future, x, y, kind)
         )
@@ -507,16 +614,27 @@ class FrontierExplorer(Node):
         self._publish_summary()
 
     def _done(self, future, x: float, y: float, kind: str) -> None:
+        active = getattr(self, "active_goal", None) or {}
+        try:
+            status = future.result().status
+            status = int(status)
+        except Exception as exc:
+            self._latch_navigation_uncertain(
+                f"Nav2 action result unavailable ({type(exc).__name__})")
+            return
+        # action_msgs GoalStatus terminal values: SUCCEEDED=4, CANCELED=5,
+        # ABORTED=6. ACCEPTED/EXECUTING/CANCELING are not proof of a stop.
+        if status not in (4, 5, 6):
+            self._latch_navigation_uncertain(
+                f"Nav2 returned nonterminal/unknown goal status {status}")
+            return
+
         self.busy = False
         self.goal_handle = None
-        active = getattr(self, "active_goal", None) or {}
+        self.cancel_future = None
         watchdog_reason = active.get("watchdog_reason")
         cancel_reason = active.get("cancel_reason")
         self.active_goal = None
-        try:
-            status = future.result().status
-        except Exception:
-            status = -1
         now = self._now_s()
         if status == 4:
             if kind == "home":
@@ -559,8 +677,19 @@ class FrontierExplorer(Node):
                 # Publish the cancellation-only cooldown and its retry deadline
                 # for operators and the bounded Gazebo validation observer.
                 self._publish_summary()
-        elif not self.failed and not self.stuck and self.enabled:
+        elif status == 6 and not self.failed and not self.stuck and self.enabled:
             self._goal_failed(x, y, kind, "aborted")
+        self._publish_state()
+
+    def _latch_navigation_uncertain(self, reason: str) -> None:
+        """Stop issuing new goals when Nav2 cannot prove the old goal ended."""
+        self.navigation_uncertain = True
+        self.navigation_uncertain_reason = reason
+        self.counts["navigation_result_unknown"] += 1
+        self.get_logger().error(
+            f"Navigation state uncertain; no further goals will be sent: {reason}. "
+            "This does not prove the physical base has stopped.")
+        self._publish_summary()
         self._publish_state()
 
 

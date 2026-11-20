@@ -396,10 +396,17 @@ if final.get('stuck') or re.search(r'WRITER STUCK:|Navigation watchdog cancellin
     raise SystemExit('external cancellation caused STUCK or an unexpected watchdog cancellation')
 if (final.get('boundary_crossed')
         or final.get('minimum_footprint_x', math.inf) < final.get('entrance_x',-1.0)
-        or final.get('minimum_uncertain_footprint_x', math.inf) < final.get('entrance_x',-1.0)):
+        or final.get('minimum_uncertain_footprint_x', math.inf) < final.get('entrance_x',-1.0)
+        or final.get('minimum_swept_footprint_x', math.inf) < final.get('entrance_x',-1.0)
+        or final.get('minimum_swept_uncertain_footprint_x', math.inf)
+           < final.get('entrance_x',-1.0)):
     raise SystemExit('padded Writer footprint crossed the entrance boundary')
 if final.get('odom_samples', 0) < 10:
     raise SystemExit('insufficient odometry samples to verify entrance clearance')
+if final.get('odom_gap_count', 0) != 0:
+    raise SystemExit('odometry gaps exceeded the 0.5 s simulation observation assumption')
+if final.get('unmapped_motion_samples', 0) != 0:
+    raise SystemExit('robot motion was observed without map-frame transform alignment')
 result={"cancel_reason":cancel['data']['reason'],"cancel_sim_s":summary['sim_s'],
         "retry_deadline_s":deadline,"cooldown_s":delay,"counts":counts,
         "frontier_policy":policy,"final_state":final.get('state'),
@@ -407,8 +414,14 @@ result={"cancel_reason":cancel['data']['reason'],"cancel_sim_s":summary['sim_s']
         "same_zone_retry_observed":same_zone_retry,
         "stuck":final.get('stuck'),"minimum_padded_footprint_x":final.get('minimum_footprint_x'),
         "minimum_uncertain_footprint_x":final.get('minimum_uncertain_footprint_x'),
+        "minimum_swept_footprint_x":final.get('minimum_swept_footprint_x'),
+        "minimum_swept_uncertain_footprint_x":final.get('minimum_swept_uncertain_footprint_x'),
         "position_uncertainty_xy":final.get('position_uncertainty_xy'),
         "entrance_x":final.get('entrance_x'),"odom_samples":final.get('odom_samples'),
+        "boundary_transform_missing":final.get('boundary_transform_missing'),
+        "unmapped_motion_samples":final.get('unmapped_motion_samples'),
+        "odom_gap_count":final.get('odom_gap_count'),
+        "maximum_odom_gap_s":final.get('maximum_odom_gap_s'),
         "path_length_m":final.get('path_length_m'),"boundary_crossed":final.get('boundary_crossed')}
 result["controlled_same_zone_retry"] = (__import__('os').environ.get(
     'LIVINGMAP_CONTROLLED_SAME_ZONE_RETRY') == 'true' and same_zone_retry)

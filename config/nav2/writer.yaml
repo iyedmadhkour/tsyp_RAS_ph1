@@ -116,6 +116,8 @@
       observation_sources: scan
       scan:
         topic: /writer/scan
+        # Five periods of the 10 Hz Gazebo LiDAR; confirm from deployed sensor.
+        expected_update_rate: 0.5
         max_obstacle_height: 2.0
         clearing: true
         marking: true
@@ -158,6 +160,8 @@
       observation_sources: scan
       scan:
         topic: /writer/scan
+        # Five periods of the 10 Hz Gazebo LiDAR; confirm from deployed sensor.
+        expected_update_rate: 0.5
         clearing: true
         marking: true
         data_type: LaserScan
@@ -180,8 +184,11 @@
     # Bound translational pose error at the entrance for both candidate goals
     # and the private lethal mask. Hardware integration must verify this bound.
     entrance_position_uncertainty_xy: 0.05
-    # Do not start a new frontier from an old map transform/odometry fallback.
+    # SIMULATION ASSUMPTION only: 5 x 10 Hz pose samples. Team 1 must set the
+    # deployed bound from measured localization/encoder update rates.
     odom_fallback_max_age_s: 0.5
+    # SIMULATION ASSUMPTION only: 5 x 10 Hz LiDAR scans. Team 1 must calibrate.
+    scan_max_age_s: 0.5
     # Task 6 frontier lifecycle. A failed goal gets a bounded number of
     # attempts, an exponential cooldown, then an expiry. Time or substantial
     # map growth re-arms the zone a bounded number of times; a region is never

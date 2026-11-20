@@ -96,6 +96,7 @@ def _request_return() -> None:
 
 def _observe(output: Path, launch_log: Path, config: Path) -> None:
     from living_map_writer.entrance import padded_footprint, footprint_min_x
+    from living_map_writer.swept_footprint import swept_min_x
 
     params = yaml.safe_load(config.read_text())["/writer/frontier_explorer"]["ros__parameters"]
     footprint = padded_footprint(params["footprint"],
@@ -104,6 +105,8 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
     position_uncertainty = float(params.get("entrance_position_uncertainty_xy", 0.0))
     rclpy.init()
     node = rclpy.create_node("team4_pr1_cancel_observer")
+    tf_buffer = Buffer()
+    tf_listener = TransformListener(tf_buffer, node)
     output.parent.mkdir(parents=True, exist_ok=True)
     stream = output.open("a", encoding="utf-8", buffering=1)
     state = ""
@@ -112,9 +115,20 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
     last_health = time.monotonic()
     minimum_footprint_x = math.inf
     minimum_uncertain_footprint_x = math.inf
+    minimum_swept_footprint_x = math.inf
+    minimum_swept_uncertain_footprint_x = math.inf
     odom_samples = 0
+    boundary_transform_missing = 0
+    snapshot_transform_samples = 0
+    maximum_tf_alignment_lag_s = 0.0
+    odom_gap_count = 0
+    unmapped_motion_samples = 0
+    maximum_odom_gap_s = 0.0
+    last_odom_stamp_s: float | None = None
+    last_raw_pose: tuple[float, float, float] | None = None
     path_length_m = 0.0
     last_xy: tuple[float, float] | None = None
+    last_pose: tuple[float, float, float] | None = None
     log_offset = 0
 
     def emit(event: str, data=None) -> None:
@@ -145,16 +159,87 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
 
     def on_odom(message: Odometry) -> None:
         nonlocal minimum_footprint_x, minimum_uncertain_footprint_x
-        nonlocal odom_samples, path_length_m, last_xy
-        x = float(message.pose.pose.position.x)
-        y = float(message.pose.pose.position.y)
+        nonlocal minimum_swept_footprint_x, minimum_swept_uncertain_footprint_x
+        nonlocal odom_samples, path_length_m, last_xy, last_pose
+        nonlocal boundary_transform_missing, snapshot_transform_samples, odom_gap_count
+        nonlocal maximum_odom_gap_s, last_odom_stamp_s
+        nonlocal maximum_tf_alignment_lag_s, unmapped_motion_samples, last_raw_pose
+        odom_stamp = message.header.stamp.sec + message.header.stamp.nanosec / 1e9
+        if last_odom_stamp_s is not None:
+            gap = odom_stamp - last_odom_stamp_s
+            if gap > 0.5:  # SIMULATION ASSUMPTION: five 10 Hz odometry periods.
+                odom_gap_count += 1
+                maximum_odom_gap_s = max(maximum_odom_gap_s, gap)
+        last_odom_stamp_s = odom_stamp
+        odom_x = float(message.pose.pose.position.x)
+        odom_y = float(message.pose.pose.position.y)
+        odom_yaw = _yaw(message.pose.pose.orientation)
+        raw_pose = (odom_x, odom_y, odom_yaw)
+        transform = None
+        try:
+            # SLAM publishes map->odom less frequently than odometry. Query its
+            # latest transform and admit only a bounded simulation-age skew.
+            transform = tf_buffer.lookup_transform("map", "writer/odom", Time())
+        except TransformException:
+            pass
+        if transform is not None:
+            transform_stamp = transform.header.stamp.sec + transform.header.stamp.nanosec / 1e9
+            if transform_stamp > 0.0:
+                alignment_lag = abs(odom_stamp - transform_stamp)
+                maximum_tf_alignment_lag_s = max(maximum_tf_alignment_lag_s, alignment_lag)
+                if alignment_lag > 0.5:  # SIMULATION ASSUMPTION: five 10 Hz pose periods.
+                    transform = None
+        if transform is not None:
+            tx = float(transform.transform.translation.x)
+            ty = float(transform.transform.translation.y)
+            transform_yaw = _yaw(transform.transform.rotation)
+        else:
+            # The controlled cooldown harness records this immutable frame
+            # alignment while holding the Writer still. It safely bridges the
+            # brief SLAM deactivation/static-TF handover in this simulation.
+            snapshot_path = output.parent / "map-to-odom.json"
+            try:
+                snapshot = json.loads(snapshot_path.read_text())
+            except (OSError, ValueError):
+                if (last_raw_pose is not None
+                        and (math.hypot(odom_x-last_raw_pose[0], odom_y-last_raw_pose[1]) > .002
+                             or abs(math.atan2(math.sin(odom_yaw-last_raw_pose[2]),
+                                               math.cos(odom_yaw-last_raw_pose[2]))) > .005)):
+                    # Simulation instrumentation floor: ideal odometry jitter
+                    # below 2 mm / 0.005 rad is not treated as actual motion.
+                    unmapped_motion_samples += 1
+                last_raw_pose = raw_pose
+                boundary_transform_missing += 1
+                return
+            tx = float(snapshot["x"])
+            ty = float(snapshot["y"])
+            transform_yaw = float(snapshot["yaw"])
+            snapshot_transform_samples += 1
+        last_raw_pose = raw_pose
+        c, s = math.cos(transform_yaw), math.sin(transform_yaw)
+        x = tx + c * odom_x - s * odom_y
+        y = ty + s * odom_x + c * odom_y
+        yaw = transform_yaw + odom_yaw
         minimum_footprint_x = min(minimum_footprint_x,
-                                  footprint_min_x(x, _yaw(message.pose.pose.orientation),
-                                                  footprint))
+                                  footprint_min_x(x, yaw, footprint))
         minimum_uncertain_footprint_x = min(
             minimum_uncertain_footprint_x,
-            footprint_min_x(x - position_uncertainty,
-                            _yaw(message.pose.pose.orientation), footprint))
+            footprint_min_x(x - position_uncertainty, yaw, footprint))
+        pose = (x, y, yaw)
+        if last_pose is None:
+            minimum_swept_footprint_x = min(minimum_swept_footprint_x,
+                                             footprint_min_x(x, yaw, footprint))
+            minimum_swept_uncertain_footprint_x = min(
+                minimum_swept_uncertain_footprint_x,
+                footprint_min_x(x - position_uncertainty, yaw, footprint))
+        else:
+            minimum_swept_footprint_x = min(
+                minimum_swept_footprint_x,
+                swept_min_x(last_pose, pose, footprint))
+            minimum_swept_uncertain_footprint_x = min(
+                minimum_swept_uncertain_footprint_x,
+                swept_min_x(last_pose, pose, footprint, position_uncertainty))
+        last_pose = pose
         xy = (x, y)
         if last_xy is not None:
             path_length_m += math.hypot(x - last_xy[0], y - last_xy[1])
@@ -196,10 +281,18 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
                 emit("health", {"state": state, "stuck": stuck,
                                  "minimum_footprint_x": minimum_footprint_x,
                                  "minimum_uncertain_footprint_x": minimum_uncertain_footprint_x,
+                                 "minimum_swept_footprint_x": minimum_swept_footprint_x,
+                                 "minimum_swept_uncertain_footprint_x": minimum_swept_uncertain_footprint_x,
                                  "position_uncertainty_xy": position_uncertainty,
                                  "entrance_x": entrance_x,
                                  "boundary_crossed": minimum_uncertain_footprint_x < entrance_x,
                                  "odom_samples": odom_samples,
+                                 "boundary_transform_missing": boundary_transform_missing,
+                                 "snapshot_transform_samples": snapshot_transform_samples,
+                                 "maximum_tf_alignment_lag_s": maximum_tf_alignment_lag_s,
+                                 "odom_gap_count": odom_gap_count,
+                                 "unmapped_motion_samples": unmapped_motion_samples,
+                                 "maximum_odom_gap_s": maximum_odom_gap_s,
                                  "path_length_m": path_length_m})
                 last_health = time.monotonic()
     except KeyboardInterrupt:
@@ -208,10 +301,18 @@ def _observe(output: Path, launch_log: Path, config: Path) -> None:
         emit("final", {"state": state, "stuck": stuck,
                        "minimum_footprint_x": minimum_footprint_x,
                        "minimum_uncertain_footprint_x": minimum_uncertain_footprint_x,
+                       "minimum_swept_footprint_x": minimum_swept_footprint_x,
+                       "minimum_swept_uncertain_footprint_x": minimum_swept_uncertain_footprint_x,
                        "position_uncertainty_xy": position_uncertainty,
                        "entrance_x": entrance_x,
                        "boundary_crossed": minimum_uncertain_footprint_x < entrance_x,
                        "odom_samples": odom_samples,
+                       "boundary_transform_missing": boundary_transform_missing,
+                       "snapshot_transform_samples": snapshot_transform_samples,
+                       "maximum_tf_alignment_lag_s": maximum_tf_alignment_lag_s,
+                       "odom_gap_count": odom_gap_count,
+                       "unmapped_motion_samples": unmapped_motion_samples,
+                       "maximum_odom_gap_s": maximum_odom_gap_s,
                        "path_length_m": path_length_m})
         stream.close()
         node.destroy_node()
