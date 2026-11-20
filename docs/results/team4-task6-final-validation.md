@@ -104,3 +104,28 @@ preflight checks; no production code, SLAM patch, `progress.py`, emergency
 handling, PR #1, system packages, or hardware was changed. Do not treat the
 unrun r4 scenario as a pass. No push, merge, approval or GitHub write was made.
 All Gazebo/ROS simulations must be stopped before closing the Ubuntu session.
+
+## Local continuation — 2026-11-20
+
+No GitHub operation or physical hardware test was performed. The r3 evidence
+above remains unchanged. The originally prepared r4 run stopped safely after
+one failure because the map selected a second frontier outside its 1.5 m
+failure zone. A separate test-only 10 m-zone diagnostic later exercised
+watchdog cancellation, retries 1/3–3/3, both cooldown waits (15 s and 30 s),
+and `FRONTIERS_EXHAUSTED`. Measured displacement during each injected fault
+stayed below 0.04 m.
+
+The time-expiry/re-arm phase was not verified. After attempt 3, the isolated
+runner needed to lower `min_cluster_cells` to expose other frontiers while the
+120 s expiry elapsed. ROS parameter discovery returned `Node not found`, a
+follow-up command timed out, and another trial stopped at the injector's 0.25 m
+movement limit. All runs used separate temporary configurations, stopped
+through their bounded cleanup, and left Git state unchanged. Their complete
+records are in
+`/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/`.
+
+The production 1.5 m / 2.0 m² defaults are unchanged. Deterministic tests cover
+the 120 s expiry and bounded reactivation by time/map growth. The full offline
+suite passed **460 tests** with the same three known async API tests deselected;
+the isolated Jazzy build completed 12 packages. Overall Task 6 remains
+**PARTIAL** until Gazebo verifies time-based expiry and reactivation.

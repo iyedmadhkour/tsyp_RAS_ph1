@@ -343,3 +343,34 @@ tests deselected. `colcon test` discovered zero tests in eight ament_python
 packages (exit code 5 per package); it is not evidence of package test success.
 An earlier isolated build finished all 12 packages. Full r4 and expiry behavior
 in Gazebo remain outstanding; overall Task 6 stays **PARTIAL**.
+
+## Validation continuation — 2026-11-20
+
+The original r4 harness ran safely but did not reach attempt 2: its initial
+frontier was `(0.94, 0.13)` and the next candidate was more than the configured
+1.5 m away. Its fail-closed guard stopped the run rather than counting a
+different region as a retry. The original r3 directory was not modified.
+
+Separate diagnostic runs used a temporary 10 m `frontier_zone_radius_m`, a
+1000-cell initial `min_cluster_cells` filter, and a 1000 m² map-growth
+threshold. These overrides live only in the external harness/evidence; the
+production configuration remains 1.5 m / 2.0 m². The successful partial run at
+`/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/r4-zone-10m-exhaustion/`
+recorded watchdog cancellations with less than 0.04 m displacement, failures
+1/3, 2/3, and 3/3 in one diagnostic zone, cooldown waits reporting 13 s and 28
+s (the configured 15 s and 30 s), then `FRONTIERS_EXHAUSTED` with re-arms 0/2.
+
+After exhaustion, the harness tried to lower the runtime cluster threshold to
+5 so the Writer could explore outside the exhausted zone while the 120 s timer
+ran. ROS parameter discovery returned `Node not found`; a retry variant later
+timed out, and another run stopped when the injected fault exceeded its 0.25 m
+movement guard. Each runner stopped its owned processes. These runs do **not**
+verify the 120 s expiry or reactivation in Gazebo.
+
+All diagnostic outcomes and temporary configuration snapshots are preserved
+at `/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/`.
+The policy's deterministic tests still cover time expiry, two bounded re-arms,
+and map-growth reactivation. The full offline suite now reports **460 passed,
+3 known hanging async API tests deselected**; the isolated ROS build completed
+12 packages. Task 6 remains **PARTIAL** until a controlled Gazebo scenario
+observes expiry/re-activation or a safe test harness for that path is prepared.

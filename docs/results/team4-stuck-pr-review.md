@@ -53,3 +53,21 @@ Team 1, and run bounded Gazebo checks covering normal rotation/recovery,
 watchdog cancellation, battery HOME return, and true immobilization. This is a
 review recommendation only; the PR was not edited, approved, merged or
 cherry-picked.
+
+## Local validation follow-up — 2026-11-20
+
+The detector was subsequently present on the local review branch and was
+validated without any GitHub action. The isolated ROS 2 Jazzy build completed
+12 packages; focused tests passed 134 and the broad offline suite passed 460
+with three known hanging async API tests deselected. Three bounded Gazebo
+scenarios passed: normal navigation with HOME return, forward-drive physical
+immobilization, and watchdog cancellation followed by STUCK. The former
+waypoint-5 event was traced to the demo fallback crossing a wall outside the
+opening; the fallback route now uses a footprint-safe passage waypoint.
+
+This clears the earlier gap in software/Gazebo evidence and supports
+integration review on the Team 4 software branch. It is not hardware
+acceptance: Team 1 still needs to confirm the motor command lease against the
+detector's stale-command timeout, odometry freshness/clock semantics, command
+mux/stop acknowledgment, and safe response to missing action results. No PR,
+branch, remote or GitHub state was changed by this validation.

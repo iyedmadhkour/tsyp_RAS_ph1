@@ -2,13 +2,24 @@
 
 ## Scope and current state
 
-The teammate's command/odometry detector is not present locally and was not
-copied from PR #1. Current production behavior remains the 45 s position-only
-`StuckDetector` in `progress.py`. Task 6's per-goal `GoalWatchdog` is present
-with 25 s frontier and 90 s HOME stall limits. The test file
-`tests/test_writer_watchdog_stuck_integration.py` uses deterministic clocks and
-test doubles to check their timing relationship; it is not a ROS executor,
-DDS, Nav2 or Gazebo test.
+This plan was written before the teammate's PR #1 detector was integrated into
+the local review branch. The 2026-11-20 continuation below records its current
+command/odometry implementation and live Gazebo results. See
+`team4-pr1-stuck-validation-checkpoint.md` for the detailed evidence.
+
+### 2026-11-20 continuation
+
+The PR #1 detector is present locally on `review/pr1-writer-stuck-detection`.
+The isolated Jazzy overlay loaded `living_map_writer` and `progress.py` from the
+fresh build. Focused integration tests passed (134); the full offline suite
+passed 460 with three known hanging async API tests deselected. Bounded Gazebo
+scenarios verified normal navigation and HOME, forward-drive immobilization
+with stationary odometry, and a Nav2 watchdog cancellation followed by STUCK.
+
+These results support software integration review. They do not settle the
+one-second stale-command assumption against Team 1's motor-controller lease,
+stale hardware odometry behavior, cancellation-response loss, or physical
+motor/RF/dispenser behavior. Those remain hardware-contract or HIL items.
 
 ## Existing isolated checks
 
@@ -22,7 +33,7 @@ DDS, Nav2 or Gazebo test.
 | Truly stationary HOME return | Current position-only detector reaches STUCK at 45 s, before the 90 s HOME watchdog stall limit. |
 | Missing Nav2 feedback | Watchdog falls back to goal-to-pose distance. |
 
-## Required tests once the teammate detector is available
+## Original planned tests (written before PR #1 integration)
 
 Run the same cases against its actual detector and Writer node wiring:
 
