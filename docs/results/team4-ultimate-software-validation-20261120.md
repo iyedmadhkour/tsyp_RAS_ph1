@@ -87,6 +87,27 @@ path. The three targeted request tests passed and the full suite passed
 506/506. Detailed diagnosis is at
 `docs/results/evidence/team4-ultimate-validation-20261120/asgi-worker-diagnosis.md`.
 
+### Final STUCK/watchdog regression rerun — PARTIAL
+
+After the steady-clock deadline change, the isolated STUCK harness was rerun at
+`docs/results/evidence/team4-ultimate-validation-20261120/stuck-regression-rerun/20261120-195818/`.
+The 12-package Jazzy build and all 165 focused detector, wiring, watchdog, and
+navigation tests passed. Normal navigation returned HOME with translation,
+rotation, zero-command intervals, and 42.75 m odometry path; the detector did
+not report false STUCK. The static-base scenario logged 455 forward command
+samples, 1,770 odometry samples with zero displacement, and emitted STUCK.
+
+The third scenario timed out after its 210 s bound without emitting a
+watchdog-cancel or STUCK event. Its Writer state and STUCK topic logs were
+empty; Nav2 repeatedly reported no map on its static costmaps and the robot
+outside the costmap. Thus this rerun did not exercise the watchdog path and is
+not a pass. Previous independent watchdog-then-STUCK runs at
+`docs/results/evidence/team4-phase2-validation-20261120/stuck/` and
+`docs/results/evidence/team4-phase2-advanced-20261120/stuck-regression-20261120/`
+remain valid recorded passes. The new timeout reduces confidence in repeatable
+setup; it does not by itself establish a production regression. No production
+code changed during this rerun.
+
 ## Final regression and build
 
 - Full test suite: **506 passed, 0 failed, 0 skipped, 0 deselected** in 9.04 s
@@ -116,7 +137,7 @@ path. The three targeted request tests passed and the full suite passed
 | 2. Continuous padded-footprint safety | **COMPLETE for tested simulation paths** | Same-zone swept path and stale bridge outage are bounded with the padded footprint, 5 cm allowance, and simulator motion cap. This is not hardware acceptance or every possible trajectory. |
 | 3. Navigation cancellation and recovery | **PARTIAL** | Delayed/rejected real ROS action responses, uncertain-state blocking and late HOME success pass. The 3 s response deadline now uses a steady-clock timer independent of `/clock`. Server restart and physical motor acknowledgment remain unvalidated. |
 | 4. Sensor freshness and fault handling | **PARTIAL** | Stale combined scan/pose outage canceled the active goal, prevented new dispatch, and recovered to HOME. Unit cases cover invalid and reordered messages; independent pose-only and scan-only live Gazebo faults remain. |
-| 5. STUCK detector and watchdog | **COMPLETE in recorded simulation scenarios** | Prior bounded normal, forward-immobilization and watchdog-then-STUCK runs remain valid; no detector or watchdog production logic changed in this continuation. Hardware thresholds remain uncalibrated. |
+| 5. STUCK detector and watchdog | **PARTIAL** | Prior bounded watchdog-then-STUCK Gazebo runs passed and the latest normal/forward-immobilization cases passed, but the latest attempted watchdog rerun timed out before a goal due missing costmap data. Reproduce the watchdog case reliably. Hardware thresholds remain uncalibrated. |
 | 6. Frontier lifecycle | **COMPLETE for recorded policy scenarios** | Prior retry/cooldown, budget exhaustion, 120 s expiration/reactivation and same-zone cancellation-only re-selection evidence remains preserved. No frontier-selection algorithm change occurred. |
 | 7. Battery/HOME | **PARTIAL** | Return requested during stale inputs and HOME completed after recovery. Physical battery calibration, telemetry-drop behavior and long-route reserve remain unverified. |
 | 8. Radio, relays and beacon faults | **PARTIAL** | Existing mocks and software policy tests remain; physical RF loss, beacon acknowledgment and actuator behavior require Team 1. |

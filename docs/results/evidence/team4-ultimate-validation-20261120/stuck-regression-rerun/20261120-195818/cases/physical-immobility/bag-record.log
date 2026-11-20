@@ -1,0 +1,17 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1795201332.866044929] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1795201332.866071548] [rosbag2_recorder]: Event publisher thread: Started
+[INFO] [1795201332.869779757] [rosbag2_recorder]: Starting recording to '/home/iyed/LivingMap-Team4/docs/results/evidence/team4-ultimate-validation-20261120/stuck-regression-rerun/20261120-195818/cases/physical-immobility/bag'
+[INFO] [1795201332.871080559] [rosbag2_recorder]: Listening for topics...
+[INFO] [1795201332.871118295] [rosbag2_recorder]: Recording...
+[INFO] [1795201332.871137433] [rosbag2_recorder]: Topics discovery started.
+[INFO] [1795201333.073308821] [rosbag2_recorder]: Subscribed to topic '/clock'
+[INFO] [1795201333.925649990] [rosbag2_recorder]: Subscribed to topic '/writer/cmd_vel'
+[INFO] [1795201333.941281149] [rosbag2_recorder]: Subscribed to topic '/living_map/writer_stuck'
+[INFO] [1795201334.070647037] [rosbag2_recorder]: Subscribed to topic '/writer/odom'
+[INFO] [1795201334.250082325] [rosbag2_recorder]: Subscribed to topic '/living_map/writer_explorer_state'
+[INFO] [1795201334.250178300] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1795201334.250198589] [rosbag2_recorder]: Topics discovery stopped.
+[INFO] [1795201425.142180211] [rosbag2_recorder]: Pausing recording.
+[INFO] [1795201425.142284891] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1795201425.144670943] [rosbag2_recorder]: Recording stopped
+[INFO] [1795201425.163916799] [rosbag2_recorder]: Event publisher thread: Exited

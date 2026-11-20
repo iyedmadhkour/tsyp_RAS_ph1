@@ -1,0 +1,5 @@
+/build/
+/install/
+/log/
+/cases/*/home/
+/cases/*/runtime/beacons.json*
