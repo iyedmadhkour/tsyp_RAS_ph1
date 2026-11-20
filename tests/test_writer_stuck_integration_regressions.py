@@ -4,6 +4,7 @@ from types import SimpleNamespace
 import pytest
 
 from living_map_writer.goal_watchdog import GoalWatchdog, WatchdogConfig
+from living_map_writer.demo_fallback import DEMO_WAYPOINTS, GAS_PASSAGE_WAYPOINT
 from living_map_writer.node import Writer
 from living_map_writer.progress import StuckDetector
 
@@ -173,3 +174,25 @@ def test_idle_odom_and_commands_do_not_trigger_stuck_but_stationary_drive_does()
         if stuck:
             break
     assert stuck
+
+
+def test_demo_route_crosses_gas_divider_through_footprint_safe_opening_both_ways():
+    wall5_east_edge = 14.75  # world x=3.75, translated by the Writer spawn offset
+    wall7_west_edge = 15.825  # world x=4.825, translated by the Writer spawn offset
+    footprint_length, footprint_width = 0.63, 0.465
+
+    def crossing_x_bounds(start, end, y):
+        fraction = (y - start[1]) / (end[1] - start[1])
+        x = start[0] + fraction * (end[0] - start[0])
+        heading = math.atan2(end[1] - start[1], end[0] - start[0])
+        half_extent_x = (abs(math.cos(heading)) * footprint_length / 2
+                         + abs(math.sin(heading)) * footprint_width / 2 + 0.01)
+        return x - half_extent_x, x + half_extent_x
+
+    crossings = [(DEMO_WAYPOINTS[4], GAS_PASSAGE_WAYPOINT),
+                 (GAS_PASSAGE_WAYPOINT, DEMO_WAYPOINTS[8])]
+    for start, end in crossings:
+        for y in (1.325, 1.5, 1.675):
+            west, east = crossing_x_bounds(start, end, y)
+            assert west > wall5_east_edge
+            assert east < wall7_west_edge
