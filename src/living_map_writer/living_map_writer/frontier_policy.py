@@ -244,4 +244,5 @@ class FrontierPolicy:
             data["blocked_zones"] = len(self.blocked_zones(now))
             data["cooling_zones"] = len(self.cooling_zones(now))
             data["exhausted_zones"] = len(self.exhausted_zones(now))
+            data["next_retry_at_s"] = self.earliest_retry_s(now)
         return data

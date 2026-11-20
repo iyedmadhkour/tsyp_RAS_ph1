@@ -516,6 +516,9 @@ class FrontierExplorer(Node):
                 self.get_logger().info(
                     f"{kind} goal at ({x:.2f},{y:.2f}) cancelled externally "
                     f"({cancel_reason or 'no reason'}); not counted as failure")
+                # Publish the cancellation-only cooldown and its retry deadline
+                # for operators and the bounded Gazebo validation observer.
+                self._publish_summary()
         elif not self.failed and not self.stuck and self.enabled:
             self._goal_failed(x, y, kind, "aborted")
         self._publish_state()

@@ -162,8 +162,11 @@ def test_unexplained_frontier_cancellation_is_paced_without_becoming_failure():
     assert e.counts["frontier_cancelled"] == 1
     assert policy.counts["cancel_cancelled"] == 1
     assert policy.earliest_retry_s(100.0) == 115.0
+    assert policy.blacklist(114.9) == [(3.0, 4.0)]
+    assert policy.blacklist(115.0) == []  # eligible for selection after cooldown
     assert policy.summary()["failure_zones"] == 0
     assert policy.summary()["cancellation_only_zones"] == 1
+    assert policy.summary(100.0)["next_retry_at_s"] == 115.0
 
 
 def test_watchdog_cancellation_is_recorded_as_a_frontier_failure():

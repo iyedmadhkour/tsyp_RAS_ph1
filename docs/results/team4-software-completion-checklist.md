@@ -38,18 +38,28 @@ software completion from Phase 2 hardware acceptance.
 ## Current validation
 
 - Isolated ROS 2 Jazzy build: **12 packages finished**.
-- Full offline test suite: **463 passed, 3 ASGI API tests deselected**. The
-  current environment's AnyIO 4.16.0 worker implementation hangs on sequential
-  thread-pool work; the worker exits after one job but is returned to the idle
-  queue. `requirements-dev.txt` now bounds AnyIO below 4.16.0. Those three tests
-  still need rerunning in an environment with a compatible resolved version.
+- Full offline test suite: **466 passed, no deselections** when run outside the
+  workspace sandbox. The earlier hangs were caused by sandboxed thread
+  scheduling: AnyIO's worker completed its function and queued the completion
+  callback, but the sandboxed event loop did not resume. The same AnyIO 4.16.0
+  passed all three tests outside the sandbox. No dependency pin or app workaround
+  is required.
 - New focused navigation/watchdog regressions: **83 passed**. Unexplained
   frontier cancellations are paced for the configured base cooldown and do
   not increment navigation failure attempts.
 - Final isolated ROS 2 Jazzy build: **12 packages finished** under
   `/tmp/livingmap-final-20261120/`.
 - The existing patched SLAM install was selected and verified through the demo
-  entry point with `--check-slam-overlay`; Gazebo was not started by this check.
+  entry point with `--check-slam-overlay`. A bounded Gazebo mission also
+  verified the running SLAM process and its three patched libraries came from
+  that overlay.
+- External Nav2 cancellation Gazebo scenario: **PASS**. One unexplained
+  cancellation had a 15 s simulation-time cooldown, remained outside failure
+  memory, caused no STUCK/watchdog event, and was followed by safe HOME. The
+  padded footprint remained at least 0.64 m inside the x=-1.0 m entrance plane.
+  The canceled goal was not observed being reselected after expiry before the
+  scenario deliberately requested HOME; the regression test verifies it becomes
+  eligible at expiry.
 - STUCK scenarios: normal navigation/HOME, forward-drive immobilization, and
   watchdog cancellation followed by STUCK passed in bounded Gazebo runs.
 - Task 6 expiry run: four fault injections were canceled by Nav2 watchdogs;
@@ -57,6 +67,9 @@ software completion from Phase 2 hardware acceptance.
   after the first post-expiry retry failure. It did not claim HOME completion.
 - No physical hardware test, GitHub write, publish, merge or remote change was
   performed.
+
+The new Gazebo capture and two preserved diagnostic harness attempts are under
+`/home/iyed/livingmap-pr1-evidence-20261120/`.
 
 See `team4-final-software-review.md` for the remaining ASGI dependency blocker,
 overlay invocation, cancellation policy, and final work-session scope.
