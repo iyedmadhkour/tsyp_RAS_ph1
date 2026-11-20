@@ -202,6 +202,42 @@ PY
 done
 [[ "$deadline_passed" == true ]] || die "simulation clock did not pass the cancellation retry deadline"
 
+echo 'Allowing up to 20 additional simulation seconds for post-cooldown exploration.'
+post_cooldown_selection=false
+for _ in {1..75}; do
+  selected_after_expiry="$(python3 - "$RUN_ROOT/observations.jsonl" "$retry_deadline" <<'PY'
+import json, sys
+from pathlib import Path
+deadline=float(sys.argv[2])
+events=[json.loads(line) for line in Path(sys.argv[1]).read_text().splitlines()]
+print(int(any(e.get('event')=='frontier_selected' and e.get('sim_s') is not None
+              and float(e['sim_s']) >= deadline for e in events)))
+PY
+  )"
+  if [[ "$selected_after_expiry" == 1 ]]; then
+    post_cooldown_selection=true
+    break
+  fi
+  health="$(python3 - "$RUN_ROOT/observations.jsonl" <<'PY'
+import json, sys
+from pathlib import Path
+for line in reversed(Path(sys.argv[1]).read_text().splitlines()):
+    event=json.loads(line)
+    if event.get('event')=='health':
+        print(event.get('sim_s') or 0)
+        break
+PY
+  )"
+  if python3 - "$health" "$retry_deadline" <<'PY'
+import sys
+raise SystemExit(0 if float(sys.argv[1]) >= float(sys.argv[2]) + 20.0 else 1)
+PY
+  then break; fi
+  sleep 1
+done
+printf 'post_cooldown_selection_observed=%s\n' "$post_cooldown_selection" \
+  | tee "$RUN_ROOT/post-cooldown-window.txt"
+
 echo 'Requesting safe HOME after the cancellation backoff elapsed.'
 python3 "$HELPER" request-return | tee "$RUN_ROOT/home-request.json"
 home=false
@@ -260,6 +296,12 @@ for event in events:
     if float(summary['sim_s']) <= float(event['sim_s']) < float(deadline):
         if math.hypot(event['data']['x']-cx,event['data']['y']-cy) <= 1.5:
             raise SystemExit('cancelled spatial goal was selected again before cooldown expiry')
+post=[e for e in events if e.get('event')=='frontier_selected'
+      and e.get('sim_s') is not None and float(e['sim_s']) >= float(deadline)]
+same_zone_retry=any(math.hypot(e['data']['x']-cx,e['data']['y']-cy) <= 1.5
+                    for e in post)
+if not post:
+    raise SystemExit('no frontier goal was selected after the cancellation cooldown elapsed')
 final=next((e['data'] for e in reversed(events) if e.get('event')=='final'), {})
 if final.get('state')!='HOME':
     raise SystemExit(f"final observer state was {final.get('state')!r}, not HOME")
@@ -272,6 +314,8 @@ if final.get('odom_samples', 0) < 10:
 result={"cancel_reason":cancel['data']['reason'],"cancel_sim_s":summary['sim_s'],
         "retry_deadline_s":deadline,"cooldown_s":delay,"counts":counts,
         "frontier_policy":policy,"final_state":final.get('state'),
+        "post_cooldown_selection_observed":bool(post),
+        "same_zone_retry_observed":same_zone_retry,
         "stuck":final.get('stuck'),"minimum_padded_footprint_x":final.get('minimum_footprint_x'),
         "entrance_x":final.get('entrance_x'),"odom_samples":final.get('odom_samples'),
         "path_length_m":final.get('path_length_m'),"boundary_crossed":final.get('boundary_crossed')}

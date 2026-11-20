@@ -55,11 +55,11 @@ software completion from Phase 2 hardware acceptance.
   that overlay.
 - External Nav2 cancellation Gazebo scenario: **PASS**. One unexplained
   cancellation had a 15 s simulation-time cooldown, remained outside failure
-  memory, caused no STUCK/watchdog event, and was followed by safe HOME. The
-  padded footprint remained at least 0.64 m inside the x=-1.0 m entrance plane.
-  The canceled goal was not observed being reselected after expiry before the
-  scenario deliberately requested HOME; the regression test verifies it becomes
-  eligible at expiry.
+  memory, caused no STUCK/watchdog event, and exploration resumed on a new
+  frontier after expiry. Battery reserve then triggered safe HOME. The padded
+  footprint remained at least 0.64 m inside the x=-1.0 m entrance plane. The
+  same-zone retry was not observed because that candidate changed with the map;
+  the regression test verifies its blacklist clears at expiry.
 - STUCK scenarios: normal navigation/HOME, forward-drive immobilization, and
   watchdog cancellation followed by STUCK passed in bounded Gazebo runs.
 - Task 6 expiry run: four fault injections were canceled by Nav2 watchdogs;
@@ -68,7 +68,7 @@ software completion from Phase 2 hardware acceptance.
 - No physical hardware test, GitHub write, publish, merge or remote change was
   performed.
 
-The new Gazebo capture and two preserved diagnostic harness attempts are under
+The new Gazebo capture and preserved diagnostic harness attempts are under
 `/home/iyed/livingmap-pr1-evidence-20261120/`.
 
 See `team4-final-software-review.md` for the remaining ASGI dependency blocker,

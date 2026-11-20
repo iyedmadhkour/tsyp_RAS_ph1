@@ -45,13 +45,14 @@ Scope: requirements closure and correctness only; no optimization work.
   **466 passed**. The three formerly excluded ASGI tests passed together:
   **3 passed**.
 - External-cancel Gazebo run: **PASS**. The Nav2 cancel service reported one
-  active Writer goal canceled at simulation time 3.592 s. The explorer published
-  a cancellation-only cooldown until 18.592 s (exactly 15 s), with zero failed
+  active Writer goal canceled at simulation time 3.142 s. The explorer published
+  a cancellation-only cooldown until 18.142 s (exactly 15 s), with zero failed
   frontiers and zero failure zones. No same-zone goal was selected before the
-  deadline. STUCK remained false, no watchdog cancellation occurred, and a
-  deliberate HOME request after the deadline completed. The padded footprint's
-  minimum x was -0.3600 m against the -1.0 m entrance boundary; 1,259 odometry
-  samples covered 14.71 m of path.
+  deadline. Exploration resumed with a new frontier at 26.132 s, outside the
+  canceled 1.5 m zone. Battery reserve then triggered HOME; the Writer reached
+  HOME. STUCK remained false and no watchdog cancellation occurred. The padded
+  footprint's minimum x was -0.3600 m against the -1.0 m entrance boundary;
+  1,566 odometry samples covered 20.30 m of path.
 - Isolated ROS 2 Jazzy build: **12 packages finished** in
   `/tmp/livingmap-final-20261120/`.
 - SLAM overlay resolver and actual runtime checks: **passed** for
@@ -77,10 +78,11 @@ Scope: requirements closure and correctness only; no optimization work.
    failure paths pass; motor-stop timing, radio loss, and restart behavior need
    HIL.
 4. Navigation and entrance safety — **PARTIAL**: watchdog, bounded unreachable
-   retries, cancellation pacing, HOME, footprint boundary, and rotation have
-   regression/simulation evidence; noisy localization and continuous swept
-   volume need additional acceptance evidence. External-cancel Gazebo evidence
-   is in `external-cancel-20261120-153342` under the evidence root below.
+   retries, cancellation pacing, post-cooldown exploration, battery-triggered
+   HOME, footprint boundary, and rotation have regression/simulation evidence;
+   noisy localization and continuous swept volume need additional acceptance
+   evidence. External-cancel Gazebo evidence is in
+   `external-cancel-20261120-154017` under the evidence root below.
 5. SLAM — **PARTIAL**: isolated Karto fix, native 8/8 checks and three completed
    patched missions are preserved; the explicit demo overlay is now selectable.
    Lower-passage visibility, comprehensive map completeness, and physical
@@ -102,16 +104,16 @@ Scope: requirements closure and correctness only; no optimization work.
 - Obtain Team 1's signed hardware interfaces and a safe HIL procedure before
   physical sensor freshness, command lease, RF, battery, beacon, motor-stop, or
   dispenser acceptance.
-- The Gazebo run reached the cooldown deadline and then the test requested HOME;
-  it did not observe the canceled frontier being selected again after the
-  deadline. The unit regression verifies that the spatial blacklist clears at
-  the deadline, making the goal eligible again. Existing successful Gazebo
-  evidence was preserved and not overwritten. Two harness startup/monitor
-  failures (wrong action namespace, then an outdated HOME-log matcher) are
-  retained in adjacent timestamped run directories; the corrected final run
-  completed successfully.
+- The Gazebo run observed exploration resume after cooldown on a new frontier
+  outside the canceled zone; the same zone was not selected again because map
+  frontiers changed during the run. A unit regression separately verifies that
+  the canceled location becomes eligible at expiry. A stricter same-zone
+  diagnostic run is preserved; its original candidate disappeared as the map
+  evolved, but navigation and HOME completed safely. Existing successful Gazebo
+  evidence was preserved and not overwritten. Two earlier harness attempts
+  (wrong action namespace and outdated HOME-log matcher) are also retained.
 - The successful external-cancel capture is
-  `/home/iyed/livingmap-pr1-evidence-20261120/external-cancel-20261120-153342/`.
-  Earlier diagnostic attempts remain alongside it and were not overwritten.
+  `/home/iyed/livingmap-pr1-evidence-20261120/external-cancel-20261120-154017/`.
+  Diagnostic attempts remain alongside it and were not overwritten.
 - All work remains local. No GitHub account, remote, PR, or branch was accessed
   or changed.
