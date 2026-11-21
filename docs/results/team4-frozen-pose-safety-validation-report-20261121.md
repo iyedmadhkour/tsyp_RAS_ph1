@@ -65,13 +65,15 @@ Earlier `scan_frames` shutdown exceptions were caused by the harness's intention
 
 ## Remaining requirements and hardware acceptance
 
-- Rerun the updated bounded harness and require its final `pose-fault-audit.json` to report `PASS`; verify fresh-stamped frozen translation and rotation independently, with their no-new-goals, acknowledgment, HOME, stationary, and swept-footprint checks.
+- **Completed in the follow-up below:** the bounded harness was rerun; fresh-stamped frozen translation and rotation, lockout, explicit acknowledgment, HOME, stationary behavior, and swept-footprint checks passed in the final recorded run. Earlier INCONCLUSIVE audits remain preserved and are described as historical results.
 - Team 1 must confirm the deployed independent odometry source, frames, timestamp synchronization, and the limits currently represented by simulation assumptions (0.05 s pairing, 0.5 s pose age, 0.35 s scan age, 0.05 m translation allowance, 0.02 rad yaw allowance).
 - Physical acceptance still requires motor-command lease and safe-stop acknowledgment contracts, measured residual motion after cancellation, and hardware-in-loop testing. A Nav2 cancel acknowledgment is not proof that the base has stopped.
 
-## Resume
+## Reproduction
 
-From Ubuntu 24.04 WSL in `/home/iyed/LivingMap-Team4`, on `phase2/reliability-optimization-20261120`, with ROS 2 Jazzy and the validated Karto overlay available, run:
+To reproduce the bounded validation from Ubuntu 24.04 WSL in
+`/home/iyed/LivingMap-Team4`, on `phase2/reliability-optimization-20261120`,
+with ROS 2 Jazzy and the validated Karto overlay available, run:
 
 ```bash
 scripts/validate_phase2_stale_pose_gazebo.sh
