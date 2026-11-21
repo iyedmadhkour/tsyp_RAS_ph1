@@ -737,6 +737,26 @@ class FrontierExplorer(Node):
 
     def _monitor_navigation_safety(self) -> None:
         """Check action deadlines and sensor freshness outside frontier ticks."""
+        now = self._now_s()
+        # Pose integrity is a mission-level movement gate, not only an active
+        # action watchdog. A stale reference must latch the same lockout during
+        # the gap between goals, so the next goal cannot wait silently on bad
+        # localization without entering NAVIGATION_UNCERTAIN. During startup,
+        # wait for the first valid synchronized pair before treating absent
+        # inputs as a stale-stream fault; the goal gate remains closed then.
+        if (getattr(self, "pose_integrity_required", False)
+                and not getattr(self, "pose_integrity_fault", False)
+                and getattr(getattr(self, "pose_integrity", None),
+                            "last_pair_stamp_s", None) is not None
+                and not self._pose_integrity_ready(now)):
+            max_age = float(self.get_parameter(
+                "pose_integrity_reference_max_age_s").value)
+            reason = (self.pose_integrity.fault_reason
+                      or self.pose_integrity.freshness_reason(now, max_age)
+                      or "independent pose reference unavailable")
+            self._latch_pose_integrity_fault(reason)
+            return
+
         active = getattr(self, "active_goal", None)
         if not self.busy or active is None:
             return
@@ -747,16 +767,8 @@ class FrontierExplorer(Node):
         if (self.navigation_uncertain or active.get("watchdog_reason") is not None
                 or active.get("cancel_reason") is not None):
             return
-        now = self._now_s()
         if FrontierExplorer._cancel_for_stale_inputs(self, now):
             return
-        if not self._pose_integrity_ready(now):
-            max_age = float(self.get_parameter(
-                "pose_integrity_reference_max_age_s").value)
-            reason = (self.pose_integrity.fault_reason
-                      or self.pose_integrity.freshness_reason(now, max_age)
-                      or "independent pose reference unavailable")
-            self._latch_pose_integrity_fault(reason)
 
     def _update_watchdog(self, now: float) -> None:
         active = getattr(self, "active_goal", None)

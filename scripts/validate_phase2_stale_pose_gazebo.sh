@@ -62,11 +62,22 @@ stop_launch() {
   state="$(ps -o stat= -p "$pid" 2>/dev/null | tr -d ' ' || true)"
   if [[ -n "$state" && "$state" != Z* ]]; then
     kill -TERM "$pid" 2>/dev/null || true
-    sleep 1
-    state="$(ps -o stat= -p "$pid" 2>/dev/null | tr -d ' ' || true)"
-    if [[ -n "$state" && "$state" != Z* ]]; then
-      kill -KILL -- "-$pid" 2>/dev/null || true
-    fi
+    for _ in {1..20}; do
+      state="$(ps -o stat= -p "$pid" 2>/dev/null | tr -d ' ' || true)"
+      [[ -z "$state" || "$state" == Z* ]] && break
+      sleep .25
+    done
+  fi
+  # ros2 launch can exit while a child has already been orphaned (notably the
+  # command-post HTTP server). Always drain this run's private process group,
+  # even when the launch manager itself handled SIGINT and exited cleanly.
+  if kill -0 -- "-$pid" 2>/dev/null; then
+    kill -TERM -- "-$pid" 2>/dev/null || true
+    for _ in {1..20}; do
+      kill -0 -- "-$pid" 2>/dev/null || break
+      sleep .25
+    done
+    kill -KILL -- "-$pid" 2>/dev/null || true
   fi
   wait "$pid" 2>/dev/null || true
 }
@@ -112,7 +123,7 @@ done
 printf 'branch=%s\nhead=%s\nstarted=%s\nros_domain_id=%s\ngz_partition=%s\n' \
   "$BRANCH" "$(git rev-parse HEAD)" "$(date -Is)" "$ROS_DOMAIN_ID" "$GZ_PARTITION" \
   >"$RUN/manifest.txt"
-printf 'fault_modes=stale,delayed,missing,frozen_translation,frozen_rotation\nspeed_preset=normal\npose_age_assumption_s=0.5\nscan_age_assumption_s=0.35\ndelay_s=1.5\n' \
+printf 'fault_modes=stale,delayed,missing,frozen_translation,frozen_rotation\nspeed_preset=normal\ngazebo_gui=false\nscan_frames=false (test relay replaces it from startup)\npose_age_assumption_s=0.5\nscan_age_assumption_s=0.35\ndelay_s=1.5\n' \
   >>"$RUN/manifest.txt"
 
 run_phase() {
@@ -124,17 +135,36 @@ run_phase() {
   PHASE_INDEX=$((PHASE_INDEX + 1))
   echo "starting $name" | tee -a "$RUN/progress.txt"
   setsid ros2 launch living_map_bringup demo.launch.py demo_fallback:=false \
-    auto_explore:=false speed:=normal rviz:=false >"$d/launch.log" 2>&1 &
+    auto_explore:=false speed:=normal rviz:=false gazebo_gui:=false \
+    scan_frames:=false >"$d/launch.log" 2>&1 &
   LAUNCH_PID=$!
 
-  # Confirm Gazebo sensor input first. A previous map timeout showed
-  # slam_toolbox stuck in Configuring; scan_frames exited later during normal
-  # harness teardown and was not the initiating failure.
+  # The adapter replaces scan_frames from startup, so the estimate stream has
+  # one publisher throughout the run and no intentional freshness gap.
+  setsid python3 "$ROOT/scripts/phase2_pose_fault_adapter.py" --ros-args \
+    -p use_sim_time:=true -p writer_mode:=pass -p delay_s:=1.5 >"$d/pose-adapter.log" 2>&1 &
+  ADAPTER_PID=$!
+  local relay_ready=false
+  for _ in {1..50}; do
+    if rg -q 'Pose fault relay ready: writer_mode=pass' "$d/pose-adapter.log"; then
+      relay_ready=true; break
+    fi
+    sleep .1
+  done
+  [[ "$relay_ready" == true ]] || die "$name: pose fault relay did not start"
+
+  # Confirm Gazebo sensor input before interpreting SLAM or map readiness.
   timeout 20s ros2 topic echo /writer/world_odom nav_msgs/msg/Odometry --once >"$d/world-odom-ready.yaml" 2>&1 \
     || { capture_startup_diagnostics "$d"; die "$name: Gazebo world odometry was not ready"; }
   timeout 20s ros2 topic echo /writer/scan_raw sensor_msgs/msg/LaserScan --once >"$d/raw-scan-ready.yaml" 2>&1 \
     || { capture_startup_diagnostics "$d"; die "$name: raw Writer scan was not ready"; }
   echo "$name: Gazebo odometry and raw scan are publishing"
+  timeout 20s ros2 topic echo /writer/odom nav_msgs/msg/Odometry --once >"$d/odom-ready.yaml" 2>&1 \
+    || die "$name: test relay did not publish Writer odometry"
+  timeout 20s ros2 topic echo /writer/scan sensor_msgs/msg/LaserScan --once >"$d/scan-ready.yaml" 2>&1 \
+    || die "$name: test relay did not preserve Writer scan"
+  timeout 20s ros2 topic echo /executor/odom nav_msgs/msg/Odometry --once >"$d/executor-odom-ready.yaml" 2>&1 \
+    || die "$name: test relay did not preserve rescue-robot odometry"
   wait_for_slam_active "$name" "$d"
   timeout 20s ros2 topic echo /map nav_msgs/msg/OccupancyGrid \
     --qos-durability transient_local --once >"$d/map-ready.yaml" 2>&1 \
@@ -150,33 +180,6 @@ run_phase() {
   done
   [[ "$life" == true ]] || die "$name: Writer controller/costmap did not become active"
   echo "$name: Writer controller and static costmap active"
-
-  while read -r candidate; do
-    [[ -n "$candidate" ]] || continue
-    [[ "$(ps -o pgid= -p "$candidate" | tr -d ' ')" == "$LAUNCH_PID" ]] || continue
-    SCAN_PID="$candidate"; break
-  done < <(pgrep -f '[/]lib/living_map_writer/scan_frames' || true)
-  [[ -n "$SCAN_PID" ]] || die "$name: cannot identify this launch's scan_frames node"
-  kill -TERM "$SCAN_PID"
-  for _ in {1..20}; do
-    state="$(ps -o stat= -p "$SCAN_PID" 2>/dev/null | tr -d ' ' || true)"
-    [[ -z "$state" || "$state" == Z* ]] && break
-    sleep .1
-  done
-  state="$(ps -o stat= -p "$SCAN_PID" 2>/dev/null | tr -d ' ' || true)"
-  [[ -z "$state" || "$state" == Z* ]] \
-    || die "$name: scan_frames did not stop within 2 s (state=$state)"
-  SCAN_PID=
-
-  setsid python3 "$ROOT/scripts/phase2_pose_fault_adapter.py" --ros-args \
-    -p use_sim_time:=true -p writer_mode:=pass -p delay_s:=1.5 >"$d/pose-adapter.log" 2>&1 &
-  ADAPTER_PID=$!
-  timeout 20s ros2 topic echo /writer/odom nav_msgs/msg/Odometry --once >"$d/odom-ready.yaml" 2>&1 \
-    || die "$name: test relay did not publish Writer odometry"
-  timeout 20s ros2 topic echo /writer/scan sensor_msgs/msg/LaserScan --once >"$d/scan-ready.yaml" 2>&1 \
-    || die "$name: test relay did not preserve Writer scan"
-  timeout 20s ros2 topic echo /executor/odom nav_msgs/msg/Odometry --once >"$d/executor-odom-ready.yaml" 2>&1 \
-    || die "$name: test relay did not preserve rescue-robot odometry"
 
   python3 "$ROOT/scripts/pr1_cancel_validation_probe.py" observe \
     --output "$d/observations.jsonl" --launch-log "$d/launch.log" \
@@ -340,8 +343,10 @@ capture_startup_diagnostics() {
   timeout 5s ros2 topic info --verbose /writer/scan_raw >"$d/startup-raw-scan-info.txt" 2>&1 || true
   timeout 5s ros2 topic info --verbose /writer/scan >"$d/startup-relayed-scan-info.txt" 2>&1 || true
   timeout 5s ros2 topic info --verbose /map >"$d/startup-map-info.txt" 2>&1 || true
+  timeout 5s ros2 topic info --verbose /writer/world_odom >"$d/startup-world-odom-info.txt" 2>&1 || true
   timeout 5s ros2 topic info --verbose /clock >"$d/startup-clock-info.txt" 2>&1 || true
   timeout 5s gz topic -l >"$d/startup-gazebo-topics.txt" 2>&1 || true
+  timeout 5s gz topic -i -t /writer/world_odom >"$d/startup-gz-world-odom-info.txt" 2>&1 || true
   ps -eo pid,ppid,pgid,stat,comm,args >"$d/startup-processes.txt"
 }
 
@@ -492,12 +497,17 @@ commands=[e for e in events if e.get("event")=="writer_cmd_vel"
 poses=[e for e in events if e.get("event")=="gazebo_world_odom"
        and e.get("sim_s") is not None]
 def delta(a,b): return abs(math.atan2(math.sin(a-b),math.cos(a-b)))
-for command in reversed(commands):
+if commands:
+    command=commands[-1]
+    now=max((float(e["sim_s"]) for e in events if e.get("sim_s") is not None),
+            default=float(command["sim_s"]))
     ct=float(command["sim_s"])
     samples=[(float(e["sim_s"]),float(e["data"]["yaw"])) for e in poses
-             if ct<=float(e["sim_s"])<=ct+2.0]
-    if len(samples)>=2 and max(delta(a[1],b[1]) for a in samples for b in samples)>.02:
-        print(f"sim_s={ct:.3f}; yaw_range_rad={max(delta(a[1],b[1]) for a in samples for b in samples):.4f}")
+             if now-.5<=float(e["sim_s"])<=now]
+    yaw_range=(max(delta(a[1],b[1]) for a in samples for b in samples)
+               if len(samples)>=2 else 0.0)
+    if now-ct<=.15 and yaw_range>.02:
+        print(f"sim_s={now:.3f}; yaw_range_rad={yaw_range:.4f}; angular_cmd_z={float(command['data']['angular_z']):.3f}")
         raise SystemExit(0)
 raise SystemExit(1)
 PY

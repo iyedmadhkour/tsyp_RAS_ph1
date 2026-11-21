@@ -171,14 +171,32 @@ def generate_launch_description() -> LaunchDescription:
         DeclareLaunchArgument("rviz", default_value="true",
                               description="Start RViz (false frees about one CPU core on small machines)"),
         DeclareLaunchArgument(
+            "gazebo_gui",
+            default_value="true",
+            description="Start Gazebo's graphical client; disable for headless simulation validation",
+        ),
+        DeclareLaunchArgument(
+            "scan_frames",
+            default_value="true",
+            description="Start the production odometry/scan relay (disable only when a test relay replaces it)",
+        ),
+        DeclareLaunchArgument(
             "speed",
             default_value="normal",
             description="Robot speed preset: normal (validated), fast or very_fast",
         ),
         SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", os.path.join(sim_share, "models")),
         # Respawned if the start-up guard has to kill a frozen Gazebo.
-        ExecuteProcess(cmd=["gz", "sim", "-r", "--gui-config", os.path.join(sim_share, "gui", "mine.config"), world],
-                       output="screen", respawn=True, respawn_delay=2.0),
+        ExecuteProcess(
+            cmd=["gz", "sim", "-r", "--gui-config", os.path.join(sim_share, "gui", "mine.config"), world],
+            output="screen", respawn=True, respawn_delay=2.0,
+            condition=IfCondition(LaunchConfiguration("gazebo_gui")),
+        ),
+        ExecuteProcess(
+            cmd=["gz", "sim", "-s", "-r", world],
+            output="screen", respawn=True, respawn_delay=2.0,
+            condition=UnlessCondition(LaunchConfiguration("gazebo_gui")),
+        ),
         Node(package="living_map_bringup", executable="sim_guard", output="screen"),
         Node(
             package="ros_gz_bridge",
@@ -239,7 +257,9 @@ def generate_launch_description() -> LaunchDescription:
         slam_launch,
         OpaqueFunction(function=speed_dependent_nodes, args=[writer_params, executor_params, firebot_params]),
         Node(package="living_map_writer", executable="writer", parameters=[{"use_sim_time": True, "auto_explore": auto_explore}], output="screen"),
-        Node(package="living_map_writer", executable="scan_frames", parameters=[{"use_sim_time": True}], output="screen"),
+        Node(package="living_map_writer", executable="scan_frames",
+             parameters=[{"use_sim_time": True}],
+             condition=IfCondition(LaunchConfiguration("scan_frames")), output="screen"),
         Node(package="living_map_writer", executable="entrance_boundary",
              parameters=[writer_params, {"use_sim_time": True}], output="screen"),
         Node(

@@ -32,6 +32,38 @@ def _continuous_bound(poses, vmax: float, radius: float, uncertainty: float):
     return lower, max(gaps, default=math.inf)
 
 
+def _frozen_phase_pass(phase: str, info: dict, position_tolerance: float,
+                       yaw_tolerance: float) -> bool:
+    stream = info["frozen_stream"]
+    valid_fault = (
+        info["fresh_stamped_pose_mismatch_latched"]
+        and info["detection_delay_after_injection_s"] is not None
+        and info["no_new_frontier_goal_while_locked"]
+        and info["explicit_recovery_acknowledged"]
+        and info["home_after_operator_ack"]
+        and stream["freshly_stamped_pose_stream"]
+        and stream["reported_pose_frozen"]
+        and info["lockout_preceded_any_center_boundary_crossing"]
+    )
+    if not valid_fault:
+        return False
+    if phase.endswith("rotation"):
+        return (
+            stream["independent_reference_yaw_range_rad"] > yaw_tolerance
+            and info["pre_fault_motion_measurement"] is not None
+            and info["pre_fault_motion_measurement"] > yaw_tolerance
+            and info["lockout_rotation_disagreement_rad"] is not None
+            and info["lockout_rotation_disagreement_rad"] > yaw_tolerance
+            and info["pre_fault_rotation_evidence"]
+        )
+    return (
+        info["pre_fault_motion_measurement"] is not None
+        and info["pre_fault_motion_measurement"] > 0.02
+        and info["lockout_translation_disagreement_m"] is not None
+        and info["lockout_translation_disagreement_m"] > position_tolerance
+    )
+
+
 def _frozen_stream_audit(run: Path, start_s: float, end_s: float,
                          freeze_rotation: bool):
     import rosbag2_py
@@ -318,41 +350,47 @@ def main() -> int:
                 if phase.endswith("rotation") else None),
         }
 
-    coordinate_events = [
-        e for phase in phase_names
-        for e in _jsonl(args.run / phase / "observations.jsonl")
-        if e.get("event") == "map_to_odom" and isinstance(e.get("data"), dict)
-    ]
-    coordinate_alignment = {
-        "samples": len(coordinate_events),
-        "maximum_translation_from_registered_odom_m": max((
-            math.hypot(float(e["data"]["x"]), float(e["data"]["y"]))
-            for e in coordinate_events), default=math.inf),
-        "maximum_absolute_yaw_from_registered_odom_rad": max((
-            abs(float(e["data"]["yaw"])) for e in coordinate_events), default=math.inf),
-    }
+    coordinate_events = []
+    coordinate_valid_events = []
+    fault_coordinate_events = []
+    for phase in phase_names:
+        phase_dir = args.run / phase
+        if phase == "stale-recovery":
+            fault_text = (phase_dir / "fault-injection.txt").read_text()
+            fault_start_s = float(re.search(
+                r"paused_sim_s=([0-9.eE+-]+)", fault_text).group(1))
+        else:
+            fault_text = (phase_dir / "fault-injection.txt").read_text()
+            fault_start_s = float(re.search(
+                r"frozen_start_sim_s=([0-9.eE+-]+)", fault_text).group(1))
+        for event in _jsonl(phase_dir / "observations.jsonl"):
+            if (event.get("event") != "map_to_odom"
+                    or not isinstance(event.get("data"), dict)
+                    or event.get("sim_s") is None):
+                continue
+            coordinate_events.append(event)
+            target = (coordinate_valid_events
+                      if float(event["sim_s"]) < fault_start_s
+                      else fault_coordinate_events)
+            target.append(event)
+
+    def coordinate_ranges(events):
+        return {
+            "samples": len(events),
+            "maximum_translation_from_registered_odom_m": max((
+                math.hypot(float(e["data"]["x"]), float(e["data"]["y"]))
+                for e in events), default=math.inf),
+            "maximum_absolute_yaw_from_registered_odom_rad": max((
+                abs(float(e["data"]["yaw"])) for e in events), default=math.inf),
+        }
+
+    coordinate_alignment = coordinate_ranges(coordinate_events)
+    coordinate_alignment_before_faults = coordinate_ranges(coordinate_valid_events)
+    coordinate_fault_drift = coordinate_ranges(fault_coordinate_events)
 
     frozen_detection_pass = all(
-        info["fresh_stamped_pose_mismatch_latched"]
-        and info["detection_delay_after_injection_s"] is not None
-        and info["no_new_frontier_goal_while_locked"]
-        and info["explicit_recovery_acknowledged"]
-        and info["home_after_operator_ack"]
-        and info["frozen_stream"]["freshly_stamped_pose_stream"]
-        and info["frozen_stream"]["reported_pose_frozen"]
-        and (info["frozen_stream"]["independent_reference_yaw_range_rad"] > 0.02
-             and info["pre_fault_motion_measurement"] is not None
-             and info["pre_fault_motion_measurement"] > yaw_tolerance
-             and info["lockout_rotation_disagreement_rad"] is not None
-             and info["lockout_rotation_disagreement_rad"] > yaw_tolerance
-             and info["pre_fault_rotation_evidence"]
-             if phase.endswith("rotation") else
-             info["pre_fault_motion_measurement"] is not None
-             and info["pre_fault_motion_measurement"] > 0.02
-             and info["lockout_translation_disagreement_m"] is not None
-             and info["lockout_translation_disagreement_m"] > position_tolerance)
-        and info["lockout_preceded_any_center_boundary_crossing"]
-        for info in frozen_results.values())
+        _frozen_phase_pass(phase, info, position_tolerance, yaw_tolerance)
+        for phase, info in frozen_results.items())
     frozen_detection_pass &= all(
         phase_results[phase]["first_center_boundary_crossing_s"] is None
         and phase_results[phase]["continuous_containment"]
@@ -378,6 +416,8 @@ def main() -> int:
         "stationary_robot": stationary_results,
         "frozen_pose_faults": frozen_results,
         "coordinate_frame_alignment": coordinate_alignment,
+        "coordinate_frame_alignment_before_faults": coordinate_alignment_before_faults,
+        "coordinate_frame_drift_during_faults": coordinate_fault_drift,
         "footprint_assumptions": {
             "footprint": params["footprint"], "padding_m": pad,
             "translation_uncertainty_m": uncertainty,

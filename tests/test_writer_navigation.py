@@ -170,6 +170,47 @@ def test_fast_safety_monitor_cancels_active_goal_when_inputs_stale(
     assert e.busy
 
 
+def test_fast_safety_monitor_latches_stale_pose_reference_between_goals():
+    from living_map_writer.pose_integrity import PoseIntegrityMonitor
+
+    integrity = PoseIntegrityMonitor()
+    integrity.observe_estimate(1.0, 0.0, 0.0, 0.0)
+    integrity.observe_reference(1.0, 1.0, 0.0, 0.0)
+    e = SimpleNamespace(
+        _now_s=lambda: 10.0, busy=False, active_goal=None,
+        pose_integrity_required=True, pose_integrity=integrity,
+        pose_integrity_fault=False,
+        _pose_integrity_ready=lambda now: integrity.paired_fresh(now, 0.5),
+        get_parameter=lambda key: SimpleNamespace(value={
+            "pose_integrity_axes_aligned": True,
+            "pose_integrity_reference_max_age_s": 0.5,
+        }[key]),
+        _latch_pose_integrity_fault=Mock(),
+    )
+
+    FrontierExplorer._monitor_navigation_safety(e)
+
+    e._latch_pose_integrity_fault.assert_called_once()
+    assert "age" in e._latch_pose_integrity_fault.call_args.args[0]
+
+
+def test_fast_safety_monitor_waits_for_first_pose_pair_during_startup():
+    from living_map_writer.pose_integrity import PoseIntegrityMonitor
+
+    integrity = PoseIntegrityMonitor()
+    e = SimpleNamespace(
+        _now_s=lambda: 10.0, busy=False, active_goal=None,
+        pose_integrity_required=True, pose_integrity=integrity,
+        pose_integrity_fault=False,
+        _pose_integrity_ready=lambda _now: False,
+        _latch_pose_integrity_fault=Mock(),
+    )
+
+    FrontierExplorer._monitor_navigation_safety(e)
+
+    e._latch_pose_integrity_fault.assert_not_called()
+
+
 def test_out_of_order_odometry_does_not_replace_the_last_accepted_fallback():
     from nav_msgs.msg import Odometry
 
