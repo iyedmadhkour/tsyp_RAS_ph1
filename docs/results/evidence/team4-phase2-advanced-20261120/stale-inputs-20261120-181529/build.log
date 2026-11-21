@@ -1,0 +1,75 @@
+Starting >>> living_map_dashboard
+Finished <<< living_map_dashboard [0.05s]
+Starting >>> living_map_interfaces
+Finished <<< living_map_interfaces [0.31s]
+Starting >>> living_map_link_sim
+--- stderr: living_map_link_sim
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_link_sim [0.76s]
+Starting >>> living_map_sim
+Finished <<< living_map_sim [0.05s]
+Starting >>> living_map_beacons
+--- stderr: living_map_beacons
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_beacons [1.05s]
+Starting >>> living_map_command_post
+--- stderr: living_map_command_post
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_command_post [1.14s]
+Starting >>> living_map_events
+--- stderr: living_map_events
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_events [1.09s]
+Starting >>> living_map_writer
+--- stderr: living_map_writer
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_writer [1.02s]
+Starting >>> living_map_executor
+--- stderr: living_map_executor
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_executor [1.38s]
+Starting >>> living_map_gateway
+--- stderr: living_map_gateway
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_gateway [1.25s]
+Starting >>> living_map_radio
+--- stderr: living_map_radio
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_radio [1.36s]
+Starting >>> living_map_bringup
+Finished <<< living_map_bringup [0.98s]
+
+Summary: 12 packages finished [10.6s]
+  8 packages had stderr output: living_map_beacons living_map_command_post living_map_events living_map_executor living_map_gateway living_map_link_sim living_map_radio living_map_writer

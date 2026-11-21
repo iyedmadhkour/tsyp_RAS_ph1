@@ -1,0 +1,12 @@
+cmd_translation_samples=1162
+cmd_rotation_samples=176
+cmd_zero_samples=15
+odom_samples=4104
+odom_path_length_m=42.75
+odom_start_to_end_m=0.34
+odom_max_deviation_m=15.51
+odom_yaw_range_rad=6.2571
+command_stamp_ns_first=1795206021806998597
+command_stamp_ns_last=1795206182092759652
+odom_stamp_ns_first=1795206021688205717
+odom_stamp_ns_last=1795206202649467376

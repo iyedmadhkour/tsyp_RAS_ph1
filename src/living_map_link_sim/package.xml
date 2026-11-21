@@ -5,7 +5,6 @@
   <description>Latency, jitter, loss, bandwidth and outage simulation between Gateway and Command Post.</description>
   <maintainer email="team@example.com">LivingMap Team</maintainer>
   <license>Apache-2.0</license>
-  <buildtool_depend>ament_python</buildtool_depend>
   <exec_depend>rclpy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>std_srvs</exec_depend>

@@ -5,7 +5,6 @@
   <description>Executor mission inheritance and beacon-guided navigation.</description>
   <maintainer email="team@example.com">LivingMap Team</maintainer>
   <license>Apache-2.0</license>
-  <buildtool_depend>ament_python</buildtool_depend>
   <exec_depend>rclpy</exec_depend>
   <exec_depend>living_map_interfaces</exec_depend>
   <exec_depend>nav2_msgs</exec_depend>

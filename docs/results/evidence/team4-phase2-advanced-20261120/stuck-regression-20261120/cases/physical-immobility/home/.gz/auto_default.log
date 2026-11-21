@@ -1,0 +1,120 @@
+(2026-11-20T18:23:15.740648255) (2026-11-20T18:23:15.740680974) [Msg] Gazebo Sim GUI    v8.15.0
+(2026-11-20T18:23:15.741207209) (2026-11-20T18:23:15.741217885) [Msg] Detected Wayland. Setting Qt to use the xcb plugin: 'QT_QPA_PLATFORM=xcb'.
+(2026-11-2(2026-11-20T18:23:15.855798420) (2026-11-20T18:23:15.855816237) [Msg] Received world [/tmp/team4-phase2-stuck-evidence/20261120-181917/cases/physical-immobility/runtime/scenario/mine.sdf] from the GUI.
+(2026-11-20T18:23:15.855832441) (2026-11-20T18:23:15.855835277) [Dbg] [gz.cc:172] Unsubscribing from [/gazebo/starting_world].
+663165) [Dbg] [Gui.cc:276] Waiting for subscribers to [/gazebo/starting_world]...
+(2026-11-20T18:23:15.887576502) (2026-11-20T18:23:15.887592425) [Dbg] [Application.cc:96] Initializing application.
+(2026-11-20T18:23:15.887655920) (2026-11-20T18:23:15.887661410) [Dbg] [Application.cc:170] Qt using OpenGL graphics interface
+(2026-11-20T18:23:15.898413512) (2026-11-20T18:23:15.898429077) [GUI] [Dbg] [Application.cc:657] Create main window
+(2026-11-20T18:23:16.505552442) (2026-11-20T18:23:16.505566987) [GUI] [Dbg] [PathManager.cc:68] Requesting resource paths through [/gazebo/resource_paths/get]
+(2026-11-20T18:23:16.533515708) (2026-11-20T18:23:16.533531375) [GUI] [Dbg] [Gui.cc:356] GUI requesting list of world names. The server may be busy downloading resources. Please be patient.
+(2026-11-20T18:23:16.793727783) (2026-11-20T18:23:16.793747328) [GUI] [Dbg] [PathManager.cc:57] Received resource paths.
+(2026-11-20T18:23:16.794131385) (2026-11-20T18:23:16.794142196) [GUI] [Dbg] [GuiRunner.cc:149] Requesting initial state from [/world/living_map_mine/state]...
+(2026-11-20T18:23:16.894780792) (2026-11-20T18:23:16.894795798) [GUI] [Msg] Loading config [/tmp/team4-phase2-stuck-evidence/20261120-181917/install/living_map_sim/share/living_map_sim/gui/mine.config]
+(2026-11-20T18:23:16.894831802) (2026-11-20T18:23:16.894834843) [GUI] [Dbg] [Application.cc:528] Loading plugin [MinimalScene]
+(2026-11-20T18:23:16.940692082) (2026-11-20T18:23:16.940705429) [GUI] [Dbg] [MinimalScene.cc:802] Creating gz-rendering interface for OpenGL
+(2026-11-20T18:23:16.940973860) (2026-11-20T18:23:16.940981727) [GUI] [Dbg] [MinimalScene.cc:802] Creating gz-rendering interface for OpenGL
+(2026-11-20T18:23:16.941005105) (2026-11-20T18:23:16.941026881) [GUI] [Dbg] [MinimalScene.cc:986] Creating render thread interface for OpenGL
+(2026-11-20T18:23:16.941610866) (2026-11-20T18:23:16.941620918) [GUI] [Dbg] [MinimalScene.cc:802] Creating gz-rendering interface for OpenGL
+(2026-11-20T18:23:16.941633900) (2026-11-20T18:23:16.941637521) [GUI] [Dbg] [MinimalScene.cc:986] Creating render thread interface for OpenGL
+(2026-11-20T18:23:17.30895981) (2026-11-20T18:23:17.30913506) [GUI] [Msg] Added plugin [3D View] to main window
+(2026-11-20T18:23:17.31223343) (2026-11-20T18:23:17.31231937) [GUI] [Msg] Loaded plugin [MinimalScene] from path [/opt/ros/jazzy/opt/gz_gui_vendor/lib/gz-gui-8/plugins/libMinimalScene.so]
+(2026-11-20T18:23:17.31265481) (2026-11-20T18:23:17.31270113) [GUI] [Dbg] [Application.cc:528] Loading plugin [EntityContextMenuPlugin]
+(2026-11-20T18:23:17.44876356) (2026-11-20T18:23:17.44892293) [GUI] [Msg] Currently tracking topic on [/gui/currently_tracked]
+(2026-11-20T18:23:17.86926550) (2026-11-20T18:23:17.86942305) [GUI] [Msg] Added plugin [Entity Context Menu] to main window
+(2026-11-20T18:23:17.86983523) (2026-11-20T18:23:17.86987694) [GUI] [Msg] Loaded plugin [EntityContextMenuPlugin] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libEntityContextMenuPlugin.so]
+(2026-11-20T18:23:17.87012917) (2026-11-20T18:23:17.87017079) [GUI] [Dbg] [Application.cc:528] Loading plugin [GzSceneManager]
+(2026-11-20T18:23:17.145608916) (2026-11-20T18:23:17.145625104) [GUI] [Msg] Added plugin [Scene Manager] to main window
+(2026-11-20T18:23:17.145701486) (2026-11-20T18:23:17.145707792) [GUI] [Msg] Loaded plugin [GzSceneManager] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libGzSceneManager.so]
+(2026-11-20T18:23:17.145735330) (2026-11-20T18:23:17.145739109) [GUI] [Dbg] [Application.cc:528] Loading plugin [InteractiveViewControl]
+(2026-11-20T18:23:17.150489128) (2026-11-20T18:23:17.150496727) [GUI] [Msg] Camera view controller topic advertised on [/gui/camera/view_control]
+(2026-11-20T18:23:17.150556179) (2026-11-20T18:23:17.150559037) [GUI] [Msg] Camera reference visual topic advertised on [/gui/camera/view_control/reference_visual]
+(2026-11-20T18:23:17.150618455) (2026-11-20T18:23:17.150621324) [GUI] [Msg] Camera view control sensitivity advertised on [/gui/camera/view_control/sensitivity]
+(2026-11-20T18:23:17.169993622) (2026-11-20T18:23:17.170008113) [GUI] [Msg] Added plugin [Interactive view control] to main window
+(2026-11-20T18:23:17.170042268) (2026-11-20T18:23:17.170045464) [GUI] [Msg] Loaded plugin [InteractiveViewControl] from path [/opt/ros/jazzy/opt/gz_gui_vendor/lib/gz-gui-8/plugins/libInteractiveViewControl.so]
+(2026-11-20T18:23:17.170086944) (2026-11-20T18:23:17.170091149) [GUI] [Dbg] [Application.cc:528] Loading plugin [CameraTracking]
+(2026-11-20T18:23:17.197940250) (2026-11-20T18:23:17.197950140) [GUI] [Msg] Added plugin [Camera tracking] to main window
+(2026-11-20T18:23:17.197990363) (2026-11-20T18:23:17.197993907) [GUI] [Msg] Loaded plugin [CameraTracking] from path [/opt/ros/jazzy/opt/gz_gui_vendor/lib/gz-gui-8/plugins/libCameraTracking.so]
+(2026-11-20T18:23:17.198016370) (2026-11-20T18:23:17.198019085) [GUI] [Dbg] [Application.cc:528] Loading plugin [MarkerManager]
+(2026-11-20T18:23:17.206439785) (2026-11-20T18:23:17.206469904) [GUI] [Msg] Listening to stats on [/world/living_map_mine/stats]
+(2026-11-20T18:23:17.225563895) (2026-11-20T18:23:17.225578214) [GUI] [Msg] Added plugin [Marker Manager] to main window
+(2026-11-20T18:23:17.225609248) (2026-11-20T18:23:17.225611137) [GUI] [Msg] Loaded plugin [MarkerManager] from path [/opt/ros/jazzy/opt/gz_gui_vendor/lib/gz-gui-8/plugins/libMarkerManager.so]
+(2026-11-20T18:23:17.225632555) (2026-11-20T18:23:17.225634954) [GUI] [Dbg] [Application.cc:528] Loading plugin [SelectEntities]
+(2026-11-20T18:23:17.256194611) (2026-11-20T18:23:17.256229760) [GUI] [Msg] Added plugin [Select entities] to main window
+(2026-11-20T18:23:17.256270915) (2026-11-20T18:23:17.256273769) [GUI] [Msg] Loaded plugin [SelectEntities] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libSelectEntities.so]
+(2026-11-20T18:23:17.256297116) (2026-11-20T18:23:17.256299960) [GUI] [Dbg] [Application.cc:528] Loading plugin [Spawn]
+(2026-11-20T18:23:17.286554922) (2026-11-20T18:23:17.286572465) [GUI] [Msg] Added plugin [Spawn] to main window
+(2026-11-20T18:23:17.286620430) (2026-11-20T18:23:17.286626064) [GUI] [Msg] Loaded plugin [Spawn] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libSpawn.so]
+(2026-11-20T18:23:17.286654162) (2026-11-20T18:23:17.286658251) [GUI] [Dbg] [Application.cc:528] Loading plugin [VisualizationCapabilities]
+(2026-11-20T18:23:17.295002788) (2026-11-20T18:23:17.295013726) [GUI] [Msg] View as transparent service on [/gui/view/transparent]
+(2026-11-20T18:23:17.295072445) (2026-11-20T18:23:17.295075533) [GUI] [Msg] View as wireframes service on [/gui/view/wireframes]
+(2026-11-20T18:23:17.295104357) (2026-11-20T18:23:17.295106139) [GUI] [Msg] View center of mass service on [/gui/view/com]
+(2026-11-20T18:23:17.295143057) (2026-11-20T18:23:17.295145668) [GUI] [Msg] View inertia service on [/gui/view/inertia]
+(2026-11-20T18:23:17.295165405) (2026-11-20T18:23:17.295167944) [GUI] [Msg] View collisions service on [/gui/view/collisions]
+(2026-11-20T18:23:17.295210783) (2026-11-20T18:23:17.295215159) [GUI] [Msg] View joints service on [/gui/view/joints]
+(2026-11-20T18:23:17.295245798) (2026-11-20T18:23:17.295248505) [GUI] [Msg] View frames service on [/gui/view/frames]
+(2026-11-20T18:23:17.309911466) (2026-11-20T18:23:17.309921654) [GUI] [Msg] Added plugin [Visualization capabilities] to main window
+(2026-11-20T18:23:17.309942049) (2026-11-20T18:23:17.309943877) [GUI] [Msg] Loaded plugin [VisualizationCapabilities] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libVisualizationCapabilities.so]
+(2026-11-20T18:23:17.309967775) (2026-11-20T18:23:17.309969509) [GUI] [Dbg] [Application.cc:528] Loading plugin [WorldControl]
+(2026-11-20T18:23:17.325410502) (2026-11-20T18:23:17.325419195) [GUI] [Msg] Using world control service [/world/living_map_mine/control]
+(2026-11-20T18:23:17.325752082) (2026-11-20T18:23:17.325757835) [GUI] [Msg] Listening to stats on [/world/living_map_mine/stats]
+(2026-11-20T18:23:17.325768832) (2026-11-20T18:23:17.325770536) [GUI] [Dbg] [WorldControl.cc:237] Using an event to share WorldControl msgs with the server
+(2026-11-20T18:23:17.336910234) (2026-11-20T18:23:17.336921200) [GUI] [Msg] Added plugin [World control] to main window
+(2026-11-20T18:23:17.336939118) (2026-11-20T18:23:17.336940918) [GUI] [Msg] Loaded plugin [WorldControl] from path [/opt/ros/jazzy/opt/gz_gui_vendor/lib/gz-gui-8/plugins/libWorldControl.so]
+(2026-11-20T18:23:17.336956659) (2026-11-20T18:23:17.336958349) [GUI] [Dbg] [Application.cc:528] Loading plugin [WorldStats]
+(2026-11-20T18:23:17.342173683) (2026-11-20T18:23:17.342180674) [GUI] [Msg] Listening to stats on [/world/living_map_mine/stats]
+(2026-11-20T18:23:17.356809956) (2026-11-20T18:23:17.356820461) [GUI] [Msg] Added plugin [World stats] to main window
+(2026-11-20T18:23:17.356849974) (2026-11-20T18:23:17.356852020) [GUI] [Msg] Loaded plugin [WorldStats] from path [/opt/ros/jazzy/opt/gz_gui_vendor/lib/gz-gui-8/plugins/libWorldStats.so]
+(2026-11-20T18:23:17.356869370) (2026-11-20T18:23:17.356871155) [GUI] [Dbg] [Application.cc:528] Loading plugin [Shapes]
+(2026-11-20T18:23:17.373951273) (2026-11-20T18:23:17.373964283) [GUI] [Msg] Added plugin [Shapes] to main window
+(2026-11-20T18:23:17.373984352) (2026-11-20T18:23:17.373986135) [GUI] [Msg] Loaded plugin [Shapes] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libShapes.so]
+(2026-11-20T18:23:17.374004243) (2026-11-20T18:23:17.374005984) [GUI] [Dbg] [Application.cc:528] Loading plugin [Lights]
+(2026-11-20T18:23:17.388366622) (2026-11-20T18:23:17.388381124) [GUI] [Msg] Added plugin [Lights] to main window
+(2026-11-20T18:23:17.388399760) (2026-11-20T18:23:17.388401516) [GUI] [Msg] Loaded plugin [Lights] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libLights.so]
+(2026-11-20T18:23:17.388421206) (2026-11-20T18:23:17.388422965) [GUI] [Dbg] [Application.cc:528] Loading plugin [TransformControl]
+(2026-11-20T18:23:17.418008634) (2026-11-20T18:23:17.418020156) [GUI] [Msg] Added plugin [Transform control] to main window
+(2026-11-20T18:23:17.418036546) (2026-11-20T18:23:17.418038313) [GUI] [Msg] Loaded plugin [TransformControl] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libTransformControl.so]
+(2026-11-20T18:23:17.418054019) (2026-11-20T18:23:17.418055685) [GUI] [Dbg] [Application.cc:528] Loading plugin [Screenshot]
+(2026-11-20T18:23:17.424715089) (2026-11-20T18:23:17.424726826) [GUI] [Msg] Screenshot service on [/gui/screenshot]
+(2026-11-20T18:23:17.435840733) (2026-11-20T18:23:17.435853371) [GUI] [Msg] Added plugin [Screenshot] to main window
+(2026-11-20T18:23:17.435871920) (2026-11-20T18:23:17.435873767) [GUI] [Msg] Loaded plugin [Screenshot] from path [/opt/ros/jazzy/opt/gz_gui_vendor/lib/gz-gui-8/plugins/libScreenshot.so]
+(2026-11-20T18:23:17.435891081) (2026-11-20T18:23:17.435892817) [GUI] [Dbg] [Application.cc:528] Loading plugin [CopyPaste]
+(2026-11-20T18:23:17.451810476) (2026-11-20T18:23:17.451821006) [GUI] [Msg] Added plugin [Copy/Paste] to main window
+(2026-11-20T18:23:17.451838895) (2026-11-20T18:23:17.451840642) [GUI] [Msg] Loaded plugin [CopyPaste] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libCopyPaste.so]
+(2026-11-20T18:23:17.451856675) (2026-11-20T18:23:17.451858351) [GUI] [Dbg] [Application.cc:528] Loading plugin [ComponentInspector]
+(2026-11-20T18:23:17.503932548) (2026-11-20T18:23:17.503943179) [GUI] [Msg] Added plugin [Component inspector] to main window
+(2026-11-20T18:23:17.503963566) (2026-11-20T18:23:17.503965391) [GUI] [Msg] Loaded plugin [ComponentInspector] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libComponentInspector.so]
+(2026-11-20T18:23:17.503988881) (2026-11-20T18:23:17.503990657) [GUI] [Dbg] [Application.cc:528] Loading plugin [EntityTree]
+(2026-11-20T18:23:17.516806248) (2026-11-20T18:23:17.516828357) [GUI] [Msg] Currently tracking topic on [/gui/currently_tracked]
+(2026-11-20T18:23:17.538399469) (2026-11-20T18:23:17.538411685) [GUI] [Msg] Added plugin [Entity tree] to main window
+(2026-11-20T18:23:17.538432188) (2026-11-20T18:23:17.538434459) [GUI] [Msg] Loaded plugin [EntityTree] from path [/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/gui/libEntityTree.so]
+(2026-11-20T18:23:17.538453741) (2026-11-20T18:23:17.538455915) [GUI] [Dbg] [Application.cc:398] Loading window config
+(2026-11-20T18:23:17.538511839) (2026-11-20T18:23:17.538514043) [GUI] [Msg] Using server control service [/server_control]
+(2026-11-20T18:23:17.538525622) (2026-11-20T18:23:17.538527638) [GUI] [Dbg] [Application.cc:671] Applying config
+(2026-11-20T18:23:17.561726275) (2026-11-20T18:23:17.561736742) [GUI] [Wrn] [Application.cc:908] [QT] file::/WorldStats/WorldStats.qml:53:3: QML RowLayout: Binding loop detected for property "x"
+(2026-11-20T18:23:17.574068435) (2026-11-20T18:23:17.574078680) [GUI] [Dbg] [MinimalScene.cc:802] Creating gz-rendering interface for OpenGL
+(2026-11-20T18:23:17.574090257) (2026-11-20T18:23:17.574091955) [GUI] [Dbg] [MinimalScene.cc:986] Creating render thread interface for OpenGL
+(2026-11-20T18:23:17.842833580) (2026-11-20T18:23:17.842843566) [GUI] [Msg] Loading plugin [gz-rendering-ogre2]
+(2026-11-20T18:23:18.28946837) (2026-11-20T18:23:18.28950753) [GUI] [Dbg] [MinimalScene.cc:749] Create scene [scene]
+(2026-11-20T18:23:18.165381329) (2026-11-20T18:23:18.165391353) [GUI] [Wrn] [Ogre2RenderTarget.cc:668] Anti-aliasing level of '' is not supported; valid FSAA levels are: [ 0 4 ]. Setting to 1
+(2026-11-20T18:23:18.491488997) (2026-11-20T18:23:18.491497616) [GUI] [Dbg] [MinimalScene.cc:1037] Creating texture node render interface for OpenGL
+(2026-11-20T18:23:18.579803314) (2026-11-20T18:23:18.579813195) [GUI] [Dbg] [TransformControl.cc:453] TransformControl plugin is using camera [scene::Camera(65527)]
+(2026-11-20T18:23:18.579868985) (2026-11-20T18:23:18.579870744) [GUI] [Dbg] [Spawn.cc:308] Spawn plugin is using camera [scene::Camera(65527)]
+(2026-11-20T18:23:18.579888235) (2026-11-20T18:23:18.579889949) [GUI] [Dbg] [SelectEntities.cc:452] SelectEntities plugin is using camera [scene::Camera(65527)]
+(2026-11-20T18:23:18.580043969) (2026-11-20T18:23:18.580046608) [GUI] [Dbg] [MarkerManager.cc:169] Advertise /marker/list service.
+(2026-11-20T18:23:18.580117078) (2026-11-20T18:23:18.580118980) [GUI] [Dbg] [MarkerManager.cc:179] Advertise /marker/list.
+(2026-11-20T18:23:18.580138164) (2026-11-20T18:23:18.580139844) [GUI] [Dbg] [MarkerManager.cc:189] Advertise /marker_array.
+(2026-11-20T18:23:18.580160632) (2026-11-20T18:23:18.580162280) [GUI] [Dbg] [CameraTracking.cc:205] CameraTrackingPrivate plugin is moving camera [scene::Camera(65527)]
+(2026-11-20T18:23:18.580245823) (2026-11-20T18:23:18.580249804) [GUI] [Msg] Move to service on [/gui/move_to]
+(2026-11-20T18:23:18.580269605) (2026-11-20T18:23:18.580271453) [GUI] [Msg] Follow service on [/gui/follow] (deprecated)
+(2026-11-20T18:23:18.580391547) (2026-11-20T18:23:18.580397291) [GUI] [Msg] Tracking topic on [/gui/track]
+(2026-11-20T18:23:18.580460868) (2026-11-20T18:23:18.580463408) [GUI] [Msg] Tracking status topic on [/gui/currently_tracked]
+(2026-11-20T18:23:18.580531069) (2026-11-20T18:23:18.580534028) [GUI] [Msg] Move to pose service on [/gui/move_to/pose]
+(2026-11-20T18:23:18.580602610) (2026-11-20T18:23:18.580605652) [GUI] [Msg] Camera pose topic advertised on [/gui/camera/pose]
+(2026-11-20T18:23:18.580651991) (2026-11-20T18:23:18.580654811) [GUI] [Msg] Follow offset service on [/gui/follow/offset] (deprecated)
+(2026-11-20T18:23:18.580682402) (2026-11-20T18:23:18.580684143) [GUI] [Dbg] [InteractiveViewControl.cc:176] InteractiveViewControl plugin is moving camera [scene::Camera(65527)]
+(2026-11-20T18:23:18.696862794) (2026-11-20T18:23:18.696875132) [GUI] [Dbg] [EntityContextMenuPlugin.cc:79] Entity context menu plugin is using camera [scene::Camera(65527)]
+(2026-11-20T18:25:12.183018178) (2026-11-20T18:25:12.183068544) [GUI] [Dbg] [SignalHandler.cc:142] Received signal[2].
+(2026-11-20T18:25:12.212258554) (2026-11-20T18:25:12.212279739) [GUI] [Dbg] [Gui.cc:536] Shutting down gz-sim-gui
+(2026-11-20T18:25:12.212326762) (2026-11-20T18:25:12.212333770) [GUI] [Dbg] [Application.cc:237] Terminating application.
+(2026-11-20T18:25:12.402797040) (2026-11-20T18:25:12.402817206) [GUI] [Dbg] [MinimalScene.cc:841] Destroy scene [scene]

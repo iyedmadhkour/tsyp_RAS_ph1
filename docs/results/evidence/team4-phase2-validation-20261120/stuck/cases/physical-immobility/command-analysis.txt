@@ -1,0 +1,7 @@
+cmd_translation_samples=453
+cmd_rotation_samples=0
+cmd_zero_samples=30
+odom_samples=1757
+odom_path_length_m=0.00
+odom_start_to_end_m=0.00
+odom_max_deviation_m=0.00

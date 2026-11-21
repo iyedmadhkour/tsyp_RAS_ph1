@@ -1,0 +1,107 @@
+Starting >>> living_map_dashboard
+--- stderr: living_map_dashboard
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_dashboard [1.45s]
+Starting >>> living_map_interfaces
+--- stderr: living_map_interfaces
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_interfaces [8.97s]
+Starting >>> living_map_link_sim
+--- stderr: living_map_link_sim
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_link_sim [1.03s]
+Starting >>> living_map_sim
+--- stderr: living_map_sim
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_sim [1.39s]
+Starting >>> living_map_beacons
+--- stderr: living_map_beacons
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_beacons [1.03s]
+Starting >>> living_map_command_post
+--- stderr: living_map_command_post
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_command_post [0.94s]
+Starting >>> living_map_events
+--- stderr: living_map_events
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_events [1.05s]
+Starting >>> living_map_writer
+--- stderr: living_map_writer
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_writer [1.05s]
+Starting >>> living_map_executor
+--- stderr: living_map_executor
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_executor [1.33s]
+Starting >>> living_map_gateway
+--- stderr: living_map_gateway
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_gateway [1.21s]
+Starting >>> living_map_radio
+--- stderr: living_map_radio
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_radio [1.21s]
+Starting >>> living_map_bringup
+--- stderr: living_map_bringup
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_bringup [7.23s]
+
+Summary: 12 packages finished [28.1s]
+  12 packages had stderr output: living_map_beacons living_map_bringup living_map_command_post living_map_dashboard living_map_events living_map_executor living_map_gateway living_map_interfaces living_map_link_sim living_map_radio living_map_sim living_map_writer

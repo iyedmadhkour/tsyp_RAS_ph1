@@ -1,0 +1,10 @@
+branch=review/pr1-writer-stuck-detection
+base=0fdf3449a5df970f74dccce922aa650c4b687c55
+head=fd3ad692d63ea1ce2878c8313e8ccfe81d526b1b
+started=2026-11-20T16:35:48+01:00
+ros_distro=jazzy
+ros_domain_id=125
+run_root=/tmp/livingmap-pr1-evidence-20261120/external-cancel-20261120-163548
+slam_overlay=/home/iyed/livingmap-setup/writer-slam-5b-9qc5m2a6/overlay/install
+complete=true
+finished=2026-11-20T16:37:24+01:00

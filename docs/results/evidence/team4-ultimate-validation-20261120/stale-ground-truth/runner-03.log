@@ -1,0 +1,142 @@
+branch=phase2/reliability-optimization-20261120
+head=66b23b9fc2fe6b85c32614bbed24361e8eb93204
+started=2026-11-20T19:17:00+01:00
+ros_distro=jazzy
+seed=none (deterministic fault timing)
+simulation_assumptions=0.5s pose age; 0.35s scan age; 0.5s costmap timeout; 10Hz scan; bridge paused by SIGSTOP
+ground_truth_topic=/model/writer/pose; source=Gazebo model pose publisher; frame=world
+Starting >>> living_map_dashboard
+--- stderr: living_map_dashboard
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_dashboard [1.36s]
+Starting >>> living_map_interfaces
+--- stderr: living_map_interfaces
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_interfaces [7.78s]
+Starting >>> living_map_link_sim
+--- stderr: living_map_link_sim
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_link_sim [0.77s]
+Starting >>> living_map_sim
+--- stderr: living_map_sim
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_sim [1.19s]
+Starting >>> living_map_beacons
+--- stderr: living_map_beacons
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_beacons [1.18s]
+Starting >>> living_map_command_post
+--- stderr: living_map_command_post
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_command_post [1.27s]
+Starting >>> living_map_events
+--- stderr: living_map_events
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_events [1.10s]
+Starting >>> living_map_writer
+--- stderr: living_map_writer
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_writer [1.13s]
+Starting >>> living_map_executor
+--- stderr: living_map_executor
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_executor [1.37s]
+Starting >>> living_map_gateway
+--- stderr: living_map_gateway
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_gateway [1.52s]
+Starting >>> living_map_radio
+--- stderr: living_map_radio
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+---
+Finished <<< living_map_radio [1.25s]
+Starting >>> living_map_bringup
+--- stderr: living_map_bringup
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_bringup [10.1s]
+
+Summary: 12 packages finished [30.1s]
+  12 packages had stderr output: living_map_beacons living_map_bringup living_map_command_post living_map_dashboard living_map_events living_map_executor living_map_gateway living_map_interfaces living_map_link_sim living_map_radio living_map_sim living_map_writer
+scan_frames_pid=178017
+paused_at=2026-11-20T19:17:38+01:00
+paused_sim_s=2.162
+{"return_request_published": true, "matched_subscribers": 1}
+resumed_at=2026-11-20T19:17:44+01:00
+resumed_sim_s=8.692
+{
+  "home_after_fresh_inputs": true,
+  "limitation": "Gazebo bridge was paused; motor stopping remains hardware-contract dependent.",
+  "physical_stop_guaranteed": false,
+  "result": "PASS",
+  "scenario": "stale_scan_and_localization_bridge_pause",
+  "stale_cancel_requested": true,
+  "swept_boundary_during_observed_intervals": {
+    "entrance_x_m": -1.0,
+    "map_transform_missing_samples": 16,
+    "minimum_uncertain_swept_x_m": -0.41000201003347003,
+    "odom_gap_count_over_0_5s": 1,
+    "status": "INCONCLUSIVE",
+    "unmapped_motion_samples": 1
+  },
+  "watchdog_pose_unavailable_count": 0,
+  "watchdog_scan_unavailable_count": 1
+}
+complete=true
+finished=2026-11-20T19:18:10+01:00
+
+PASS: stale bridge cancellation and HOME recovery. Evidence: /home/iyed/LivingMap-Team4/docs/results/evidence/team4-ultimate-validation-20261120/stale-ground-truth/runs/stale-inputs-20261120-191700

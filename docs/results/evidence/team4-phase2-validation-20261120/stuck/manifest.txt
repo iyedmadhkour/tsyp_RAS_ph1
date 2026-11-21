@@ -1,0 +1,7 @@
+branch=phase2/reliability-optimization-20261120
+commit=0f79291f1bcddaa750462de7b7ac425eaa540b8e
+ros_distro=jazzy
+started=2026-11-20T17:20:46+01:00
+run_root=/tmp/livingmap-phase2-stuck-20261120/20261120-172045
+complete=true
+finished=2026-11-20T17:28:54+01:00

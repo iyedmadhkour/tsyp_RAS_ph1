@@ -1,0 +1,1213 @@
+Starting >>> living_map_interfaces
+Starting >>> living_map_dashboard
+-- The C compiler identification is GNU 13.3.0
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+-- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Found rosidl_default_generators: 1.6.1 (/opt/ros/jazzy/share/rosidl_default_generators/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Configuring done (1.2s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+-- Build files have been written to: /tmp/livingmap-team4-master-qa-20261120/build/living_map_dashboard
+-- Install configuration: ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/web
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/web/index.html
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/web/style.css
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/web/app.js
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/package_run_dependencies/living_map_dashboard
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/parent_prefix_path/living_map_dashboard
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/environment/ament_prefix_path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/environment/ament_prefix_path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/environment/path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/environment/path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/local_setup.bash
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/local_setup.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/local_setup.zsh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/local_setup.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/package.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages/living_map_dashboard
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/cmake/living_map_dashboardConfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/cmake/living_map_dashboardConfig-version.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_dashboard/package.xml
+--- stderr: living_map_dashboard
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_dashboard [1.31s]
+Starting >>> living_map_link_sim
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rosidl_adapter: 4.6.9 (/opt/ros/jazzy/share/rosidl_adapter/cmake)
+-- Found geometry_msgs: 5.3.8 (/opt/ros/jazzy/share/geometry_msgs/cmake)
+-- Found nav_msgs: 5.3.8 (/opt/ros/jazzy/share/nav_msgs/cmake)
+-- Found ament_cmake_ros: 0.12.2 (/opt/ros/jazzy/share/ament_cmake_ros/cmake)
+running egg_info
+creating ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info
+writing ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info/PKG-INFO
+writing dependency_links to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info/dependency_links.txt
+writing entry points to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info/entry_points.txt
+writing requirements to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info/requires.txt
+writing top-level names to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info/top_level.txt
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info/SOURCES.txt'
+reading manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info/SOURCES.txt'
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build/lib
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build/lib/living_map_link_sim
+copying living_map_link_sim/model.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build/lib/living_map_link_sim
+copying living_map_link_sim/node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build/lib/living_map_link_sim
+copying living_map_link_sim/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build/lib/living_map_link_sim
+running install
+running install_lib
+creating /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_link_sim
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build/lib/living_map_link_sim/model.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_link_sim
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build/lib/living_map_link_sim/node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_link_sim
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/build/lib/living_map_link_sim/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_link_sim
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_link_sim/model.py to model.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_link_sim/node.py to node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_link_sim/__init__.py to __init__.cpython-312.pyc
+running install_data
+copying resource/living_map_link_sim -> /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages
+copying package.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_link_sim
+running install_egg_info
+Copying ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/living_map_link_sim.egg-info to /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_link_sim-0.1.0-py3.12.egg-info
+running install_scripts
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+Installing link_sim script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_link_sim
+writing list of installed files to '/tmp/livingmap-team4-master-qa-20261120/build/living_map_link_sim/install.log'
+Finished <<< living_map_link_sim [1.00s]
+Starting >>> living_map_command_post
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found python_cmake_module: 0.11.1 (/opt/ros/jazzy/share/python_cmake_module/cmake)
+-- Found PythonExtra: /usr/bin/python3  
+running egg_info
+creating ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info
+writing ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info/PKG-INFO
+writing dependency_links to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info/dependency_links.txt
+writing entry points to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info/entry_points.txt
+writing requirements to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info/requires.txt
+writing top-level names to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info/top_level.txt
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info/SOURCES.txt'
+reading manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info/SOURCES.txt'
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post
+copying living_map_command_post/demo.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post
+copying living_map_command_post/node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post
+copying living_map_command_post/state.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post
+copying living_map_command_post/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post
+copying living_map_command_post/scenario.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post
+copying living_map_command_post/web.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post
+running install
+running install_lib
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter Development NumPy Development.Module Development.Embed 
+creating /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post/demo.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post/node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post/state.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post/scenario.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/build/lib/living_map_command_post/web.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post/demo.py to demo.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post/node.py to node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post/state.py to state.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post/__init__.py to __init__.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post/scenario.py to scenario.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post/web.py to web.cpython-312.pyc
+running install_data
+copying resource/living_map_command_post -> /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages
+copying package.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_command_post
+running install_egg_info
+Copying ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/living_map_command_post.egg-info to /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_command_post-0.1.0-py3.12.egg-info
+running install_scripts
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Configuring done (3.2s)
+Installing command_post script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_command_post
+writing list of installed files to '/tmp/livingmap-team4-master-qa-20261120/build/living_map_command_post/install.log'
+Finished <<< living_map_command_post [0.94s]
+Starting >>> living_map_sim
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+-- Build files have been written to: /tmp/livingmap-team4-master-qa-20261120/build/living_map_interfaces
+[  1%] Generating type hashes for ROS interfaces
+[  2%] Generating Rust code for ROS interfaces
+[  2%] Built target ament_cmake_python_copy_living_map_interfaces
+-- The C compiler identification is GNU 13.3.0
+running egg_info
+creating living_map_interfaces.egg-info
+writing living_map_interfaces.egg-info/PKG-INFO
+writing dependency_links to living_map_interfaces.egg-info/dependency_links.txt
+writing top-level names to living_map_interfaces.egg-info/top_level.txt
+writing manifest file 'living_map_interfaces.egg-info/SOURCES.txt'
+reading manifest file 'living_map_interfaces.egg-info/SOURCES.txt'
+writing manifest file 'living_map_interfaces.egg-info/SOURCES.txt'
+[  2%] Built target ament_cmake_python_build_living_map_interfaces_egg
+[  2%] Built target living_map_interfaces__rosidl_generator_type_description
+[  3%] Generating C code for ROS interfaces
+[  3%] Generating C++ code for ROS interfaces
+[  3%] Built target living_map_interfaces__rs
+-- The CXX compiler identification is GNU 13.3.0
+[  3%] Built target living_map_interfaces__cpp
+-- Detecting C compiler ABI info
+[  4%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_memory__type_support.c.o
+[  4%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/detected_event__description.c.o
+[  5%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/detected_event__type_support.c.o
+[  6%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/detected_event__functions.c.o
+[  6%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_memory__functions.c.o
+[  7%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_status__functions.c.o
+[  9%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/robot_status__functions.c.o
+[  8%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_memory__description.c.o
+[ 10%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/robot_status__type_support.c.o
+[ 11%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/mission_brief__functions.c.o
+[ 12%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/mission_brief__type_support.c.o
+[ 13%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/network_status__description.c.o
+[ 14%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_status__description.c.o
+[ 15%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/robot_status__description.c.o
+[ 15%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/network_status__functions.c.o
+[ 15%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/mission_brief__description.c.o
+[ 15%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_status__type_support.c.o
+[ 16%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_seed_batch__description.c.o
+[ 17%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/network_status__type_support.c.o
+[ 18%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_seed_batch__functions.c.o
+[ 18%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/msg/detail/beacon_seed_batch__type_support.c.o
+[ 18%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/start_mission__description.c.o
+[ 19%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/deploy_beacon__description.c.o
+[ 20%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/deploy_beacon__type_support.c.o
+[ 21%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/deploy_beacon__functions.c.o
+[ 22%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/start_mission__functions.c.o
+[ 23%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/start_mission__type_support.c.o
+[ 23%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/fail_robot__description.c.o
+[ 24%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/fail_robot__functions.c.o
+[ 25%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/fail_robot__type_support.c.o
+[ 25%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/reset_system__functions.c.o
+[ 26%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/reset_system__description.c.o
+[ 27%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_c.dir/rosidl_generator_c/living_map_interfaces/srv/detail/reset_system__type_support.c.o
+[ 28%] Linking C shared library libliving_map_interfaces__rosidl_generator_c.so
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+[ 28%] Built target living_map_interfaces__rosidl_generator_c
+[ 31%] Generating C type support for eProsima Fast-RTPS
+[ 31%] Generating C type support dispatch for ROS interfaces
+[ 31%] Generating C++ type support for eProsima Fast-RTPS
+[ 31%] Generating C++ introspection for ROS interfaces
+[ 31%] Generating C introspection for ROS interfaces
+[ 32%] Generating C++ type support dispatch for ROS interfaces
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[ 34%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/msg/beacon_status__type_support.cpp.o
+[ 34%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/msg/detected_event__type_support.cpp.o
+[ 35%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/msg/network_status__type_support.cpp.o
+[ 35%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/msg/beacon_seed_batch__type_support.cpp.o
+[ 36%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/srv/start_mission__type_support.cpp.o
+[ 36%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/msg/robot_status__type_support.cpp.o
+[ 37%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/msg/beacon_memory__type_support.cpp.o
+[ 38%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/msg/mission_brief__type_support.cpp.o
+[ 39%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/srv/deploy_beacon__type_support.cpp.o
+[ 40%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/srv/fail_robot__type_support.cpp.o
+[ 40%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/living_map_interfaces/srv/reset_system__type_support.cpp.o
+[ 41%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/msg/beacon_status__type_support.cpp.o
+[ 42%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/msg/detected_event__type_support.cpp.o
+[ 43%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/msg/robot_status__type_support.cpp.o
+[ 44%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/msg/mission_brief__type_support.cpp.o
+[ 44%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/msg/beacon_memory__type_support.cpp.o
+[ 45%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/srv/start_mission__type_support.cpp.o
+[ 45%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/msg/network_status__type_support.cpp.o
+[ 46%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/msg/beacon_seed_batch__type_support.cpp.o
+[ 47%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/srv/deploy_beacon__type_support.cpp.o
+[ 47%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/srv/fail_robot__type_support.cpp.o
+[ 48%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/living_map_interfaces/srv/reset_system__type_support.cpp.o
+[ 49%] Linking CXX shared library libliving_map_interfaces__rosidl_typesupport_c.so
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[ 50%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/msg/detail/detected_event__type_support.cpp.o
+[ 51%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/msg/detail/beacon_memory__type_support.cpp.o
+[ 52%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/msg/detail/beacon_status__type_support.cpp.o
+[ 52%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/msg/detail/robot_status__type_support.cpp.o
+[ 52%] Built target living_map_interfaces__rosidl_typesupport_c
+[ 53%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/msg/detail/mission_brief__type_support.cpp.o
+[ 54%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/msg/detail/network_status__type_support.cpp.o
+[ 55%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/msg/detail/detected_event__type_support.c.o
+[ 55%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/msg/detail/beacon_memory__type_support.c.o
+[ 56%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/msg/detail/beacon_status__type_support.c.o
+[ 57%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/msg/detail/robot_status__type_support.c.o
+[ 58%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/msg/detail/mission_brief__type_support.c.o
+[ 58%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/srv/detail/deploy_beacon__type_support.cpp.o
+[ 59%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/msg/detail/beacon_seed_batch__type_support.cpp.o
+[ 60%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/srv/detail/start_mission__type_support.cpp.o
+[ 61%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/srv/detail/fail_robot__type_support.cpp.o
+[ 61%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/msg/detail/network_status__type_support.c.o
+-- Configuring done (2.0s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+-- Build files have been written to: /tmp/livingmap-team4-master-qa-20261120/build/living_map_sim
+[ 62%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/msg/detail/beacon_seed_batch__type_support.c.o
+[ 63%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/living_map_interfaces/srv/detail/reset_system__type_support.cpp.o
+[ 64%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/srv/detail/deploy_beacon__type_support.c.o
+[ 64%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/srv/detail/start_mission__type_support.c.o
+[ 65%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/srv/detail/fail_robot__type_support.c.o
+-- Install configuration: ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/worlds
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/worlds/mine.sdf
+[ 66%] Building C object CMakeFiles/living_map_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/living_map_interfaces/srv/detail/reset_system__type_support.c.o
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/model.sdf
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/materials
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/materials/textures
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/materials/textures/headlight.jpg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/materials/textures/x2.jpg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/meshes
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/meshes/x2_wheel_left.dae
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/meshes/x2_chassis.dae
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/meshes/x2_wheel_right.dae
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/meshes/headlight.dae
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/writer/model.config
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/firebot
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/firebot/model.sdf
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/firebot/model.config
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor/model.sdf
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor/meshes
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor/meshes/wheel.stl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor/meshes/bumper.stl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor/meshes/user_rail.stl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor/meshes/base_link.stl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor/meshes/top_plate.stl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/models/executor/model.config
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/rviz
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/rviz/living_map.rviz
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/gui
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/gui/mine.config
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/package_run_dependencies/living_map_sim
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/parent_prefix_path/living_map_sim
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/environment/ament_prefix_path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/environment/ament_prefix_path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/environment/path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/environment/path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/local_setup.bash
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/local_setup.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/local_setup.zsh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/local_setup.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/package.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages/living_map_sim
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/cmake/living_map_simConfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/cmake/living_map_simConfig-version.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_sim/package.xml
+--- stderr: living_map_sim
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_sim [2.13s]
+[ 67%] Linking C shared library libliving_map_interfaces__rosidl_typesupport_introspection_c.so
+[ 68%] Linking CXX shared library libliving_map_interfaces__rosidl_typesupport_cpp.so
+[ 70%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/msg/detail/dds_fastrtps/detected_event__type_support.cpp.o
+[ 70%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/msg/detail/dds_fastrtps/mission_brief__type_support.cpp.o
+[ 70%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/msg/detail/dds_fastrtps/beacon_seed_batch__type_support.cpp.o
+[ 71%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/msg/detail/dds_fastrtps/beacon_memory__type_support.cpp.o
+[ 72%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/msg/detail/dds_fastrtps/robot_status__type_support.cpp.o
+[ 73%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/srv/detail/dds_fastrtps/start_mission__type_support.cpp.o
+[ 74%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/msg/detail/dds_fastrtps/network_status__type_support.cpp.o
+[ 75%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/srv/detail/dds_fastrtps/deploy_beacon__type_support.cpp.o
+[ 75%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/msg/detail/dds_fastrtps/beacon_status__type_support.cpp.o
+[ 75%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/msg/detail/detected_event__type_support_c.cpp.o
+[ 76%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/srv/detail/dds_fastrtps/fail_robot__type_support.cpp.o
+[ 77%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/msg/detail/beacon_memory__type_support_c.cpp.o
+[ 78%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/msg/detail/beacon_status__type_support_c.cpp.o
+[ 78%] Built target living_map_interfaces__rosidl_typesupport_introspection_c
+[ 79%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/msg/detail/robot_status__type_support_c.cpp.o
+[ 79%] Built target living_map_interfaces__rosidl_typesupport_cpp
+[ 79%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/living_map_interfaces/srv/detail/dds_fastrtps/reset_system__type_support.cpp.o
+[ 79%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/msg/detail/mission_brief__type_support_c.cpp.o
+[ 80%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/msg/detail/network_status__type_support_c.cpp.o
+[ 81%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/msg/detail/beacon_seed_batch__type_support_c.cpp.o
+[ 81%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/srv/detail/deploy_beacon__type_support_c.cpp.o
+[ 81%] Linking CXX shared library libliving_map_interfaces__rosidl_typesupport_introspection_cpp.so
+[ 82%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/srv/detail/start_mission__type_support_c.cpp.o
+[ 83%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/srv/detail/reset_system__type_support_c.cpp.o
+[ 84%] Building CXX object CMakeFiles/living_map_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/living_map_interfaces/srv/detail/fail_robot__type_support_c.cpp.o
+[ 84%] Built target living_map_interfaces__rosidl_typesupport_introspection_cpp
+[ 85%] Linking CXX shared library libliving_map_interfaces__rosidl_typesupport_fastrtps_cpp.so
+[ 85%] Linking CXX shared library libliving_map_interfaces__rosidl_typesupport_fastrtps_c.so
+[ 85%] Built target living_map_interfaces__rosidl_typesupport_fastrtps_cpp
+[ 85%] Built target living_map_interfaces__rosidl_typesupport_fastrtps_c
+[ 85%] Built target living_map_interfaces
+[ 86%] Generating Python code for ROS interfaces
+[ 86%] Built target living_map_interfaces__py
+[ 87%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/msg/_detected_event_s.c.o
+[ 88%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/msg/_mission_brief_s.c.o
+[ 89%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/msg/_robot_status_s.c.o
+[ 90%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/msg/_beacon_seed_batch_s.c.o
+[ 90%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/msg/_network_status_s.c.o
+[ 90%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/srv/_fail_robot_s.c.o
+[ 90%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/msg/_beacon_memory_s.c.o
+[ 91%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/msg/_beacon_status_s.c.o
+[ 92%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/srv/_start_mission_s.c.o
+[ 93%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/srv/_deploy_beacon_s.c.o
+[ 94%] Building C object CMakeFiles/living_map_interfaces__rosidl_generator_py.dir/rosidl_generator_py/living_map_interfaces/srv/_reset_system_s.c.o
+[ 95%] Linking C shared library libliving_map_interfaces__rosidl_generator_py.so
+[ 95%] Built target living_map_interfaces__rosidl_generator_py
+[ 96%] Building C object CMakeFiles/living_map_interfaces_s__rosidl_typesupport_introspection_c.dir/rosidl_generator_py/living_map_interfaces/_living_map_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o
+[ 96%] Building C object CMakeFiles/living_map_interfaces_s__rosidl_typesupport_fastrtps_c.dir/rosidl_generator_py/living_map_interfaces/_living_map_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o
+[ 97%] Building C object CMakeFiles/living_map_interfaces_s__rosidl_typesupport_c.dir/rosidl_generator_py/living_map_interfaces/_living_map_interfaces_s.ep.rosidl_typesupport_c.c.o
+[ 99%] Linking C shared module rosidl_generator_py/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_c.so
+[ 99%] Linking C shared module rosidl_generator_py/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_introspection_c.so
+[100%] Linking C shared module rosidl_generator_py/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_fastrtps_c.so
+[100%] Built target living_map_interfaces_s__rosidl_typesupport_introspection_c
+[100%] Built target living_map_interfaces_s__rosidl_typesupport_c
+[100%] Built target living_map_interfaces_s__rosidl_typesupport_fastrtps_c
+-- Install configuration: ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/rosidl_interfaces/living_map_interfaces
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/DetectedEvent.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconMemory.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconStatus.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/RobotStatus.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/MissionBrief.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/NetworkStatus.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconSeedBatch.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/DeployBeacon.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/StartMission.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/FailRobot.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/ResetSystem.json
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/start_mission.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/reset_system.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/deploy_beacon.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/fail_robot.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/beacon_seed_batch.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/network_status.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__description.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__functions.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__struct.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__type_support.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__functions.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/robot_status.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/rosidl_generator_c__visibility_control.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/beacon_status.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/mission_brief.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/beacon_memory.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detected_event.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/environment/library_path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/environment/library_path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_generator_c.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_generator_c.so" to ""
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__rosidl_typesupport_fastrtps_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_fastrtps_c.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_fastrtps_c.so" to ""
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__rosidl_typesupport_introspection_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__rosidl_typesupport_introspection_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__type_support.c
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__rosidl_typesupport_introspection_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__rosidl_typesupport_introspection_c.h
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__rosidl_typesupport_introspection_c.h
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__type_support.c
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__type_support.c
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__rosidl_typesupport_introspection_c.h
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__type_support.c
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__type_support.c
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__rosidl_typesupport_introspection_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__rosidl_typesupport_introspection_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__rosidl_typesupport_introspection_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__rosidl_typesupport_introspection_c.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__rosidl_typesupport_introspection_c.h
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__type_support.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_introspection_c.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_introspection_c.so" to ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_c.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_c.so" to ""
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/reset_system.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/start_mission.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/deploy_beacon.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/fail_robot.hpp
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/beacon_memory.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/mission_brief.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/robot_status.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detected_event.hpp
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__struct.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__builder.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__type_support.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__traits.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/beacon_seed_batch.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/beacon_status.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/network_status.hpp
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/dds_fastrtps
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/dds_fastrtps
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_fastrtps_cpp.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_fastrtps_cpp.so" to ""
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/fail_robot__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/deploy_beacon__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/reset_system__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/srv/detail/start_mission__type_support.cpp
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg
+-- Up-to-date: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_memory__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_seed_batch__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/robot_status__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/network_status__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/beacon_status__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/detected_event__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/include/living_map_interfaces/living_map_interfaces/msg/detail/mission_brief__type_support.cpp
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_introspection_cpp.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_introspection_cpp.so" to ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_cpp.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_typesupport_cpp.so" to ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/environment/pythonpath.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/environment/pythonpath.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces-0.1.0-py3.12.egg-info
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces-0.1.0-py3.12.egg-info/SOURCES.txt
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces-0.1.0-py3.12.egg-info/dependency_links.txt
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces-0.1.0-py3.12.egg-info/top_level.txt
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces-0.1.0-py3.12.egg-info/PKG-INFO
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/_living_map_interfaces_s.ep.rosidl_typesupport_c.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/_living_map_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/_living_map_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/__init__.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_c.so
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_start_mission.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_deploy_beacon.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_deploy_beacon_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_reset_system.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_start_mission_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/__init__.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_fail_robot.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_reset_system_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_fail_robot_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_introspection_c.so
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_fastrtps_c.so
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_network_status_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_seed_batch_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_detected_event_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_memory.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_network_status.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/__init__.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_seed_batch.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_memory_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_detected_event.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_robot_status_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_status.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_mission_brief_s.c
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_mission_brief.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_robot_status.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_status_s.c
+Listing '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/__init__.py'...
+Listing '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/__init__.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_memory.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_seed_batch.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_beacon_status.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_detected_event.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_mission_brief.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_network_status.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/msg/_robot_status.py'...
+Listing '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/__init__.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_deploy_beacon.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_fail_robot.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_reset_system.py'...
+Compiling '/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/srv/_start_mission.py'...
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_fastrtps_c.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_fastrtps_c.so" to ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_introspection_c.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_introspection_c.so" to ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_c.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_interfaces/living_map_interfaces_s__rosidl_typesupport_c.so" to ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_generator_py.so
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/libliving_map_interfaces__rosidl_generator_py.so" to ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/src
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/src/srv.rs
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/src/msg.rs
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/src/srv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/src/srv/rmw.rs
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/src/lib.rs
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/src/msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/src/msg/rmw.rs
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/Cargo.toml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/rust/build.rs
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/DetectedEvent.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconMemory.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconStatus.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/RobotStatus.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/MissionBrief.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/NetworkStatus.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconSeedBatch.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/DeployBeacon.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/StartMission.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/FailRobot.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/ResetSystem.idl
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/DetectedEvent.msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconMemory.msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconStatus.msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/RobotStatus.msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/MissionBrief.msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/NetworkStatus.msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/msg/BeaconSeedBatch.msg
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/DeployBeacon.srv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/StartMission.srv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/FailRobot.srv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/srv/ResetSystem.srv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/package_run_dependencies/living_map_interfaces
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/parent_prefix_path/living_map_interfaces
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/environment/ament_prefix_path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/environment/ament_prefix_path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/environment/path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/environment/path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/local_setup.bash
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/local_setup.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/local_setup.zsh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/local_setup.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/package.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages/living_map_interfaces
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_generator_cExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_generator_cExport-noconfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_typesupport_fastrtps_cExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfaces__rosidl_typesupport_introspection_cExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfaces__rosidl_typesupport_cExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfaces__rosidl_typesupport_cExport-noconfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_generator_cppExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfaces__rosidl_typesupport_introspection_cppExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfaces__rosidl_typesupport_cppExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfaces__rosidl_typesupport_cppExport-noconfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_generator_pyExport.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/export_living_map_interfaces__rosidl_generator_pyExport-noconfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/rosidl_cmake-extras.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/ament_cmake_export_libraries-extras.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/ament_cmake_export_targets-extras.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/rosidl_cmake_aggregate_target-extras.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfacesConfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/cmake/living_map_interfacesConfig-version.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_interfaces/package.xml
+--- stderr: living_map_interfaces
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_interfaces [7.89s]
+Starting >>> living_map_beacons
+Starting >>> living_map_writer
+running egg_info
+creating ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info
+writing ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info/PKG-INFO
+writing dependency_links to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info/dependency_links.txt
+writing entry points to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info/entry_points.txt
+writing requirements to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info/requires.txt
+writing top-level names to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info/top_level.txt
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info/SOURCES.txt'
+reading manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info/SOURCES.txt'
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons
+copying living_map_beacons/placement.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons
+copying living_map_beacons/store.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons
+copying living_map_beacons/node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons
+copying living_map_beacons/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons
+copying living_map_beacons/visualizer.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons
+copying living_map_beacons/protocol.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons
+copying living_map_beacons/aging.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons
+running install
+running install_lib
+creating /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons/placement.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons/store.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons/node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons/visualizer.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons/protocol.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/build/lib/living_map_beacons/aging.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons/placement.py to placement.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons/store.py to store.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons/node.py to node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons/__init__.py to __init__.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons/visualizer.py to visualizer.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons/protocol.py to protocol.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons/aging.py to aging.cpython-312.pyc
+running install_data
+copying resource/living_map_beacons -> /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages
+copying package.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_beacons
+running install_egg_info
+Copying ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/living_map_beacons.egg-info to /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_beacons-0.1.0-py3.12.egg-info
+running install_scripts
+Installing beacon_manager script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_beacons
+Installing beacon_visualizer script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_beacons
+writing list of installed files to '/tmp/livingmap-team4-master-qa-20261120/build/living_map_beacons/install.log'
+Finished <<< living_map_beacons [1.19s]
+Starting >>> living_map_events
+running egg_info
+creating ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info
+writing ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info/PKG-INFO
+writing dependency_links to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info/dependency_links.txt
+writing entry points to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info/entry_points.txt
+writing requirements to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info/requires.txt
+writing top-level names to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info/top_level.txt
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info/SOURCES.txt'
+reading manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info/SOURCES.txt'
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/sortie.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/entrance_boundary.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/pose_freshness.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/frontier_policy.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/progress.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/scan_frames.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/entrance.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/frontier_node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/demo_fallback.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/swept_footprint.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/goal_watchdog.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/frontier.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+copying living_map_writer/battery.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer
+running install
+running install_lib
+creating /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/sortie.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/entrance_boundary.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/pose_freshness.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/frontier_policy.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/progress.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/scan_frames.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/entrance.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/frontier_node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/demo_fallback.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/swept_footprint.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/goal_watchdog.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/frontier.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/build/lib/living_map_writer/battery.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/sortie.py to sortie.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/entrance_boundary.py to entrance_boundary.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/pose_freshness.py to pose_freshness.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/node.py to node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/frontier_policy.py to frontier_policy.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/progress.py to progress.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/__init__.py to __init__.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/scan_frames.py to scan_frames.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/entrance.py to entrance.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/frontier_node.py to frontier_node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/demo_fallback.py to demo_fallback.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/swept_footprint.py to swept_footprint.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/goal_watchdog.py to goal_watchdog.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/frontier.py to frontier.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer/battery.py to battery.cpython-312.pyc
+running install_data
+copying resource/living_map_writer -> /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages
+copying package.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_writer
+creating /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_writer/behavior_trees
+copying behavior_trees/navigate_with_planner_fallback.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_writer/behavior_trees
+running install_egg_info
+Copying ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/living_map_writer.egg-info to /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_writer-0.1.1-py3.12.egg-info
+running install_scripts
+Installing demo_fallback script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_writer
+Installing entrance_boundary script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_writer
+Installing frontier_explorer script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_writer
+Installing scan_frames script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_writer
+Installing writer script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_writer
+writing list of installed files to '/tmp/livingmap-team4-master-qa-20261120/build/living_map_writer/install.log'
+Finished <<< living_map_writer [1.47s]
+Starting >>> living_map_executor
+running egg_info
+creating ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info
+writing ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info/PKG-INFO
+writing dependency_links to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info/dependency_links.txt
+writing entry points to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info/entry_points.txt
+writing requirements to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info/requires.txt
+writing top-level names to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info/top_level.txt
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info/SOURCES.txt'
+reading manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info/SOURCES.txt'
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_events/build
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_events/build/lib
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_events/build/lib/living_map_events
+copying living_map_events/node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_events/build/lib/living_map_events
+copying living_map_events/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_events/build/lib/living_map_events
+running install
+running install_lib
+creating /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_events
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_events/build/lib/living_map_events/node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_events
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_events/build/lib/living_map_events/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_events
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_events/node.py to node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_events/__init__.py to __init__.cpython-312.pyc
+running install_data
+copying resource/living_map_events -> /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages
+copying package.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_events
+running install_egg_info
+Copying ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_events/living_map_events.egg-info to /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_events-0.1.1-py3.12.egg-info
+running install_scripts
+Installing event_sensor script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_events
+writing list of installed files to '/tmp/livingmap-team4-master-qa-20261120/build/living_map_events/install.log'
+Finished <<< living_map_events [1.09s]
+Starting >>> living_map_gateway
+running egg_info
+creating ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info
+writing ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info/PKG-INFO
+writing dependency_links to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info/dependency_links.txt
+writing entry points to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info/entry_points.txt
+writing requirements to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info/requires.txt
+writing top-level names to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info/top_level.txt
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info/SOURCES.txt'
+reading manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info/SOURCES.txt'
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor
+copying living_map_executor/graph.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor
+copying living_map_executor/node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor
+copying living_map_executor/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor
+copying living_map_executor/route.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor
+copying living_map_executor/mission.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor
+copying living_map_executor/policy.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor
+running install
+running install_lib
+creating /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor/graph.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor/node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor/route.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor/mission.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/build/lib/living_map_executor/policy.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor/graph.py to graph.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor/node.py to node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor/__init__.py to __init__.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor/route.py to route.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor/mission.py to mission.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor/policy.py to policy.cpython-312.pyc
+running install_data
+copying resource/living_map_executor -> /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages
+copying package.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_executor
+running install_egg_info
+Copying ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/living_map_executor.egg-info to /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_executor-0.1.1-py3.12.egg-info
+running install_scripts
+Installing executor script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_executor
+writing list of installed files to '/tmp/livingmap-team4-master-qa-20261120/build/living_map_executor/install.log'
+Finished <<< living_map_executor [1.46s]
+Starting >>> living_map_radio
+running egg_info
+creating ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info
+writing ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info/PKG-INFO
+writing dependency_links to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info/dependency_links.txt
+writing entry points to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info/entry_points.txt
+writing requirements to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info/requires.txt
+writing top-level names to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info/top_level.txt
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info/SOURCES.txt'
+reading manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info/SOURCES.txt'
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+copying living_map_gateway/node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+copying living_map_gateway/dedup.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+copying living_map_gateway/state.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+copying living_map_gateway/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+copying living_map_gateway/map_codec.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+copying living_map_gateway/web.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+copying living_map_gateway/forward.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+copying living_map_gateway/coordinate.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway
+running install
+running install_lib
+creating /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway/node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway/dedup.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway/state.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway/map_codec.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway/web.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway/forward.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/build/lib/living_map_gateway/coordinate.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway/node.py to node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway/dedup.py to dedup.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway/state.py to state.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway/__init__.py to __init__.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway/map_codec.py to map_codec.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway/web.py to web.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway/forward.py to forward.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway/coordinate.py to coordinate.cpython-312.pyc
+running install_data
+copying resource/living_map_gateway -> /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages
+copying package.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_gateway
+running install_egg_info
+Copying ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/living_map_gateway.egg-info to /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_gateway-0.1.1-py3.12.egg-info
+running install_scripts
+Installing gateway script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_gateway
+writing list of installed files to '/tmp/livingmap-team4-master-qa-20261120/build/living_map_gateway/install.log'
+Finished <<< living_map_gateway [1.30s]
+running egg_info
+creating ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info
+writing ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info/PKG-INFO
+writing dependency_links to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info/dependency_links.txt
+writing entry points to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info/entry_points.txt
+writing requirements to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info/requires.txt
+writing top-level names to ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info/top_level.txt
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info/SOURCES.txt'
+reading manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info/SOURCES.txt'
+writing manifest file '../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib
+creating /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio
+copying living_map_radio/model.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio
+copying living_map_radio/node.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio
+copying living_map_radio/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio
+copying living_map_radio/mesh.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio
+copying living_map_radio/walls.py -> /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio
+running install
+running install_lib
+creating /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio/model.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio/node.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio/__init__.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio/mesh.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio
+copying /tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/build/lib/living_map_radio/walls.py -> /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio/model.py to model.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio/node.py to node.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio/__init__.py to __init__.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio/mesh.py to mesh.cpython-312.pyc
+byte-compiling /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio/walls.py to walls.cpython-312.pyc
+running install_data
+copying resource/living_map_radio -> /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages
+copying package.xml -> /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_radio
+running install_egg_info
+Copying ../../../../../tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/living_map_radio.egg-info to /tmp/livingmap-team4-master-qa-20261120/install/lib/python3.12/site-packages/living_map_radio-0.1.1-py3.12.egg-info
+running install_scripts
+Installing radio script to /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_radio
+writing list of installed files to '/tmp/livingmap-team4-master-qa-20261120/build/living_map_radio/install.log'
+Finished <<< living_map_radio [1.20s]
+Starting >>> living_map_bringup
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Found rclcpp: 28.1.22 (/opt/ros/jazzy/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 4.6.9 (/opt/ros/jazzy/share/rosidl_generator_c/cmake)
+-- Found rosidl_generator_cpp: 4.6.9 (/opt/ros/jazzy/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 7.3.4 (/opt/ros/jazzy/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 8.4.4 (/opt/ros/jazzy/share/rmw_fastrtps_cpp/cmake)
+-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")  
+-- Found FastRTPS: /opt/ros/jazzy/include (Required is at least version "2.13") 
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Configuring done (2.0s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+-- Build files have been written to: /tmp/livingmap-team4-master-qa-20261120/build/living_map_bringup
+[ 50%] Building CXX object CMakeFiles/clock_throttle.dir/src/clock_throttle.cpp.o
+[100%] Linking CXX executable clock_throttle
+[100%] Built target clock_throttle
+-- Install configuration: ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_bringup/clock_throttle
+-- Set non-toolchain portion of runtime path of "/tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_bringup/clock_throttle" to ""
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_bringup/nav2_guard
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/lib/living_map_bringup/sim_guard
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/launch
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/launch/navigation.launch.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/launch/demo.launch.py
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/nav2
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/nav2/writer.yaml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/nav2/executor.yaml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/nav2/firebot.yaml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/slam
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/slam/writer.yaml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/gps_anchor.yaml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/link.yaml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/events.yaml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/config/rf.yaml
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/package_run_dependencies/living_map_bringup
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/parent_prefix_path/living_map_bringup
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/environment/ament_prefix_path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/environment/ament_prefix_path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/environment/path.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/environment/path.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/local_setup.bash
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/local_setup.sh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/local_setup.zsh
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/local_setup.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/package.dsv
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/ament_index/resource_index/packages/living_map_bringup
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/cmake/living_map_bringupConfig.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/cmake/living_map_bringupConfig-version.cmake
+-- Installing: /tmp/livingmap-team4-master-qa-20261120/install/share/living_map_bringup/package.xml
+--- stderr: living_map_bringup
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+
+
+---
+Finished <<< living_map_bringup [7.57s]
+
+Summary: 12 packages finished [19.7s]
+  4 packages had stderr output: living_map_bringup living_map_dashboard living_map_interfaces living_map_sim

@@ -1,0 +1,1 @@
+[writer-28] [ERROR] [1795207099.924208988] [living_map.writer]: WRITER STUCK: commanded motion produced no progress for 45 s while navigating; radio stays alive as a relay

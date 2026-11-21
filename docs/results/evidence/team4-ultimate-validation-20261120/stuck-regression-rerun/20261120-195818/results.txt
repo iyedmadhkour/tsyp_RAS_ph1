@@ -1,0 +1,6 @@
+normal-home=home expected=home
+normal-home_status=PASS
+physical-immobility=stuck expected=stuck
+physical-immobility_status=PASS
+watchdog-immobility=timeout expected=watchdog
+watchdog-immobility_status=FAIL

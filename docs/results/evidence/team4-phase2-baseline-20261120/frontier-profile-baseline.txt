@@ -1,0 +1,27 @@
+map=maps/map-0030-periodic.npz pose=[13.89145598666828, 3.4723870936626087] grid=477x195
+         1741482 function calls in 0.337 seconds
+
+   Ordered by: cumulative time
+   List reduced from 28 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.076    0.076    0.337    0.337 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:39(choose_frontier)
+     4370    0.095    0.000    0.173    0.000 {method 'update' of 'set' objects}
+        1    0.018    0.018    0.071    0.071 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:7(frontier_cells)
+   764750    0.056    0.000    0.056    0.000 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:83(<genexpr>)
+    78640    0.026    0.000    0.054    0.000 {built-in method builtins.any}
+   384896    0.028    0.000    0.028    0.000 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:13(<genexpr>)
+   319010    0.021    0.000    0.021    0.000 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:72(<genexpr>)
+    60863    0.006    0.000    0.006    0.000 {method 'add' of 'set' objects}
+    60863    0.004    0.000    0.004    0.000 {method 'append' of 'collections.deque' objects}
+    60864    0.004    0.000    0.004    0.000 {method 'popleft' of 'collections.deque' objects}
+        1    0.001    0.001    0.001    0.001 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:18(clusters)
+       43    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+       16    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+     1764    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+     1061    0.000    0.000    0.000    0.000 {built-in method math.hypot}
+      750    0.000    0.000    0.000    0.000 {method 'remove' of 'set' objects}
+      706    0.000    0.000    0.000    0.000 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:136(<genexpr>)
+      750    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+      303    0.000    0.000    0.000    0.000 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:149(<lambda>)
+      750    0.000    0.000    0.000    0.000 /home/iyed/LivingMap-Team4/src/living_map_writer/living_map_writer/frontier.py:118(<genexpr>)

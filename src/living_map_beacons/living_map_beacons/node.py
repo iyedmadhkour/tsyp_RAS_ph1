@@ -8,7 +8,7 @@ import rclpy
 from nav_msgs.msg import OccupancyGrid
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
-from std_msgs.msg import ByteMultiArray, Float32
+from std_msgs.msg import Bool, ByteMultiArray, Float32
 
 from living_map_interfaces.msg import BeaconMemory, DetectedEvent, RobotStatus
 from living_map_interfaces.srv import DeployBeacon, ResetSystem
@@ -57,6 +57,7 @@ class BeaconManager(Node):
         ))
         self.writer_pose: tuple[float, float] | None = None
         self.writer_state = "UNKNOWN"
+        self.writer_failed = False
         self.uplink: float | None = None
         self.map: OccupancyGrid | None = None
 
@@ -73,6 +74,7 @@ class BeaconManager(Node):
         self.create_subscription(ByteMultiArray, "inside/beacon_write_rx", self.on_beacon_write, 20)
         map_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                              reliability=ReliabilityPolicy.RELIABLE)
+        self.create_subscription(Bool, "writer_failed", self.on_writer_failed, map_qos)
         self.create_subscription(OccupancyGrid, "/map", self.on_map, map_qos)
         self.create_timer(3.0, self.rebroadcast_all)
 
@@ -90,9 +92,11 @@ class BeaconManager(Node):
         )
 
     def _store_and_send(self, packet: BeaconPacket) -> None:
-        self.items[packet.beacon_id] = packet
-        self.store.save(self.items)
-        self._publish_frame(encode(packet))
+        frame = encode(packet)
+        updated = {**self.items, packet.beacon_id: packet}
+        self.store.save(updated)
+        self.items = updated
+        self._publish_frame(frame)
 
     def _link_predecessor(self, previous_id: int, new_packet: BeaconPacket) -> None:
         """The previous beacon hears its successor and records the way on."""
@@ -103,8 +107,9 @@ class BeaconManager(Node):
         if not previous.flags & FLAG_STANDOFF:
             bearing, distance = guidance((previous.x_m, previous.y_m), (new_packet.x_m, new_packet.y_m))
             update.update(bearing_rad=bearing, range_m=distance)
-        self.seq += 1
-        self._store_and_send(replace(previous, sequence=self.seq, **update))
+        sequence = self.seq + 1
+        self._store_and_send(replace(previous, sequence=sequence, **update))
+        self.seq = sequence
 
     def _deploy(
         self,
@@ -130,13 +135,13 @@ class BeaconManager(Node):
 
         # Record the kind of place the beacon sits in (junction / corridor / dead end).
         flags |= place_flags(self._openings((x, y)))
-        self.seq += 1
+        sequence = self.seq + 1
         beacon_id = max(self.items.keys(), default=0) + 1
         packet = BeaconPacket(
             flags=flags,
             mission_id=1,
             beacon_id=beacon_id,
-            sequence=self.seq,
+            sequence=sequence,
             timestamp_sec=int(time.time()),
             x_m=x,
             y_m=y,
@@ -152,9 +157,16 @@ class BeaconManager(Node):
             ),
         )
         previous_id = self.prev
-        self.prev = beacon_id
         self._store_and_send(packet)
-        self._link_predecessor(previous_id, packet)
+        self.seq = sequence
+        self.prev = beacon_id
+        try:
+            self._link_predecessor(previous_id, packet)
+        except (OSError, ValueError) as exc:
+            # The new beacon is already durable: retrying the drop would spend
+            # another puck. Preserve it and report the incomplete forward link.
+            self.get_logger().error(
+                f"B{beacon_id:03d} recorded, but predecessor link update failed: {exc}")
         self._publish_memory(packet, label)
         role = "/".join(roles(packet.flags)) or "NAV"
         where = f" -> {label} {distance:.1f} m at {math.degrees(bearing):.0f} deg" if packet.flags & FLAG_STANDOFF else ""
@@ -201,7 +213,10 @@ class BeaconManager(Node):
         beacon_id = self._deploy_event(event)
         response.success = beacon_id is not None
         response.beacon_id = int(beacon_id or 0)
-        response.message = "deployed" if beacon_id is not None else "duplicate suppressed or dispenser empty"
+        response.message = ("deployed" if beacon_id is not None else
+                            "not deployed: duplicate, empty dispenser or memory write failure")
+        if beacon_id is None and (self.writer_failed or self.writer_state == "FAILED"):
+            response.message = "not deployed: Writer destroyed"
         return response
 
     def on_reset_service(self, request: ResetSystem.Request, response: ResetSystem.Response) -> ResetSystem.Response:
@@ -217,18 +232,31 @@ class BeaconManager(Node):
         return response
 
     def _deploy_event(self, event: DetectedEvent) -> int | None:
+        try:
+            return self._record_event(event)
+        except (OSError, ValueError) as exc:
+            self.get_logger().error(f"Event deployment could not be recorded: {exc}")
+            return None
+
+    def _record_event(self, event: DetectedEvent) -> int | None:
+        if self.writer_failed or self.writer_state == "FAILED":
+            self.get_logger().warning("Event deployment rejected: Writer destroyed")
+            return None
+        target = (event.pose.pose.position.x, event.pose.pose.position.y)
+        reliable_pose = self.writer_pose is not None
+        if reliable_pose:
+            if self._duplicate(event.event_type, *target):
+                return None
+            # Rewriting a deployed beacon does not consume magazine stock.
+            reused = self._reuse_navigation_beacon(event, target)
+            if reused is not None:
+                return reused
         if not self.policy.can_deploy_event(len(self.items)):
             self.get_logger().error(f"Dispenser empty: cannot record {event.event_id}")
             return None
-        target = (event.pose.pose.position.x, event.pose.pose.position.y)
-        if self.writer_pose is None or self.writer_state == "FAILED":
+        if not reliable_pose:
             # No reliable Writer pose: record the event where it was sensed.
             return self._deploy(*target, event.event_type, event.severity, event.confidence, event.event_id or "EVENT")
-        if self._duplicate(event.event_type, *target):
-            return None
-        reused = self._reuse_navigation_beacon(event, target)
-        if reused is not None:
-            return reused
         return self._deploy(*self.writer_pose, event.event_type, event.severity, event.confidence,
                             event.event_id or "EVENT", target=target, reason="safe standoff")
 
@@ -245,11 +273,11 @@ class BeaconManager(Node):
             return None
         beacon = min(nearby, key=lambda p: math.dist((p.x_m, p.y_m), self.writer_pose))
         bearing, distance = guidance((beacon.x_m, beacon.y_m), target)
-        self.seq += 1
+        sequence = self.seq + 1
         updated = replace(
             beacon,
             flags=beacon.flags | FLAG_STANDOFF,
-            sequence=self.seq,
+            sequence=sequence,
             timestamp_sec=int(time.time()),
             bearing_rad=bearing,
             range_m=distance,
@@ -259,6 +287,7 @@ class BeaconManager(Node):
             ttl_sec=ttl_for(event.event_type),
         )
         self._store_and_send(updated)
+        self.seq = sequence
         label = event.event_id or "EVENT"
         self._publish_memory(updated, label)
         self.get_logger().info(
@@ -277,6 +306,17 @@ class BeaconManager(Node):
     def on_map(self, msg: OccupancyGrid) -> None:
         self.map = msg
 
+    def on_writer_failed(self, msg: Bool) -> None:
+        if msg.data:
+            self.writer_failed = True
+            self.writer_state = "FAILED"
+        elif self.writer_failed:
+            # A freshly initialized Writer publishes False. Keep deployed
+            # beacons, but do not reuse the destroyed Writer's stale pose.
+            self.writer_failed = False
+            self.writer_state = "UNKNOWN"
+            self.writer_pose = None
+
     def _openings(self, pose: tuple[float, float]) -> int:
         if self.map is None:
             return 0
@@ -287,13 +327,18 @@ class BeaconManager(Node):
     def on_writer_status(self, status: RobotStatus) -> None:
         if status.robot_id != "writer" or status.pose.header.frame_id != "map":
             return
+        if self.writer_failed:
+            return
         self.writer_state = status.state
         self.writer_pose = (status.pose.pose.position.x, status.pose.pose.position.y)
+        if status.state == "FAILED":
+            self.writer_failed = True
         # Only a moving, exploring Writer inside the mine drops navigation beacons.
         if status.state not in {"ONLINE", "RETURNING"}:
             return
         if self.writer_pose[0] < float(self.get_parameter("entrance_x").value):
             return
+        previous_relay_at = self.policy.last_relay_at
         decision = self.policy.decide(
             self.writer_pose,
             [(p.x_m, p.y_m) for p in self.items.values()],
@@ -303,7 +348,13 @@ class BeaconManager(Node):
             time.monotonic(),
         )
         if decision is not None:
-            self._deploy(*self.writer_pose, flags=decision.flags, reason=decision.reason)
+            try:
+                beacon_id = self._deploy(*self.writer_pose, flags=decision.flags, reason=decision.reason)
+            except (OSError, ValueError) as exc:
+                self.get_logger().error(f"Navigation beacon deployment could not be recorded: {exc}")
+                beacon_id = None
+            if beacon_id is None:
+                self.policy.last_relay_at = previous_relay_at
 
     def on_beacon_write(self, msg: ByteMultiArray) -> None:
         """A robot marks an event resolved: the beacon updates its own memory."""
@@ -334,8 +385,48 @@ class BeaconManager(Node):
     def rebroadcast_all(self) -> None:
         # Models physical beacon persistence / periodic advertising independently
         # of Writer lifetime.
+        self.repair_predecessor_links()
         for packet in list(self.items.values()):
             self._publish_frame(encode(packet))
+
+    def repair_predecessor_links(self) -> None:
+        """Reconcile durable successor records into missing predecessor links.
+
+        A new beacon is saved before its predecessor is rewritten so a failed
+        second write never loses a drop. The successor's `previous_beacon_id`
+        is therefore the durable repair record, including across a restart.
+        Repair only an empty link with one unambiguous child; never overwrite a
+        different successor or guess between branches.
+        """
+        successors: dict[int, list[BeaconPacket]] = {}
+        for packet in self.items.values():
+            if packet.previous_beacon_id in self.items:
+                successors.setdefault(packet.previous_beacon_id, []).append(packet)
+
+        for previous_id, children in successors.items():
+            previous = self.items[previous_id]
+            if len(children) != 1:
+                self.get_logger().warning(
+                    f"Cannot repair B{previous_id:03d} successor link: "
+                    f"{len(children)} durable successors are ambiguous")
+                continue
+            child = children[0]
+            if previous.next_beacon_id == child.beacon_id:
+                continue
+            if previous.next_beacon_id != 0:
+                self.get_logger().warning(
+                    f"Cannot repair B{previous_id:03d} successor link: already points to "
+                    f"B{previous.next_beacon_id:03d}, not B{child.beacon_id:03d}")
+                continue
+            try:
+                self._link_predecessor(previous_id, child)
+            except (OSError, ValueError) as exc:
+                self.get_logger().warning(
+                    f"Predecessor link repair B{previous_id:03d}->B{child.beacon_id:03d} "
+                    f"will retry: {exc}")
+            else:
+                self.get_logger().info(
+                    f"Repaired predecessor link B{previous_id:03d}->B{child.beacon_id:03d}")
 
 
 def main() -> None:

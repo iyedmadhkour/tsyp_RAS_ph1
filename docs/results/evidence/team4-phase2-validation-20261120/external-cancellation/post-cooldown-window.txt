@@ -1,0 +1,1 @@
+post_cooldown_selection_observed=true

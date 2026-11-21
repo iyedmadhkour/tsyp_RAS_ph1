@@ -11,6 +11,10 @@ and assistance actions are simulated, as described in the technical report.
 | [Relay destruction log](beacon_destroyed.log) | Beacon removed; 4 October 2026 | Mesh routes recover around a destroyed relay |
 | [Spacious-layout snapshot](run_spacious_state.json) | Writer destroyed; 5 October 2026 | Fire and both victims resolved; both Executor robots report back at the entrance |
 
+For the current Team 4 software status, see the [completion checklist](team4-software-completion-checklist.md).
+The [Task 6 report](team4-task6-exploration.md) records the bounded cooldown,
+expiry and reactivation Gazebo evidence.
+
 The 4 October snapshots were captured at objective completion; they do not
 establish that both Executor robots had finished returning to the entrance.
 The 5 October snapshot includes completed return journeys.

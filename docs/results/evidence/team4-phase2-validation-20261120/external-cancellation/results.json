@@ -1,0 +1,35 @@
+{
+  "boundary_crossed": false,
+  "cancel_reason": "no reason",
+  "cancel_sim_s": 2.232,
+  "controlled_same_zone_retry": true,
+  "cooldown_s": 15.0,
+  "counts": {
+    "frontier_cancelled": 1,
+    "frontier_selected": 1
+  },
+  "entrance_x": -1.0,
+  "final_state": "HOME",
+  "frontier_policy": {
+    "blocked_zones": 1,
+    "cancellation_only_zones": 1,
+    "cooling_zones": 1,
+    "counts": {
+      "cancel_cancelled": 1,
+      "cancels": 1
+    },
+    "exhausted_zones": 0,
+    "failure_zones": 0,
+    "next_retry_at_s": 17.232,
+    "visited_goals": 0
+  },
+  "minimum_padded_footprint_x": -0.35999999996971843,
+  "minimum_uncertain_footprint_x": -0.4099999999697184,
+  "odom_samples": 1097,
+  "path_length_m": 1.333791556178575,
+  "position_uncertainty_xy": 0.05,
+  "post_cooldown_selection_observed": true,
+  "retry_deadline_s": 17.232,
+  "same_zone_retry_observed": true,
+  "stuck": false
+}

@@ -1,0 +1,63 @@
+Starting >>> living_map_interfaces
+Starting >>> living_map_dashboard
+Starting >>> living_map_link_sim
+Starting >>> living_map_sim
+Finished <<< living_map_link_sim [1.35s]
+--- stderr: living_map_dashboard
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+    CATKIN_SYMLINK_INSTALL
+
+
+---
+Finished <<< living_map_dashboard [1.97s]
+Starting >>> living_map_command_post
+--- stderr: living_map_sim
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+    CATKIN_SYMLINK_INSTALL
+
+
+---
+Finished <<< living_map_sim [1.97s]
+Finished <<< living_map_command_post [1.22s]
+--- stderr: living_map_interfaces
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+    CATKIN_SYMLINK_INSTALL
+
+
+---
+Finished <<< living_map_interfaces [8.83s]
+Starting >>> living_map_beacons
+Starting >>> living_map_writer
+Starting >>> living_map_events
+Finished <<< living_map_beacons [1.37s]
+Starting >>> living_map_gateway
+Starting >>> living_map_radio
+Finished <<< living_map_writer [1.38s]
+Starting >>> living_map_executor
+Finished <<< living_map_events [1.50s]
+Finished <<< living_map_radio [1.54s]
+Finished <<< living_map_gateway [1.59s]
+Finished <<< living_map_executor [1.77s]
+Starting >>> living_map_bringup
+--- stderr: living_map_bringup
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CATKIN_INSTALL_INTO_PREFIX_ROOT
+    CATKIN_SYMLINK_INSTALL
+
+
+---
+Finished <<< living_map_bringup [7.51s]
+
+Summary: 12 packages finished [19.7s]
+  4 packages had stderr output: living_map_bringup living_map_dashboard living_map_interfaces living_map_sim

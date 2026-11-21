@@ -1,0 +1,10 @@
+{
+  "home_after_fresh_inputs": true,
+  "limitation": "Gazebo bridge was paused; motor stopping remains hardware-contract dependent.",
+  "physical_stop_guaranteed": false,
+  "result": "PASS",
+  "scenario": "stale_scan_and_localization_bridge_pause",
+  "stale_cancel_requested": true,
+  "watchdog_pose_unavailable_count": 1,
+  "watchdog_scan_unavailable_count": 1
+}

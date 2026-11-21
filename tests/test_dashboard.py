@@ -15,15 +15,23 @@ def test_source_dashboard_assets_are_resolvable():
     assert (web / "app.js").is_file()
 
 
-def test_command_post_and_harness_views_are_separate():
+def test_command_post_and_harness_views_are_separate(monkeypatch):
     import asyncio
+    import anyio.to_thread
     import httpx
+
+    def reject_worker_handoff(*args, **kwargs):
+        raise AssertionError("ASGI command-post route used the broken worker-pool handoff")
+
+    monkeypatch.setattr(anyio.to_thread, "run_sync", reject_worker_handoff)
     calls = []
     app = create_app(CommandPostState(), lambda payload: True, set_link=lambda up, after: calls.append((up, after)) or True)
 
     async def exercise():
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             assert (await client.get("/harness")).status_code == 200
+            asset = await client.get("/static/app.js")
+            assert asset.status_code == 200 and "LivingMap" in asset.text
             cut = await client.post("/api/harness/link", json={"up": False, "restore_after_s": 20})
             assert cut.status_code == 200 and "20 s" in cut.json()["message"]
             assert (await client.post("/api/harness/link", json={"up": True})).status_code == 200

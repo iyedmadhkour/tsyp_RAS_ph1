@@ -1,0 +1,9 @@
+branch=phase2/reliability-optimization-20261120
+head=66b23b9fc2fe6b85c32614bbed24361e8eb93204
+started=2026-11-20T19:17:00+01:00
+ros_distro=jazzy
+seed=none (deterministic fault timing)
+simulation_assumptions=0.5s pose age; 0.35s scan age; 0.5s costmap timeout; 10Hz scan; bridge paused by SIGSTOP
+ground_truth_topic=/model/writer/pose; source=Gazebo model pose publisher; frame=world
+complete=true
+finished=2026-11-20T19:18:10+01:00

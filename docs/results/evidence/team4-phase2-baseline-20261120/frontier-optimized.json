@@ -1,0 +1,179 @@
+{
+  "benchmark": "living_map_writer.frontier.choose_frontier",
+  "config_sha256": "69461f53bceea11a231ce8a6e25b17e35186622bb3fa5336e6e820de35d769da",
+  "dataset": "/home/iyed/LivingMap-Team4/docs/results/evidence/team4-phase2-baseline-20261120/maps.json",
+  "dataset_description": "Task 6 r4 expiry/reactivation Gazebo map snapshots; odometry linearly interpolated to map simulation timestamp and transformed with exact recorded map-to-odom",
+  "frontier_source_sha256": "8cbcd5d0f9be917be569dbcd2d041167098c45a5901c2ec7c3d2f90e905c9d99",
+  "maps": [
+    {
+      "known_cells": 14670,
+      "map_file": "maps/map-0002-periodic.npz",
+      "map_sha256": "cbd08b8bdef1e8d8c3abfa60787905990f17371d9f77c450dedccf18c3854577",
+      "max_ms": 26.710577,
+      "median_ms": 22.645173,
+      "min_ms": 22.143028,
+      "occupied_cells": 441,
+      "p95_ms": 26.710577,
+      "resolution_m": 0.05000000074505806,
+      "robot_pose_map_xy": [
+        0.6078643431211798,
+        0.08239801262738106
+      ],
+      "selected_xy": [
+        2.4072142650216435,
+        -2.073966024765168
+      ],
+      "selection_stats": {
+        "clusters": 271,
+        "clusters_too_small": 234,
+        "clusters_without_eligible_goal": 31,
+        "filtered_frontier_cells": 4214,
+        "raw_frontier_cells": 5972,
+        "selected": true,
+        "selected_cluster_cells": 2322,
+        "selected_score": 65.53406424652773,
+        "selected_x": 2.4072142650216435,
+        "selected_y": -2.073966024765168
+      },
+      "shape_width_height": [
+        284,
+        194
+      ],
+      "sim_s": 31.832,
+      "trial_count": 15,
+      "trial_ms": [
+        22.475884,
+        22.959086,
+        22.446543,
+        22.198516,
+        22.479965,
+        22.645173,
+        22.352172,
+        23.465051,
+        24.255377,
+        26.710577,
+        24.526209,
+        24.655618,
+        22.398454,
+        22.143028,
+        23.573862
+      ],
+      "warmup_count": 2
+    },
+    {
+      "known_cells": 40779,
+      "map_file": "maps/map-0015-periodic.npz",
+      "map_sha256": "35aaecbad65aee019e045a6ed196f00fb3eb332c5597a687e1ffe125b8c4f86f",
+      "max_ms": 46.895243,
+      "median_ms": 38.24326,
+      "min_ms": 36.585089,
+      "occupied_cells": 1115,
+      "p95_ms": 46.895243,
+      "resolution_m": 0.05000000074505806,
+      "robot_pose_map_xy": [
+        4.275156749611202,
+        -1.7748235413841233
+      ],
+      "selected_xy": [
+        10.620420800121856,
+        -3.1985039185804753
+      ],
+      "selection_stats": {
+        "clusters": 78,
+        "clusters_too_small": 67,
+        "clusters_without_eligible_goal": 5,
+        "filtered_frontier_cells": 1894,
+        "raw_frontier_cells": 2155,
+        "selected": true,
+        "selected_cluster_cells": 994,
+        "selected_score": 35.74788807700782,
+        "selected_x": 10.620420800121856,
+        "selected_y": -3.1985039185804753
+      },
+      "shape_width_height": [
+        371,
+        195
+      ],
+      "sim_s": 159.832,
+      "trial_count": 15,
+      "trial_ms": [
+        42.897648,
+        42.585616,
+        46.895243,
+        42.407722,
+        38.707138,
+        37.688602,
+        38.283314,
+        37.622794,
+        38.861398,
+        36.971258,
+        37.36055,
+        36.909022,
+        38.24326,
+        37.317799,
+        36.585089
+      ],
+      "warmup_count": 2
+    },
+    {
+      "known_cells": 79974,
+      "map_file": "maps/map-0030-periodic.npz",
+      "map_sha256": "35df3dc869d2a3e53773123b2fbfa08684c0a63e89bbff0ed0184af3b31361a3",
+      "max_ms": 77.584111,
+      "median_ms": 73.053357,
+      "min_ms": 70.789507,
+      "occupied_cells": 2185,
+      "p95_ms": 77.584111,
+      "resolution_m": 0.05000000074505806,
+      "robot_pose_map_xy": [
+        13.89145598666828,
+        3.4723870936626087
+      ],
+      "selected_xy": [
+        7.320420750948025,
+        3.801496185727653
+      ],
+      "selection_stats": {
+        "clusters": 39,
+        "clusters_too_small": 31,
+        "clusters_without_eligible_goal": 4,
+        "filtered_frontier_cells": 750,
+        "raw_frontier_cells": 1017,
+        "selected": true,
+        "selected_cluster_cells": 575,
+        "selected_score": 9.594509981106043,
+        "selected_x": 7.320420750948025,
+        "selected_y": 3.801496185727653
+      },
+      "shape_width_height": [
+        477,
+        195
+      ],
+      "sim_s": 306.022,
+      "trial_count": 15,
+      "trial_ms": [
+        73.130093,
+        73.068461,
+        71.986515,
+        73.961034,
+        71.968018,
+        72.348409,
+        77.584111,
+        73.620235,
+        76.032841,
+        76.455323,
+        72.378515,
+        71.996019,
+        72.97269,
+        70.789507,
+        73.053357
+      ],
+      "warmup_count": 2
+    }
+  ],
+  "numpy": "1.26.4",
+  "python": "3.12.3",
+  "random_seed": null,
+  "random_seed_note": "Captured Gazebo OccupancyGrid data; no synthetic noise or RNG is used.",
+  "source_commit": "8714209b2045f45963fde0715815d58d76f789d4"
+}

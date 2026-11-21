@@ -1,0 +1,12 @@
+[frontier_explorer-30] [INFO] [1795206405.836300762] [writer.frontier_explorer]: Explorer state PAUSED
+[frontier_explorer-30] [INFO] [1795206413.416165367] [writer.frontier_explorer]: Explorer state SEARCHING
+[frontier_explorer-30] [INFO] [1795206413.449442122] [writer.frontier_explorer]: Frontier selected x=0.99 y=0.12 cells=1106 score=31.05 raw=2344 clusters=152 blocked_zones=0
+[frontier_explorer-30] [INFO] [1795206416.467483458] [writer.frontier_explorer]: Explorer state NAVIGATING
+[frontier_explorer-30] [WARN] [1795206453.262761934] [writer.frontier_explorer]: Navigation watchdog cancelling frontier goal at (0.99,0.12): recovery_limit after 26.0 s (source=feedback, distance=1.04 m, recoveries=3, jumps=0)
+[frontier_explorer-30] [WARN] [1795206453.348228037] [writer.frontier_explorer]: Frontier goal failed at (0.99,0.12) [watchdog_recovery_limit]; zone attempt 1/3, cooldown 15 s
+[frontier_explorer-30] [INFO] [1795206453.348906681] [writer.frontier_explorer]: Explorer state SEARCHING
+[frontier_explorer-30] [INFO] [1795206456.251089973] [writer.frontier_explorer]: Frontier selected x=0.89 y=1.62 cells=1106 score=13.56 raw=2344 clusters=152 blocked_zones=1
+[frontier_explorer-30] [INFO] [1795206459.220499701] [writer.frontier_explorer]: Explorer state NAVIGATING
+[frontier_explorer-30] [INFO] [1795206492.311508208] [writer.frontier_explorer]: Explorer state STUCK
+[writer-27] [ERROR] [1795206492.324830080] [living_map.writer]: WRITER STUCK: commanded motion produced no progress for 45 s while navigating; radio stays alive as a relay
+[frontier_explorer-30] [INFO] [1795206492.384650417] [writer.frontier_explorer]: frontier goal at (0.89,1.62) cancelled externally (Writer immobilised); not counted as failure

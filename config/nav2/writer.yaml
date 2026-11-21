@@ -6,6 +6,9 @@
     odom_topic: /writer/odom
     bt_loop_duration: 10
     default_server_timeout: 100
+    # Cancellation results can arrive on the next 12 Hz controller cycle.
+    # The Nav2 default of 20 ms expires before that cycle under WSL scheduling.
+    default_cancel_timeout: 1000
     wait_for_service_timeout: 1000
     action_server_result_timeout: 900.0
     navigators: [navigate_to_pose, navigate_through_poses]
@@ -51,11 +54,16 @@
     use_sim_time: true
     expected_planner_frequency: 10.0
     costmap_update_timeout: 1.0
-    planner_plugins: [GridBased]
+    planner_plugins: [GridBased, GridBasedDijkstra]
     GridBased:
       plugin: nav2_navfn_planner::NavfnPlanner
       tolerance: 0.5
       use_astar: true
+      allow_unknown: true
+    GridBasedDijkstra:
+      plugin: nav2_navfn_planner::NavfnPlanner
+      tolerance: 0.5
+      use_astar: false
       allow_unknown: true
 
 "/writer/behavior_server":
@@ -94,13 +102,22 @@
     height: 4
     resolution: 0.05
     footprint: "[[0.35, 0.32], [0.35, -0.32], [-0.35, -0.32], [-0.35, 0.32]]"
-    plugins: [obstacle_layer, inflation_layer]
+    footprint_padding: 0.01
+    use_maximum: true
+    plugins: [obstacle_layer, entrance_layer, inflation_layer]
+    entrance_layer:
+      plugin: nav2_costmap_2d::StaticLayer
+      map_topic: /writer/entrance_mask
+      map_subscribe_transient_local: true
+      footprint_clearing_enabled: false
     obstacle_layer:
       plugin: nav2_costmap_2d::ObstacleLayer
       enabled: true
       observation_sources: scan
       scan:
         topic: /writer/scan
+        # Five periods of the 10 Hz Gazebo LiDAR; confirm from deployed sensor.
+        expected_update_rate: 0.5
         max_obstacle_height: 2.0
         clearing: true
         marking: true
@@ -123,9 +140,16 @@
     global_frame: map
     robot_base_frame: writer/base_link
     footprint: "[[0.35, 0.32], [0.35, -0.32], [-0.35, -0.32], [-0.35, 0.32]]"
+    footprint_padding: 0.01
     resolution: 0.05
     track_unknown_space: true
-    plugins: [static_layer, obstacle_layer, inflation_layer]
+    use_maximum: true
+    plugins: [static_layer, obstacle_layer, entrance_layer, inflation_layer]
+    entrance_layer:
+      plugin: nav2_costmap_2d::StaticLayer
+      map_topic: /writer/entrance_mask
+      map_subscribe_transient_local: true
+      footprint_clearing_enabled: false
     static_layer:
       plugin: nav2_costmap_2d::StaticLayer
       map_topic: /map
@@ -136,6 +160,8 @@
       observation_sources: scan
       scan:
         topic: /writer/scan
+        # Five periods of the 10 Hz Gazebo LiDAR; confirm from deployed sensor.
+        expected_update_rate: 0.5
         clearing: true
         marking: true
         data_type: LaserScan
@@ -148,3 +174,71 @@
       cost_scaling_factor: 4.0
       inflation_radius: 0.55
     always_send_full_costmap: true
+
+"/writer/frontier_explorer":
+  ros__parameters:
+    entrance_x: -1.0
+    footprint: "[[0.35, 0.32], [0.35, -0.32], [-0.35, -0.32], [-0.35, 0.32]]"
+    footprint_padding: 0.01
+    goal_tolerance_xy: 0.25
+    # Bound translational pose error at the entrance for both candidate goals
+    # and the private lethal mask. Hardware integration must verify this bound.
+    entrance_position_uncertainty_xy: 0.05
+    # SIMULATION ASSUMPTION only: 5 x 10 Hz pose samples. Team 1 must set the
+    # deployed bound from measured localization/encoder update rates.
+    odom_fallback_max_age_s: 0.5
+    # SIMULATION ASSUMPTION only: 3.5 x 10 Hz LiDAR periods. This allows the
+    # 10 Hz Writer safety timer to request cancellation before the 0.5 s Nav2
+    # costmap observation timeout. Team 1 must calibrate from deployed data.
+    scan_max_age_s: 0.35
+    # Independent pose-motion integrity reference. In Gazebo this is the
+    # physics-derived world_odom stream, distinct from scan_frames' /writer/odom
+    # output. A hardware profile must provide an independently sourced,
+    # frame-axis-aligned odometry reference or keep goal dispatch blocked.
+    pose_integrity_required: true
+    pose_integrity_reference_topic: /writer/world_odom
+    pose_integrity_axes_aligned: true
+    # Simulation assumptions reuse the existing 5 cm entrance allowance and
+    # 0.02 rad STUCK yaw-noise bound; Team 1 must validate deployed values.
+    pose_integrity_position_tolerance_m: 0.05
+    pose_integrity_yaw_tolerance_rad: 0.02
+    # SIMULATION pairing allowance for asynchronously delivered Gazebo
+    # messages. Team 1 must confirm the deployed timestamp/skew contract.
+    pose_integrity_max_stamp_skew_s: 0.05
+    pose_integrity_reference_max_age_s: 0.5
+    # Wall-clock fail-safe for unresolved ROS action acceptance/cancellation.
+    # Timeout latches NAVIGATION_UNCERTAIN and blocks new goals; it does not
+    # assert that the base stopped. Team 1 must confirm deployed action/motor
+    # acknowledgment behavior before treating this as hardware acceptance.
+    action_response_timeout_s: 3.0
+    # Task 6 frontier lifecycle. A failed goal gets a bounded number of
+    # attempts, an exponential cooldown, then an expiry. Time or substantial
+    # map growth re-arms the zone a bounded number of times; a region is never
+    # banned forever on the strength of one transient failure.
+    frontier_zone_radius_m: 1.5
+    frontier_max_attempts: 3
+    frontier_cooldown_base_s: 15.0
+    frontier_cooldown_max_s: 60.0
+    frontier_exhausted_expiry_s: 120.0
+    frontier_max_rearms: 2
+    frontier_visited_radius_m: 1.0
+    frontier_visited_min_age_s: 30.0
+    frontier_visited_expiry_s: 120.0
+    frontier_max_visits: 2
+    frontier_map_growth_threshold_m2: 2.0
+    # Navigation-progress watchdog for the current Nav2 goal. This is separate
+    # from progress.py's STUCK detector: it never declares STUCK/DESTROYED.
+    nav_watchdog_progress_window_s: 20.0
+    nav_watchdog_min_progress_m: 0.25
+    nav_watchdog_rotation_grace_s: 10.0
+    nav_watchdog_stall_s: 25.0
+    nav_watchdog_goal_timeout_s: 150.0
+    nav_watchdog_home_stall_s: 90.0
+    nav_watchdog_home_timeout_s: 300.0
+    nav_watchdog_max_recoveries: 3
+    nav_watchdog_reset_jump_m: 1.0
+
+"/writer/entrance_boundary":
+  ros__parameters:
+    entrance_x: -1.0
+    position_uncertainty_xy: 0.05

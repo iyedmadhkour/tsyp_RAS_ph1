@@ -1,0 +1,17 @@
+**/build/
+**/install/
+**/log/
+**/home/
+**/ros-logs/
+**/.coverage
+**/.pytest_cache/
+**/__pycache__/
+**/*.log
+**/*.mcap
+**/bag/
+**/runtime/
+**/readiness/map.yaml
+**/readiness/scan.yaml
+**/readiness/odom.yaml
+**/readiness/enable-response.txt
+**/20261120-211904/

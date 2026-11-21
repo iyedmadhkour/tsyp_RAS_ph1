@@ -1,0 +1,36 @@
+{
+  "action": "/writer/navigate_to_pose",
+  "cases": [
+    {
+      "busy_while_goal_remained_active": true,
+      "case": "delayed_cancel_ack_then_canceled",
+      "duplicate_cancel_server_requests": 1,
+      "elapsed_seconds": 3.614,
+      "result_pending_before_ack": true,
+      "status": "PASS",
+      "terminal_status": 5,
+      "timeout_seconds": 3.0,
+      "uncertain_while_server_withheld_ack": true
+    },
+    {
+      "busy_after_terminal_result": false,
+      "case": "cancel_rejected_then_late_home_success",
+      "duplicate_cancel_server_requests": 1,
+      "elapsed_seconds": 0.216,
+      "home_state": "HOME",
+      "status": "PASS",
+      "terminal_status": 4,
+      "uncertain_before_late_success": true,
+      "uncertain_cleared_by_terminal_result": true
+    }
+  ],
+  "client_errors": [],
+  "limitation": "ROS action state only; test server publishes no cmd_vel and cannot validate base stopping.",
+  "physical_motor_stop_guaranteed": false,
+  "result": "PASS",
+  "ros_domain_id": 105,
+  "scenario": "writer_navigate_to_pose_cancel_fault_injection",
+  "server_errors": [],
+  "server_thread_count": 4,
+  "transport": "real rclpy ActionClient/ActionServer"
+}

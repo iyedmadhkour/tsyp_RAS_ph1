@@ -1,0 +1,2 @@
+Writer node: /tmp/team4-phase2-stuck-evidence/20261120-181917/build/living_map_writer/living_map_writer/node.py
+STUCK detector: /tmp/team4-phase2-stuck-evidence/20261120-181917/build/living_map_writer/living_map_writer/progress.py

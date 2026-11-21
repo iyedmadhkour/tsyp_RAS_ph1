@@ -1,0 +1,5 @@
+scan_frames_pid=182630
+paused_at=2026-11-20T19:25:58+01:00
+paused_sim_s=3.012
+resumed_at=2026-11-20T19:26:05+01:00
+resumed_sim_s=10.472

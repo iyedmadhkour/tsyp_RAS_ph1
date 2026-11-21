@@ -1,0 +1,3967 @@
+pose {
+  header {
+    stamp {
+      nsec: 34000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999969718
+    y: 4.8967302346031228e-14
+  }
+  orientation {
+    x: -8.096081223875697e-13
+    y: 1.5881560550615871e-10
+    z: 9.8451774483244908e-18
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 68000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999938614
+    y: 1.9983210568587617e-13
+  }
+  orientation {
+    x: -1.6411786464319927e-12
+    y: 3.2193947221020674e-10
+    z: 1.6357011475480185e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 102000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999990751
+    y: 3.5774475658630483e-13
+  }
+  orientation {
+    x: -2.472749179923288e-12
+    y: 4.8506333903039281e-10
+    z: 2.287635578464e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 136000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999876406
+    y: 5.1612564520843913e-13
+  }
+  orientation {
+    x: -3.304319711435692e-12
+    y: 6.4818720602407531e-10
+    z: 2.9393171273547366e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 170000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999845302
+    y: 6.7453764350263657e-13
+  }
+  orientation {
+    x: -4.1358902202028393e-12
+    y: 8.1131107313610947e-10
+    z: 3.5915779451354157e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 204000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999814198
+    y: 8.3295170357152746e-13
+  }
+  orientation {
+    x: -4.9674607697754614e-12
+    y: 9.7443494044372118e-10
+    z: 4.2430292121969229e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 238000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999783094
+    y: 9.9136589891022075e-13
+  }
+  orientation {
+    x: -5.7990313285468811e-12
+    y: 1.1375588079217517e-09
+    z: 4.8947117992138222e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 272000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999975199
+    y: 1.1497801112767883e-12
+  }
+  orientation {
+    x: -6.630601871066971e-12
+    y: 1.3006826755548836e-09
+    z: 5.5461388180925951e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 306000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999720886
+    y: 1.3081943209242927e-12
+  }
+  orientation {
+    x: -7.4621724143928454e-12
+    y: 1.463806543339574e-09
+    z: 6.1976216435676153e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 340000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999689782
+    y: 1.4666085268214904e-12
+  }
+  orientation {
+    x: -8.2937429584854823e-12
+    y: 1.6269304112392945e-09
+    z: 6.849480516434814e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 374000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999658678
+    y: 1.6250227323232606e-12
+  }
+  orientation {
+    x: -9.1253135171103255e-12
+    y: 1.7900542792986909e-09
+    z: 7.5010019002070784e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 408000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999627574
+    y: 1.7834369328250571e-12
+  }
+  orientation {
+    x: -9.9568840959512011e-12
+    y: 1.9531781474949024e-09
+    z: 8.1526396500469215e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 442000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999959647
+    y: 1.9418511312217203e-12
+  }
+  orientation {
+    x: -1.0788454695342917e-11
+    y: 2.1163020158435313e-09
+    z: 8.80390153545781e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 476000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999565366
+    y: 2.1002653326508944e-12
+  }
+  orientation {
+    x: -1.1620025297054369e-11
+    y: 2.2794258843431003e-09
+    z: 9.4554460046126634e-17
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 510000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999534262
+    y: 2.2586795376466149e-12
+  }
+  orientation {
+    x: -1.2451595943134401e-11
+    y: 2.4425497530264565e-09
+    z: 1.0107028900612746e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 544000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999503158
+    y: 2.4170937454426944e-12
+  }
+  orientation {
+    x: -1.3283166520564058e-11
+    y: 2.6056736218341425e-09
+    z: 1.0758586220266882e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 578000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999472054
+    y: 2.5755079489036559e-12
+  }
+  orientation {
+    x: -1.4114737115280675e-11
+    y: 2.7687974907845489e-09
+    z: 1.1410213664766673e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 612000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999944095
+    y: 2.7339221627105766e-12
+  }
+  orientation {
+    x: -1.4946307685399786e-11
+    y: 2.9319213599079214e-09
+    z: 1.2061404296401174e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 646000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999409846
+    y: 2.892336379311007e-12
+  }
+  orientation {
+    x: -1.577787824450083e-11
+    y: 3.0950452291662512e-09
+    z: 1.2713054673121344e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 680000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999378742
+    y: 3.0507505802277044e-12
+  }
+  orientation {
+    x: -1.6609448835482193e-11
+    y: 3.2581690985697851e-09
+    z: 1.3364328814079232e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 714000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999347638
+    y: 3.2091647900502648e-12
+  }
+  orientation {
+    x: -1.7441019462300769e-11
+    y: 3.4212929681299184e-09
+    z: 1.4015582337588908e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 748000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999316534
+    y: 3.3675790009955518e-12
+  }
+  orientation {
+    x: -1.8272590080117442e-11
+    y: 3.58441683783357e-09
+    z: 1.4667208092095559e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 782000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999928543
+    y: 3.5259932239648871e-12
+  }
+  orientation {
+    x: -1.9104160697641364e-11
+    y: 3.7475407076765222e-09
+    z: 1.531867706825736e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 816000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999254326
+    y: 3.6844074387989221e-12
+  }
+  orientation {
+    x: -1.9935731311401805e-11
+    y: 3.9106645776547936e-09
+    z: 1.5970085388726964e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 850000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999223222
+    y: 3.8428216587534023e-12
+  }
+  orientation {
+    x: -2.0767301935190263e-11
+    y: 4.0737884477825358e-09
+    z: 1.6621694190379051e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 884000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999192118
+    y: 4.0012358758329314e-12
+  }
+  orientation {
+    x: -2.1598872544555354e-11
+    y: 4.2369123180539327e-09
+    z: 1.7273210239884391e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 918000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999161014
+    y: 4.159650088418704e-12
+  }
+  orientation {
+    x: -2.2430443193086102e-11
+    y: 4.4000361884881114e-09
+    z: 1.7924520215099096e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 952000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999912991
+    y: 4.3180643025827123e-12
+  }
+  orientation {
+    x: -2.3262013832255848e-11
+    y: 4.5631600590851e-09
+    z: 1.8576102718077639e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      nsec: 986000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999098806
+    y: 4.4764785216851051e-12
+  }
+  orientation {
+    x: -2.4093584456948457e-11
+    y: 4.7262839298373633e-09
+    z: 1.9227308261572107e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 20000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999067702
+    y: 4.6348927408112535e-12
+  }
+  orientation {
+    x: -2.4925155055275045e-11
+    y: 4.8894078007342842e-09
+    z: 1.9878335165127911e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 54000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999036598
+    y: 4.79330695159972e-12
+  }
+  orientation {
+    x: -2.57567257150893e-11
+    y: 5.0525316717630204e-09
+    z: 2.05293260569382e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 88000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999999005494
+    y: 4.9517211652538249e-12
+  }
+  orientation {
+    x: -2.6588296350132151e-11
+    y: 5.2156555429413754e-09
+    z: 2.1180397057723648e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 122000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999897439
+    y: 5.11013536683307e-12
+  }
+  orientation {
+    x: -2.741986706635095e-11
+    y: 5.3787794142698596e-09
+    z: 2.18321040149539e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 156000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998943286
+    y: 5.2685495660770682e-12
+  }
+  orientation {
+    x: -2.8251437791647572e-11
+    y: 5.5419032857577364e-09
+    z: 2.2483582519948506e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 190000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998912182
+    y: 5.4269637648894686e-12
+  }
+  orientation {
+    x: -2.9083008503632356e-11
+    y: 5.7050271573920747e-09
+    z: 2.3134414624955348e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 224000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998881078
+    y: 5.5853779745980252e-12
+  }
+  orientation {
+    x: -2.991457918013298e-11
+    y: 5.8681510291752311e-09
+    z: 2.3785967863977251e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 258000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998849974
+    y: 5.7437921862424356e-12
+  }
+  orientation {
+    x: -3.0746149830219419e-11
+    y: 6.0312749010829965e-09
+    z: 2.4437489621817703e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 292000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999881887
+    y: 5.9022063965246048e-12
+  }
+  orientation {
+    x: -3.1577720478171274e-11
+    y: 6.194398773125675e-09
+    z: 2.5088171280182152e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 326000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998787766
+    y: 6.0606206001190761e-12
+  }
+  orientation {
+    x: -3.2409291132689476e-11
+    y: 6.3575226453371347e-09
+    z: 2.573912344699258e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 360000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998756662
+    y: 6.2190348091936932e-12
+  }
+  orientation {
+    x: -3.324086179354896e-11
+    y: 6.5206465176976259e-09
+    z: 2.639050868616702e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 394000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998725558
+    y: 6.3774490159456009e-12
+  }
+  orientation {
+    x: -3.4072432478833828e-11
+    y: 6.6837703902354638e-09
+    z: 2.7041599850425138e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 428000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998694454
+    y: 6.5358632274189134e-12
+  }
+  orientation {
+    x: -3.4904003147040732e-11
+    y: 6.8468942629447176e-09
+    z: 2.7692650212077847e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 462000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999866335
+    y: 6.69427744006911e-12
+  }
+  orientation {
+    x: -3.5735573771136665e-11
+    y: 7.0100181357663909e-09
+    z: 2.8343852333543476e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 496000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998632246
+    y: 6.8526916488571487e-12
+  }
+  orientation {
+    x: -3.6567144404055869e-11
+    y: 7.1731420087695742e-09
+    z: 2.8994992982106669e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 530000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998601142
+    y: 7.0111058469776723e-12
+  }
+  orientation {
+    x: -3.7398715034732057e-11
+    y: 7.3362658818905612e-09
+    z: 2.9645708176183013e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 564000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998570038
+    y: 7.1695200461894135e-12
+  }
+  orientation {
+    x: -3.8230285681383305e-11
+    y: 7.4993897551543618e-09
+    z: 3.0296439752565198e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 598000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998538934
+    y: 7.3279342469268418e-12
+  }
+  orientation {
+    x: -3.90618563320756e-11
+    y: 7.6625136285982156e-09
+    z: 3.0947263013151095e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 632000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999850783
+    y: 7.4863484439479753e-12
+  }
+  orientation {
+    x: -3.9893426972729928e-11
+    y: 7.825637502165407e-09
+    z: 3.1598498210923445e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 666000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998476726
+    y: 7.6447626346908855e-12
+  }
+  orientation {
+    x: -4.07249976205868e-11
+    y: 7.9887613758816282e-09
+    z: 3.2249450617603637e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 700000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998445622
+    y: 7.8031768322506251e-12
+  }
+  orientation {
+    x: -4.1556568249466273e-11
+    y: 8.1518852497486328e-09
+    z: 3.2900335944679468e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 734000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998414518
+    y: 7.9615910329156766e-12
+  }
+  orientation {
+    x: -4.2388138865389552e-11
+    y: 8.315009123731279e-09
+    z: 3.3551195000170448e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 768000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998383414
+    y: 8.1200052356006e-12
+  }
+  orientation {
+    x: -4.32197094619784e-11
+    y: 8.4781329978690265e-09
+    z: 3.4201987629287825e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 802000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999835231
+    y: 8.2784194407185843e-12
+  }
+  orientation {
+    x: -4.4051280058376741e-11
+    y: 8.6412568721695135e-09
+    z: 3.4852547339251919e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 836000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998321206
+    y: 8.4368336433904551e-12
+  }
+  orientation {
+    x: -4.4882850667411732e-11
+    y: 8.8043807466311287e-09
+    z: 3.5503441587937827e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 870000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998290102
+    y: 8.59524784851837e-12
+  }
+  orientation {
+    x: -4.5714421263629249e-11
+    y: 8.9675046212456432e-09
+    z: 3.6154362792588509e-16
+    w: 1
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 904000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998258998
+    y: 8.75366205549139e-12
+  }
+  orientation {
+    x: -4.6545991879496034e-11
+    y: 9.1306284959793082e-09
+    z: 3.6804795431362564e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 938000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998227894
+    y: 8.91207627431862e-12
+  }
+  orientation {
+    x: -4.7377562497082321e-11
+    y: 9.2937523709096634e-09
+    z: 3.7455660001375535e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 1
+      nsec: 972000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999819679
+    y: 9.0704904972607764e-12
+  }
+  orientation {
+    x: -4.8209133109497004e-11
+    y: 9.4568762459690159e-09
+    z: 3.8107107297524708e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 6000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998165686
+    y: 9.2289047146215849e-12
+  }
+  orientation {
+    x: -4.9040703740965417e-11
+    y: 9.620000121170956e-09
+    z: 3.8757973323090953e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 40000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998134582
+    y: 9.3873189249820026e-12
+  }
+  orientation {
+    x: -4.987227441754492e-11
+    y: 9.7831239965164369e-09
+    z: 3.9408785859585791e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 74000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998103478
+    y: 9.54573314111691e-12
+  }
+  orientation {
+    x: -5.0703845114872148e-11
+    y: 9.9462478720199389e-09
+    z: 4.0059782766034726e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 108000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998072374
+    y: 9.7041473595079638e-12
+  }
+  orientation {
+    x: -5.1535415805950466e-11
+    y: 1.0109371747698492e-08
+    z: 4.0711220248871448e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 142000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999804127
+    y: 9.8625615799229041e-12
+  }
+  orientation {
+    x: -5.2366986517813371e-11
+    y: 1.0272495623531191e-08
+    z: 4.1362121302374559e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 176000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999998010166
+    y: 1.0020975804601584e-11
+  }
+  orientation {
+    x: -5.3198557186204096e-11
+    y: 1.0435619499498314e-08
+    z: 4.201325437780775e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 210000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997979062
+    y: 1.0179390029738769e-11
+  }
+  orientation {
+    x: -5.4030127833977661e-11
+    y: 1.0598743375614732e-08
+    z: 4.2664120135041706e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 244000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997947958
+    y: 1.0337804249860643e-11
+  }
+  orientation {
+    x: -5.48616985169405e-11
+    y: 1.0761867251900152e-08
+    z: 4.3314592160227111e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 278000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997916854
+    y: 1.0496218463670842e-11
+  }
+  orientation {
+    x: -5.56932692408068e-11
+    y: 1.0924991128331693e-08
+    z: 4.3965090404175112e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 312000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999788575
+    y: 1.0654632684160476e-11
+  }
+  orientation {
+    x: -5.6524839952794636e-11
+    y: 1.1088115004917486e-08
+    z: 4.4615773974852184e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 346000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997854646
+    y: 1.081304690972171e-11
+  }
+  orientation {
+    x: -5.73564106183578e-11
+    y: 1.125123888163411e-08
+    z: 4.5266609642778463e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 380000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997823542
+    y: 1.0971461137729311e-11
+  }
+  orientation {
+    x: -5.8187981233973916e-11
+    y: 1.1414362758503549e-08
+    z: 4.5916931389331428e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 414000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997792438
+    y: 1.1129875363262861e-11
+  }
+  orientation {
+    x: -5.9019551838655313e-11
+    y: 1.1577486635502314e-08
+    z: 4.6567395385906535e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 448000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997761334
+    y: 1.1288289587948299e-11
+  }
+  orientation {
+    x: -5.9851122467149689e-11
+    y: 1.1740610512634165e-08
+    z: 4.7218016361430693e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 482000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999773023
+    y: 1.1446703813012172e-11
+  }
+  orientation {
+    x: -6.0682693107645318e-11
+    y: 1.1903734389884249e-08
+    z: 4.7868282957356625e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 516000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997699126
+    y: 1.1605118029897749e-11
+  }
+  orientation {
+    x: -6.1514263751012311e-11
+    y: 1.2066858267268967e-08
+    z: 4.8518824149169635e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 550000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997668022
+    y: 1.176353224356623e-11
+  }
+  orientation {
+    x: -6.234583443160954e-11
+    y: 1.22299821448358e-08
+    z: 4.916914302672604e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 584000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997636918
+    y: 1.1921946453837404e-11
+  }
+  orientation {
+    x: -6.317740512690118e-11
+    y: 1.2393106022544695e-08
+    z: 4.9819489007998579e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 618000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997605814
+    y: 1.2080360662711448e-11
+  }
+  orientation {
+    x: -6.4008975801148053e-11
+    y: 1.2556229900414646e-08
+    z: 5.04699290668219e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 652000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999757471
+    y: 1.2238774876520818e-11
+  }
+  orientation {
+    x: -6.48405464717234e-11
+    y: 1.2719353778464243e-08
+    z: 5.112033762279e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 686000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997543606
+    y: 1.2397189094490134e-11
+  }
+  orientation {
+    x: -6.5672117126323215e-11
+    y: 1.2882477656635706e-08
+    z: 5.1770831093450927e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 720000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997512502
+    y: 1.2555603311198263e-11
+  }
+  orientation {
+    x: -6.6503687789133851e-11
+    y: 1.3045601534974742e-08
+    z: 5.2420945292583224e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 754000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997481398
+    y: 1.2714017521895294e-11
+  }
+  orientation {
+    x: -6.7335258501063673e-11
+    y: 1.3208725413478228e-08
+    z: 5.3071359880832487e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 788000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997450294
+    y: 1.2872431731538857e-11
+  }
+  orientation {
+    x: -6.81668292092161e-11
+    y: 1.3371849292114817e-08
+    z: 5.3721808088829981e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 822000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999741919
+    y: 1.3030845933651004e-11
+  }
+  orientation {
+    x: -6.8998399955533357e-11
+    y: 1.3534973170913051e-08
+    z: 5.4372397291949095e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 856000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997388086
+    y: 1.3189260145914118e-11
+  }
+  orientation {
+    x: -6.9829970675749978e-11
+    y: 1.3698097049816803e-08
+    z: 5.502305933308894e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 890000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997356982
+    y: 1.3347674362006016e-11
+  }
+  orientation {
+    x: -7.0661541362011959e-11
+    y: 1.3861220928867464e-08
+    z: 5.56732687577215e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 924000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997325878
+    y: 1.3506088581576243e-11
+  }
+  orientation {
+    x: -7.1493112045329682e-11
+    y: 1.4024344808071123e-08
+    z: 5.6323829207710209e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 958000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997294774
+    y: 1.3664502803834547e-11
+  }
+  orientation {
+    x: -7.23246827410949e-11
+    y: 1.4187468687434512e-08
+    z: 5.6973787203159653e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 2
+      nsec: 992000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999726367
+    y: 1.3822917022924421e-11
+  }
+  orientation {
+    x: -7.31562534644548e-11
+    y: 1.4350592566934778e-08
+    z: 5.76244522854887e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 26000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997232566
+    y: 1.3981331245145318e-11
+  }
+  orientation {
+    x: -7.3987824218916508e-11
+    y: 1.4513716446570316e-08
+    z: 5.827478110933375e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 60000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997201462
+    y: 1.4139745465451971e-11
+  }
+  orientation {
+    x: -7.4819394923361018e-11
+    y: 1.4676840326349905e-08
+    z: 5.89248008379077e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 94000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997170358
+    y: 1.429815968705355e-11
+  }
+  orientation {
+    x: -7.5650965601653243e-11
+    y: 1.4839964206286589e-08
+    z: 5.9574875105877094e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 128000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997139254
+    y: 1.4456573906653465e-11
+  }
+  orientation {
+    x: -7.6482536283946632e-11
+    y: 1.5003088086381704e-08
+    z: 6.022504129928799e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 162000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999710815
+    y: 1.4614988129823747e-11
+  }
+  orientation {
+    x: -7.731410695672765e-11
+    y: 1.5166211966612578e-08
+    z: 6.0875821971040934e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 196000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997077046
+    y: 1.4773402346596997e-11
+  }
+  orientation {
+    x: -7.8145677665609959e-11
+    y: 1.5329335847037512e-08
+    z: 6.1525525992143047e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 230000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997045942
+    y: 1.4931816563539167e-11
+  }
+  orientation {
+    x: -7.89772483978664e-11
+    y: 1.5492459727598808e-08
+    z: 6.2175903422091017e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 264000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999997014838
+    y: 1.5090230777092422e-11
+  }
+  orientation {
+    x: -7.98088191342502e-11
+    y: 1.5655583608290697e-08
+    z: 6.2826284665725374e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 298000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996983734
+    y: 1.5248644993416304e-11
+  }
+  orientation {
+    x: -8.0640389839879932e-11
+    y: 1.5818707489145874e-08
+    z: 6.34761968116221e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 332000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999695263
+    y: 1.5407059198900002e-11
+  }
+  orientation {
+    x: -8.147196055717353e-11
+    y: 1.5981831370142492e-08
+    z: 6.4125970185078833e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 366000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996921526
+    y: 1.5565473411432468e-11
+  }
+  orientation {
+    x: -8.2303531244949019e-11
+    y: 1.614495525125207e-08
+    z: 6.4775693431755481e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 400000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996890422
+    y: 1.5723887618510629e-11
+  }
+  orientation {
+    x: -8.3135101938852521e-11
+    y: 1.6308079132559688e-08
+    z: 6.5425576640273607e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 434000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996859318
+    y: 1.5882301828724976e-11
+  }
+  orientation {
+    x: -8.39666726229192e-11
+    y: 1.647120301396853e-08
+    z: 6.6075404292900258e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 468000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996828214
+    y: 1.6040716036148061e-11
+  }
+  orientation {
+    x: -8.479824333920147e-11
+    y: 1.6634326895537455e-08
+    z: 6.6725082580466632e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 502000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999679711
+    y: 1.619913025229363e-11
+  }
+  orientation {
+    x: -8.5629814027787092e-11
+    y: 1.6797450777232273e-08
+    z: 6.7374471216599286e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 536000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996766006
+    y: 1.6357544463896487e-11
+  }
+  orientation {
+    x: -8.64613846986048e-11
+    y: 1.6960574659104082e-08
+    z: 6.8024246908810533e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 570000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996734902
+    y: 1.6515958678179403e-11
+  }
+  orientation {
+    x: -8.729295533806764e-11
+    y: 1.7123698541155385e-08
+    z: 6.8673986303233588e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 604000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996703798
+    y: 1.667437290035614e-11
+  }
+  orientation {
+    x: -8.8124525938029119e-11
+    y: 1.7286822423325065e-08
+    z: 6.9323333057837173e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 638000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996672694
+    y: 1.6832787125146547e-11
+  }
+  orientation {
+    x: -8.8956096522599312e-11
+    y: 1.744994630562525e-08
+    z: 6.997280373130014e-16
+    w: 0.99999999999999989
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 672000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999664159
+    y: 1.6991201350591645e-11
+  }
+  orientation {
+    x: -8.9787667128378623e-11
+    y: 1.7613070188106175e-08
+    z: 7.062201469772092e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 706000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996610486
+    y: 1.7149615577052622e-11
+  }
+  orientation {
+    x: -9.0619237789560424e-11
+    y: 1.777619407073352e-08
+    z: 7.1271204648334074e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 740000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996579382
+    y: 1.7308029809708425e-11
+  }
+  orientation {
+    x: -9.1450808429917216e-11
+    y: 1.79393179535133e-08
+    z: 7.1920713193072842e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 774000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996548278
+    y: 1.7466444029012363e-11
+  }
+  orientation {
+    x: -9.22823791228513e-11
+    y: 1.8102441836423973e-08
+    z: 7.257011012335654e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 808000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996517174
+    y: 1.762485824951328e-11
+  }
+  orientation {
+    x: -9.3113949788909771e-11
+    y: 1.8265565719484754e-08
+    z: 7.3219300538825931e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 842000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.99999999648607
+    y: 1.7783272472323271e-11
+  }
+  orientation {
+    x: -9.3945520441929677e-11
+    y: 1.8428689602694471e-08
+    z: 7.3868568873169948e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 876000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996454966
+    y: 1.7941686694348624e-11
+  }
+  orientation {
+    x: -9.4777091133571434e-11
+    y: 1.8591813486061663e-08
+    z: 7.4517666451162511e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 910000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996423862
+    y: 1.8100100913649874e-11
+  }
+  orientation {
+    x: -9.560866181972017e-11
+    y: 1.8754937369576887e-08
+    z: 7.5166867117796367e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 944000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996392757
+    y: 1.8258515135401678e-11
+  }
+  orientation {
+    x: -9.644023251094729e-11
+    y: 1.8918061253230026e-08
+    z: 7.5816116274025594e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 3
+      nsec: 978000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996361653
+    y: 1.8416929363056522e-11
+  }
+  orientation {
+    x: -9.7271803168051568e-11
+    y: 1.9081185137080642e-08
+    z: 7.6464878989331014e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 12000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996330549
+    y: 1.85753435728602e-11
+  }
+  orientation {
+    x: -9.8103373835261965e-11
+    y: 1.9244309021064878e-08
+    z: 7.7114551146989551e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 46000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996299445
+    y: 1.8733757792093521e-11
+  }
+  orientation {
+    x: -9.8934944474264455e-11
+    y: 1.9407432905180166e-08
+    z: 7.7764017146259537e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 80000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996268341
+    y: 1.8892172010280985e-11
+  }
+  orientation {
+    x: -9.9766515099303685e-11
+    y: 1.9570556789433216e-08
+    z: 7.8412923797468859e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 114000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996237237
+    y: 1.9050586227118917e-11
+  }
+  orientation {
+    x: -1.0059808574380481e-10
+    y: 1.9733680673837017e-08
+    z: 7.9061914337502747e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 148000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996206133
+    y: 1.9209000442190233e-11
+  }
+  orientation {
+    x: -1.0142965641612437e-10
+    y: 1.9896804558409154e-08
+    z: 7.9710611220076135e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 182000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996175029
+    y: 1.9367414660828898e-11
+  }
+  orientation {
+    x: -1.0226122704238185e-10
+    y: 2.0059928443105192e-08
+    z: 8.0359438336921241e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 216000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996143925
+    y: 1.952582886737025e-11
+  }
+  orientation {
+    x: -1.0309279770639209e-10
+    y: 2.0223052327969753e-08
+    z: 8.1008179076808686e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 250000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996112821
+    y: 1.96842430797521e-11
+  }
+  orientation {
+    x: -1.0392436837729528e-10
+    y: 2.0386176212965727e-08
+    z: 8.1656822974415505e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 284000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996081717
+    y: 1.9842657292743886e-11
+  }
+  orientation {
+    x: -1.0475593900542283e-10
+    y: 2.0549300098113637e-08
+    z: 8.2305711591271545e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 318000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996050613
+    y: 2.0001071493613507e-11
+  }
+  orientation {
+    x: -1.055875096691148e-10
+    y: 2.0712423983421004e-08
+    z: 8.295495542535677e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 352000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999996019509
+    y: 2.0159485690724619e-11
+  }
+  orientation {
+    x: -1.0641908034468463e-10
+    y: 2.0875547868886191e-08
+    z: 8.3603935979940637e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 386000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995988405
+    y: 2.0317899884831307e-11
+  }
+  orientation {
+    x: -1.0725065107366359e-10
+    y: 2.1038671754515471e-08
+    z: 8.4253090351215907e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 420000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995957301
+    y: 2.0476314075802817e-11
+  }
+  orientation {
+    x: -1.0808222181330056e-10
+    y: 2.1201795640274965e-08
+    z: 8.4902179057807926e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 454000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995926197
+    y: 2.063472827126285e-11
+  }
+  orientation {
+    x: -1.0891379254535778e-10
+    y: 2.1364919526170561e-08
+    z: 8.5551350289785868e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 488000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995895093
+    y: 2.0793142475263828e-11
+  }
+  orientation {
+    x: -1.0974536327353364e-10
+    y: 2.1528043412223281e-08
+    z: 8.6200098092016239e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 522000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995863989
+    y: 2.0951556682449609e-11
+  }
+  orientation {
+    x: -1.1057693393846615e-10
+    y: 2.169116729845716e-08
+    z: 8.684895548390858e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 556000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995832885
+    y: 2.1109970890303431e-11
+  }
+  orientation {
+    x: -1.114085045925246e-10
+    y: 2.1854291184814584e-08
+    z: 8.7497562086261138e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 590000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995801781
+    y: 2.126838510376266e-11
+  }
+  orientation {
+    x: -1.1224007525892905e-10
+    y: 2.2017415071289113e-08
+    z: 8.814621217598865e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 624000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995770677
+    y: 2.1426799317008124e-11
+  }
+  orientation {
+    x: -1.1307164593120247e-10
+    y: 2.2180538957896322e-08
+    z: 8.8794584236988116e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 658000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995739573
+    y: 2.1585213525109325e-11
+  }
+  orientation {
+    x: -1.1390321667146196e-10
+    y: 2.2343662844680164e-08
+    z: 8.9443268620190387e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 692000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995708469
+    y: 2.1743627734891481e-11
+  }
+  orientation {
+    x: -1.1473478740555788e-10
+    y: 2.2506786731561785e-08
+    z: 9.0091802845442586e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 726000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995677365
+    y: 2.19020419437592e-11
+  }
+  orientation {
+    x: -1.1556635814948188e-10
+    y: 2.2669910618570015e-08
+    z: 9.0740152593715949e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 760000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995646261
+    y: 2.2060456159355063e-11
+  }
+  orientation {
+    x: -1.1639792881906255e-10
+    y: 2.2833034505755267e-08
+    z: 9.13880788172136e-16
+    w: 0.99999999999999978
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 794000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995615157
+    y: 2.2218870377617216e-11
+  }
+  orientation {
+    x: -1.1722949949579869e-10
+    y: 2.2996158393095094e-08
+    z: 9.2036650997538127e-16
+    w: 0.99999999999999967
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 828000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995584053
+    y: 2.237728459697189e-11
+  }
+  orientation {
+    x: -1.1806107012890606e-10
+    y: 2.315928228062223e-08
+    z: 9.2684506448297086e-16
+    w: 0.99999999999999967
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 862000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995552949
+    y: 2.2535698817775955e-11
+  }
+  orientation {
+    x: -1.1889264081348957e-10
+    y: 2.3322406168285868e-08
+    z: 9.3332862194779458e-16
+    w: 0.99999999999999967
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 896000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995521845
+    y: 2.269411303814422e-11
+  }
+  orientation {
+    x: -1.1972421150291605e-10
+    y: 2.348553005612825e-08
+    z: 9.39814456101746e-16
+    w: 0.99999999999999967
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 930000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995490741
+    y: 2.2852527248468321e-11
+  }
+  orientation {
+    x: -1.2055578221347885e-10
+    y: 2.3648653944114124e-08
+    z: 9.4629824764638826e-16
+    w: 0.99999999999999967
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 964000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995459637
+    y: 2.3010941459764608e-11
+  }
+  orientation {
+    x: -1.2138735295260627e-10
+    y: 2.3811777832239924e-08
+    z: 9.5278286052904123e-16
+    w: 0.99999999999999967
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 4
+      nsec: 998000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995428533
+    y: 2.3169355665621604e-11
+  }
+  orientation {
+    x: -1.2221892371119213e-10
+    y: 2.3974901720517469e-08
+    z: 9.5926708528131336e-16
+    w: 0.99999999999999967
+  }
+}
+
+pose {
+  header {
+    stamp {
+      sec: 5
+      nsec: 32000000
+    }
+    data {
+      key: "frame_id"
+      value: "world"
+    }
+    data {
+      key: "child_frame_id"
+      value: "writer/base_link"
+    }
+  }
+  position {
+    x: -10.999999995397429
+    y: 2.3327769883294965e-11
+  }
+  orientation {
+    x: -1.2305049442219445e-10
+    y: 2.4138025608965075e-08
+    z: 9.65750600422103e-16
+    w: 0.99999999999999967
+  }
+}
+

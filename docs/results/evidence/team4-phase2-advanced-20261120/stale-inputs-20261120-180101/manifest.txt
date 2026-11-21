@@ -1,0 +1,6 @@
+branch=phase2/reliability-optimization-20261120
+head=7e5ac45a00457ff5c34ddfe7baed34ebdfbac9a6
+started=2026-11-20T18:01:01+01:00
+ros_distro=jazzy
+seed=none (deterministic fault timing)
+simulation_assumptions=0.5s pose and scan age; Gazebo 10Hz scan; bridge paused by SIGSTOP

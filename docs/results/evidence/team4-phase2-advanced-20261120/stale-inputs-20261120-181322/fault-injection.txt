@@ -1,0 +1,2 @@
+scan_frames_pid=144268
+paused_at=2026-11-20T18:13:40+01:00

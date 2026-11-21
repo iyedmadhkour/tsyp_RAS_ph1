@@ -22,10 +22,12 @@ cleanup_demo() {
 }
 trap cleanup_demo EXIT INT TERM
 fallback=false
+check_slam_overlay=false
 speed="${LIVING_MAP_SPEED:-normal}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --fallback) fallback=true ;;
+    --check-slam-overlay) check_slam_overlay=true ;;
     --speed) [[ $# -ge 2 ]] || { echo "--speed needs a value: normal, fast or very_fast"; exit 2; }; speed="$2"; shift ;;
     --speed=*) speed="${1#--speed=}" ;;
     *) echo "Usage: $0 [--fallback] [--speed normal|fast|very_fast]"; exit 2 ;;
@@ -37,6 +39,37 @@ case "$speed" in
   normal|fast|very_fast) ;;
   *) echo "Unknown speed '$speed'; choose normal, fast or very_fast"; exit 2 ;;
 esac
+
+# The Karto endpoint fix is opt-in and outside /opt/ros. Source it only after
+# the normal Jazzy and LivingMap environments so it takes precedence here.
+if [[ -n "${LIVING_MAP_SLAM_OVERLAY:-}" ]]; then
+  overlay_prefix="$(realpath -e "$LIVING_MAP_SLAM_OVERLAY")" || {
+    echo "SLAM overlay path does not exist: $LIVING_MAP_SLAM_OVERLAY" >&2; exit 2;
+  }
+  if [[ ! -d "$overlay_prefix" || ! -f "$overlay_prefix/local_setup.bash" ]]; then
+    echo "SLAM overlay must be a ROS install prefix containing local_setup.bash: $overlay_prefix" >&2
+    exit 2
+  fi
+  overlay_restore_nounset=0
+  case $- in *u*) overlay_restore_nounset=1; set +u ;; esac
+  source "$overlay_prefix/local_setup.bash"
+  if [[ "$overlay_restore_nounset" -eq 1 ]]; then set -u; fi
+  unset overlay_restore_nounset
+  selected_prefix="$(ros2 pkg prefix slam_toolbox)"
+  selected_prefix="$(realpath -e "$selected_prefix")"
+  if [[ "$selected_prefix" != "$overlay_prefix" ]]; then
+    echo "SLAM overlay selection failed: expected $overlay_prefix, got $selected_prefix" >&2
+    exit 2
+  fi
+  echo "[LivingMap] SLAM Toolbox overlay: $selected_prefix"
+elif [[ "$check_slam_overlay" == true ]]; then
+  echo "--check-slam-overlay requires LIVING_MAP_SLAM_OVERLAY to name an install prefix" >&2
+  exit 2
+fi
+if [[ "$check_slam_overlay" == true ]]; then
+  echo "[LivingMap] Overlay selection verified; Gazebo was not started."
+  exit 0
+fi
 export LIVING_MAP_SPEED="$speed"
 echo "[LivingMap] Robot speed preset: $speed"
 if [[ "$fallback" == true ]]; then

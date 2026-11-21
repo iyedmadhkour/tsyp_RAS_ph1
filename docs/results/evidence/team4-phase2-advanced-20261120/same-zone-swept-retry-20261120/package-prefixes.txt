@@ -1,0 +1,2 @@
+slam_prefix=/home/iyed/livingmap-setup/writer-slam-5b-9qc5m2a6/overlay/install
+writer_prefix=/tmp/team4-phase2-external-cancel-evidence/external-cancel-20261120-181116/install

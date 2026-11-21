@@ -17,6 +17,17 @@ from rclpy.qos import QoSProfile, DurabilityPolicy
 from std_msgs.msg import Bool, String
 
 
+GAS_PASSAGE_WAYPOINT = (15.3, 2.0)
+DEMO_WAYPOINTS = (
+    (1.8, -1.8), (6.0, -1.8), (10.0, -1.8),
+    (15.4, -1.8), (15.4, 0.0), GAS_PASSAGE_WAYPOINT, (14.5, 3.1),
+    GAS_PASSAGE_WAYPOINT, (15.4, 0.0), (15.4, -1.8), (13.0, -2.0),
+    (13.0, -3.8), (6.0, -2.2),
+    # The route then returns to the entrance, mirroring the explorer's best case.
+    (1.8, -1.8), (0.0, 0.0),
+)
+
+
 def normalize_angle(angle: float) -> float:
     return math.atan2(math.sin(angle), math.cos(angle))
 
@@ -32,17 +43,11 @@ class DemoFallback(Node):
         self.declare_parameter("max_angular_vel", 0.8)
         self.max_linear = float(self.get_parameter("max_linear_vel").value)
         self.max_angular = float(self.get_parameter("max_angular_vel").value)
-        # Safe centre-line route checked against mine.sdf. It enters the gas
-        # chamber through the intentional opening, then returns to V01 in the open entry corridor.
-        self.waypoints = [
-            (1.8, -1.8), (6.0, -1.8), (10.0, -1.8),
-            (15.4, -1.8), (15.4, 0.0), (14.5, 3.1),
-            (15.4, 0.0), (15.4, -1.8), (13.0, -2.0),
-            (13.0, -3.8), (6.0, -2.2),
-        ]
-        # The route then returns to the entrance, mirroring the explorer's best case.
-        self.return_from = len(self.waypoints)
-        self.waypoints += [(1.8, -1.8), (0.0, 0.0)]
+        # Cross the northern gas divider through its narrow eastern opening in
+        # both directions; the intermediate waypoint keeps the Writer's full
+        # footprint clear of the divider and the adjacent vertical wall.
+        self.waypoints = list(DEMO_WAYPOINTS)
+        self.return_from = len(DEMO_WAYPOINTS) - 2
         self.stuck = False
         self.cmd_pub = self.create_publisher(Twist, "/writer/cmd_vel", 10)
         self.create_subscription(Odometry, "/writer/odom", self.on_odom, 20)

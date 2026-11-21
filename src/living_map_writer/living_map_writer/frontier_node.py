@@ -1,40 +1,75 @@
 from __future__ import annotations
 
+from collections import Counter
+import json
+import math
+from pathlib import Path
+import time
+
+from ament_index_python.packages import get_package_share_directory
+
 import rclpy
 from nav2_msgs.action import NavigateToPose
 from nav_msgs.msg import OccupancyGrid, Odometry
+from sensor_msgs.msg import LaserScan
 from rclpy.action import ActionClient
+from rclpy.clock import Clock, ClockType
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, DurabilityPolicy
 from rclpy.time import Time
 from std_msgs.msg import Bool, String
+from std_srvs.srv import Trigger
 from tf2_ros import Buffer, TransformException, TransformListener
 
-from .frontier import choose_frontier
+from .frontier import choose_frontier, frontier_cells
+from .entrance import padded_footprint, rotation_safe_center_x
+from .frontier_policy import FrontierPolicy, FrontierPolicyConfig
+from .goal_watchdog import GoalWatchdog, WatchdogConfig
+from .pose_freshness import pose_stamp_is_fresh
+from .pose_integrity import PoseIntegrityMonitor
+from .progress import yaw_from_quaternion
 from .sortie import Sortie
 
 
 class FrontierExplorer(Node):
     """Occupancy-grid frontier explorer using Nav2 goals in the SLAM map frame.
 
-    When no reachable frontier remains, or the sortie budget (battery reserve)
-    is spent, the Writer drives back to the entrance: the best case, in which
-    it hands over a complete map in person.
+    When no safe reachable frontier remains, all remaining frontier candidates
+    exhausted their bounded retries, or the sortie budget (battery reserve) is
+    spent, the Writer drives back to the entrance: the best case, in which it
+    hands over a complete map in person.
     """
 
     def __init__(self) -> None:
         super().__init__("frontier_explorer", namespace="/writer")
         self.map: OccupancyGrid | None = None
         self.odom_fallback = (0.0, 0.0)
+        self.odom_fallback_stamp_s: float | None = None
+        self.last_scan_stamp_s: float | None = None
+        self.navigation_uncertain = False
+        self.navigation_uncertain_reason: str | None = None
+        self.pose_integrity_fault = False
+        self.pose_integrity_fault_reason: str | None = None
+        self.cancel_future = None
+        self.angular_z = 0.0
         self.busy = False
-        self.blacklist: list[tuple[float, float]] = []
-        # Suppress the local area around successful goals while retaining other
-        # unexplored sections of the same connected boundary.
-        self.visited: list[tuple[float, float]] = []
         self.failed = False
         self.stuck = False
         self.enabled = False
         self.goal_handle = None
+        self.active_goal: dict | None = None
+        self.feedback_distance: float | None = None
+        self.feedback_recoveries = 0
+        self.known_area_m2 = 0.0
+        self.counts: Counter[str] = Counter()
+        self.last_wait_log_key: float | None = None
+        self.stale_pose_reported = False
+        self.stale_scan_reported = False
+        self.last_stale_pose_summary_s: float | None = None
+        self.behavior_tree = str(Path(get_package_share_directory("living_map_writer"))
+                                 / "behavior_trees" / "navigate_with_planner_fallback.xml")
+        if not Path(self.behavior_tree).is_file():
+            raise RuntimeError("Writer planner behavior tree is missing; build living_map_writer")
 
         self.declare_parameter("min_cluster_cells", 5)
         self.declare_parameter("home_x", 0.0)
@@ -44,12 +79,102 @@ class FrontierExplorer(Node):
         self.declare_parameter("max_return_attempts", 3)
         # Map-frame x of the mine entrance; the Writer explores only beyond it.
         self.declare_parameter("entrance_x", -1.0)
+        self.declare_parameter("footprint", "[[0.35,0.32],[0.35,-0.32],[-0.35,-0.32],[-0.35,0.32]]")
+        self.declare_parameter("footprint_padding", 0.01)
+        self.declare_parameter("goal_tolerance_xy", 0.25)
+        self.declare_parameter("entrance_position_uncertainty_xy", 0.0)
+        self.declare_parameter("odom_fallback_max_age_s", 0.5)
+        self.declare_parameter("scan_max_age_s", 0.5)
+        self.declare_parameter("pose_integrity_required", True)
+        self.declare_parameter("pose_integrity_reference_topic", "/writer/world_odom")
+        self.declare_parameter("pose_integrity_axes_aligned", True)
+        self.declare_parameter("pose_integrity_max_stamp_skew_s", 0.05)
+        self.declare_parameter("pose_integrity_reference_max_age_s", 0.5)
+        self.declare_parameter("pose_integrity_position_tolerance_m", 0.05)
+        self.declare_parameter("pose_integrity_yaw_tolerance_rad", 0.02)
+        self.declare_parameter("action_response_timeout_s", 3.0)
+        # Frontier lifecycle (Task 6). See docs/results/team4-task6-exploration.md.
+        self.declare_parameter("frontier_zone_radius_m", 1.5)
+        self.declare_parameter("frontier_max_attempts", 3)
+        self.declare_parameter("frontier_cooldown_base_s", 15.0)
+        self.declare_parameter("frontier_cooldown_max_s", 60.0)
+        self.declare_parameter("frontier_exhausted_expiry_s", 120.0)
+        self.declare_parameter("frontier_max_rearms", 2)
+        self.declare_parameter("frontier_visited_radius_m", 1.0)
+        self.declare_parameter("frontier_visited_min_age_s", 30.0)
+        self.declare_parameter("frontier_visited_expiry_s", 120.0)
+        self.declare_parameter("frontier_max_visits", 2)
+        self.declare_parameter("frontier_map_growth_threshold_m2", 2.0)
+        # Navigation-progress watchdog, distinct from the STUCK detector.
+        self.declare_parameter("nav_watchdog_progress_window_s", 20.0)
+        self.declare_parameter("nav_watchdog_min_progress_m", 0.25)
+        self.declare_parameter("nav_watchdog_rotation_grace_s", 10.0)
+        self.declare_parameter("nav_watchdog_stall_s", 25.0)
+        self.declare_parameter("nav_watchdog_goal_timeout_s", 150.0)
+        self.declare_parameter("nav_watchdog_home_stall_s", 90.0)
+        self.declare_parameter("nav_watchdog_home_timeout_s", 300.0)
+        self.declare_parameter("nav_watchdog_max_recoveries", 3)
+        self.declare_parameter("nav_watchdog_reset_jump_m", 1.0)
+        footprint = padded_footprint(self.get_parameter("footprint").value,
+                                     float(self.get_parameter("footprint_padding").value))
+        self.frontier_clearance = max(math.hypot(x, y) for x, y in footprint)
+        self.minimum_goal_x = rotation_safe_center_x(
+            float(self.get_parameter("entrance_x").value), footprint,
+            float(self.get_parameter("goal_tolerance_xy").value),
+            float(self.get_parameter("entrance_position_uncertainty_xy").value))
         self.sortie = Sortie(
             float(self.get_parameter("exploration_budget_s").value),
             int(self.get_parameter("empty_ticks_to_complete").value),
             int(self.get_parameter("max_return_attempts").value),
         )
+        self.policy = FrontierPolicy(FrontierPolicyConfig(
+            zone_radius_m=float(self.get_parameter("frontier_zone_radius_m").value),
+            max_attempts=int(self.get_parameter("frontier_max_attempts").value),
+            base_cooldown_s=float(self.get_parameter("frontier_cooldown_base_s").value),
+            max_cooldown_s=float(self.get_parameter("frontier_cooldown_max_s").value),
+            exhausted_expiry_s=float(self.get_parameter("frontier_exhausted_expiry_s").value),
+            max_rearms=int(self.get_parameter("frontier_max_rearms").value),
+            visited_radius_m=float(self.get_parameter("frontier_visited_radius_m").value),
+            visited_min_age_s=float(self.get_parameter("frontier_visited_min_age_s").value),
+            visited_expiry_s=float(self.get_parameter("frontier_visited_expiry_s").value),
+            max_visits=int(self.get_parameter("frontier_max_visits").value),
+            map_growth_threshold_m2=float(
+                self.get_parameter("frontier_map_growth_threshold_m2").value),
+        ))
+        self.watchdog = GoalWatchdog(WatchdogConfig(
+            progress_window_s=float(self.get_parameter("nav_watchdog_progress_window_s").value),
+            min_progress_m=float(self.get_parameter("nav_watchdog_min_progress_m").value),
+            rotation_grace_s=float(self.get_parameter("nav_watchdog_rotation_grace_s").value),
+            stall_timeout_s=float(self.get_parameter("nav_watchdog_stall_s").value),
+            goal_timeout_s=float(self.get_parameter("nav_watchdog_goal_timeout_s").value),
+            home_stall_timeout_s=float(self.get_parameter("nav_watchdog_home_stall_s").value),
+            home_timeout_s=float(self.get_parameter("nav_watchdog_home_timeout_s").value),
+            max_recoveries=int(self.get_parameter("nav_watchdog_max_recoveries").value),
+            reset_jump_m=float(self.get_parameter("nav_watchdog_reset_jump_m").value),
+        ))
         self.last_tick_s: float | None = None
+        self.pose_integrity_required = bool(self.get_parameter(
+            "pose_integrity_required").value)
+        if not self.pose_integrity_required:
+            raise RuntimeError(
+                "Writer autonomy requires an independent pose-integrity reference")
+        reference_topic = str(self.get_parameter(
+            "pose_integrity_reference_topic").value).strip()
+        resolved_reference_topic = (self.resolve_topic_name(reference_topic)
+                                    if reference_topic else "")
+        if self.pose_integrity_required and (
+                not resolved_reference_topic
+                or resolved_reference_topic == self.resolve_topic_name("/writer/odom")):
+            raise RuntimeError(
+                "pose integrity requires a distinct independent odometry reference topic")
+        if not bool(self.get_parameter("pose_integrity_axes_aligned").value):
+            raise RuntimeError(
+                "pose-integrity reference axes must be transformed/aligned before use")
+        self.pose_integrity = PoseIntegrityMonitor(
+            float(self.get_parameter("pose_integrity_position_tolerance_m").value),
+            float(self.get_parameter("pose_integrity_yaw_tolerance_rad").value),
+            float(self.get_parameter("pose_integrity_max_stamp_skew_s").value),
+        )
 
         self.nav = ActionClient(self, NavigateToPose, "navigate_to_pose")
         self.tf_buffer = Buffer()
@@ -57,32 +182,244 @@ class FrontierExplorer(Node):
 
         self.create_subscription(OccupancyGrid, "/map", self.on_map, 10)
         self.create_subscription(Odometry, "/writer/odom", self.on_odom, 10)
+        self.pose_integrity_reference_sub = None
+        if reference_topic:
+            self.pose_integrity_reference_sub = self.create_subscription(
+                Odometry, reference_topic, self.on_pose_integrity_reference, 20)
+        self.create_subscription(LaserScan, "/writer/scan", self.on_scan, 10)
         state_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.create_subscription(Bool, "/living_map/writer_failed", self.on_failed, state_qos)
         self.create_subscription(Bool, "/living_map/writer_enabled", self.on_enabled, state_qos)
         self.create_subscription(Bool, "/living_map/writer_stuck", self.on_stuck, state_qos)
         self.create_subscription(Bool, "/living_map/writer_return_request", self.on_return_request, state_qos)
         self.state_pub = self.create_publisher(String, "/living_map/writer_explorer_state", state_qos)
+        self.summary_pub = self.create_publisher(
+            String, "/living_map/writer_exploration_summary", state_qos)
         self.published_state = ""
         self.create_timer(2.0, self.tick)
+        # Frontier selection is intentionally slow; stale-input cancellation
+        # must run independently so Nav2's costmap timeout cannot win the race.
+        self.create_timer(0.1, self._monitor_navigation_safety)
+        # Action deadlines use monotonic time and must continue if /clock pauses.
+        self.action_deadline_clock = Clock(clock_type=ClockType.STEADY_TIME)
+        self.create_timer(0.1, self._monitor_action_response_deadlines,
+                          clock=self.action_deadline_clock)
+        self.create_service(Trigger, "ack_pose_integrity_recovery",
+                            self.ack_pose_integrity_recovery)
 
     def on_map(self, msg: OccupancyGrid) -> None:
         self.map = msg
+        resolution = float(msg.info.resolution)
+        self.known_area_m2 = sum(1 for value in msg.data if value >= 0) * resolution * resolution
 
     def on_odom(self, msg: Odometry) -> None:
-        self.odom_fallback = (msg.pose.pose.position.x, msg.pose.pose.position.y)
+        stamp = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
+        if (not math.isfinite(stamp)
+                or (self.odom_fallback_stamp_s is not None
+                    and stamp < self.odom_fallback_stamp_s)):
+            self.counts["odom_out_of_order"] += 1
+            return
+        x = float(msg.pose.pose.position.x)
+        y = float(msg.pose.pose.position.y)
+        angular_z = float(msg.twist.twist.angular.z)
+        if not all(math.isfinite(value) for value in (x, y, angular_z)):
+            self.counts["odom_invalid"] += 1
+            return
+        self.odom_fallback = (x, y)
+        self.odom_fallback_stamp_s = stamp
+        self.angular_z = angular_z
+        yaw = yaw_from_quaternion(
+            msg.pose.pose.orientation.x, msg.pose.pose.orientation.y,
+            msg.pose.pose.orientation.z, msg.pose.pose.orientation.w)
+        if yaw is not None and self.pose_integrity_required:
+            fault = self.pose_integrity.observe_estimate(stamp, x, y, yaw)
+            if fault is not None:
+                self._latch_pose_integrity_fault(fault)
 
-    def map_pose(self) -> tuple[float, float]:
+    def on_pose_integrity_reference(self, msg: Odometry) -> None:
+        stamp = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
+        pose = msg.pose.pose
+        yaw = yaw_from_quaternion(pose.orientation.x, pose.orientation.y,
+                                  pose.orientation.z, pose.orientation.w)
+        if yaw is None:
+            return
+        fault = self.pose_integrity.observe_reference(
+            stamp, pose.position.x, pose.position.y, yaw)
+        if fault is not None:
+            self._latch_pose_integrity_fault(fault)
+
+    def _pose_integrity_ready(self, now_s: float) -> bool:
+        if not getattr(self, "pose_integrity_required", False):
+            return True
+        if not bool(self.get_parameter("pose_integrity_axes_aligned").value):
+            return False
+        if self.pose_integrity.fault_reason is not None:
+            return False
+        max_age = float(self.get_parameter(
+            "pose_integrity_reference_max_age_s").value)
+        return self.pose_integrity.paired_fresh(now_s, max_age)
+
+    def _latch_pose_integrity_fault(self, reason: str) -> None:
+        if self.pose_integrity_fault:
+            return
+        self.pose_integrity.latch_fault(reason)
+        self.pose_integrity_fault = True
+        self.pose_integrity_fault_reason = reason
+        self.counts["pose_integrity_faults"] += 1
+        self._latch_navigation_uncertain(
+            f"pose integrity could not be established: {reason}",
+            count_unknown_result=False)
+        if self.busy:
+            self._cancel("pose integrity disagreement")
+        self._publish_summary()
+        self._publish_state()
+
+    def ack_pose_integrity_recovery(self, _request, response):
+        if self.busy:
+            response.success = False
+            response.message = "Cannot acknowledge pose recovery while a Nav2 goal is active."
+            return response
+        now = self._now_s()
+        max_age = float(self.get_parameter(
+            "pose_integrity_reference_max_age_s").value)
+        if not self.pose_integrity_fault:
+            response.success = False
+            response.message = "No pose-integrity fault is latched."
+            return response
+        if not self.pose_integrity.recovery_ready:
+            response.success = False
+            response.message = "Recovery needs two new agreeing pose/reference pairs."
+            return response
+        if not self.pose_integrity.paired_fresh(now, max_age):
+            response.success = False
+            response.message = "Recovery needs a fresh, timestamp-paired pose/reference sample."
+            return response
+        if self.map_pose() is None:
+            response.success = False
+            response.message = "Recovery needs a fresh map-frame Writer pose."
+            return response
+        if not self.scan_is_fresh(now):
+            response.success = False
+            response.message = "Recovery needs a fresh Writer LiDAR scan."
+            return response
+        if not self.pose_integrity.acknowledge_recovery():
+            response.success = False
+            response.message = "Pose integrity monitor rejected recovery acknowledgment."
+            return response
+        self.pose_integrity_fault = False
+        self.pose_integrity_fault_reason = None
+        self.navigation_uncertain = False
+        self.navigation_uncertain_reason = None
+        self.counts["pose_integrity_recovery_acknowledged"] += 1
+        response.success = True
+        response.message = (
+            "Pose sources agree again. Operator must independently verify the base is stopped "
+            "before acknowledging recovery.")
+        self.get_logger().warning(response.message)
+        self._publish_summary()
+        self._publish_state()
+        return response
+
+    def on_scan(self, msg: LaserScan) -> None:
+        stamp = msg.header.stamp.sec + msg.header.stamp.nanosec / 1e9
+        if (not math.isfinite(stamp)
+                or (self.last_scan_stamp_s is not None
+                    and stamp < self.last_scan_stamp_s)):
+            self.counts["scan_out_of_order"] += 1
+            return
+        self.last_scan_stamp_s = stamp
+        self.stale_scan_reported = False
+
+    def scan_is_fresh(self, now: float) -> bool:
+        max_age = float(self.get_parameter("scan_max_age_s").value)
+        return (self.last_scan_stamp_s is not None
+                and pose_stamp_is_fresh(now, self.last_scan_stamp_s, max_age))
+
+    def map_pose(self) -> tuple[float, float] | None:
+        now = self._now_s()
+        max_age = float(self.get_parameter("odom_fallback_max_age_s").value)
         try:
             transform = self.tf_buffer.lookup_transform("map", "writer/base_link", Time())
-            return transform.transform.translation.x, transform.transform.translation.y
+            stamp = transform.header.stamp.sec + transform.header.stamp.nanosec / 1e9
+            tx = float(transform.transform.translation.x)
+            ty = float(transform.transform.translation.y)
+            if (pose_stamp_is_fresh(now, stamp, max_age)
+                    and math.isfinite(tx) and math.isfinite(ty)):
+                self.stale_pose_reported = False
+                return tx, ty
         except TransformException:
-            return self.odom_fallback
+            pass
+        if (self.odom_fallback_stamp_s is not None
+                and pose_stamp_is_fresh(now, self.odom_fallback_stamp_s, max_age)):
+            try:
+                map_to_odom = self.tf_buffer.lookup_transform("map", "writer/odom", Time())
+                stamp = map_to_odom.header.stamp.sec + map_to_odom.header.stamp.nanosec / 1e9
+                if pose_stamp_is_fresh(now, stamp, max_age):
+                    q = map_to_odom.transform.rotation
+                    yaw = math.atan2(2.0 * (q.w * q.z + q.x * q.y),
+                                     1.0 - 2.0 * (q.y * q.y + q.z * q.z))
+                    c, s = math.cos(yaw), math.sin(yaw)
+                    odom_x, odom_y = self.odom_fallback
+                    tx = float(map_to_odom.transform.translation.x)
+                    ty = float(map_to_odom.transform.translation.y)
+                    map_x = tx + c * odom_x - s * odom_y
+                    map_y = ty + s * odom_x + c * odom_y
+                    if all(math.isfinite(value) for value in (yaw, map_x, map_y)):
+                        self.stale_pose_reported = False
+                        return map_x, map_y
+            except TransformException:
+                pass
+        if not self.stale_pose_reported:
+            self.get_logger().warning(
+                "No fresh map transform or odometry pose; waiting before selecting a goal")
+            self.stale_pose_reported = True
+        return None
 
     def _cancel(self, reason: str) -> None:
-        if self.goal_handle is not None:
-            self.goal_handle.cancel_goal_async()
-            self.get_logger().warning(f"Active Writer goal cancelled: {reason}")
+        active = getattr(self, "active_goal", None)
+        if active is None:
+            return
+        if active.get("cancel_reason") is None:
+            active["cancel_reason"] = reason
+            active["cancel_response"] = "not_requested"
+        if self.goal_handle is None or active.get("cancel_sent"):
+            return
+        active["cancel_sent"] = True
+        active["cancel_response"] = "pending"
+        active["cancel_sent_at"] = time.monotonic()
+        try:
+            self.cancel_future = self.goal_handle.cancel_goal_async()
+            self.cancel_future.add_done_callback(self._on_cancel_response)
+            self.get_logger().warning(f"Active Writer goal cancellation requested: {reason}")
+        except Exception as exc:
+            active["cancel_response"] = "response_unknown"
+            self.get_logger().error(f"Nav2 cancellation request failed: {exc}")
+            self._latch_navigation_uncertain(
+                f"Nav2 cancellation request failed ({type(exc).__name__})")
+            self._publish_summary()
+
+    def _on_cancel_response(self, future) -> None:
+        active = getattr(self, "active_goal", None)
+        if active is None:
+            return
+        try:
+            response = future.result()
+            active["cancel_response"] = (
+                "accepted" if response.goals_canceling else "not_confirmed")
+            active["cancel_goals_reported"] = len(response.goals_canceling)
+        except Exception as exc:
+            active["cancel_response"] = "response_unknown"
+            self.get_logger().error(f"Nav2 cancellation response is unknown: {exc}")
+            self._latch_navigation_uncertain(
+                f"Nav2 cancellation response unavailable ({type(exc).__name__})")
+        else:
+            if not response.goals_canceling:
+                self._latch_navigation_uncertain(
+                    "Nav2 did not confirm cancellation; awaiting terminal action result")
+        # A cancel service response is not proof that the action has stopped.
+        # busy remains true until the terminal action result arrives.
+        self._publish_summary()
+        self._publish_state()
 
     def on_enabled(self, msg: Bool) -> None:
         self.enabled = bool(msg.data)
@@ -101,7 +438,7 @@ class FrontierExplorer(Node):
 
     def on_return_request(self, msg: Bool) -> None:
         if msg.data and self.sortie.phase == "EXPLORING":
-            self.sortie.start_return("battery reserve reached")
+            self.sortie.start_return("battery reserve reached", "BATTERY_RESERVE")
             self._cancel("battery reserve reached; heading home")
             self.get_logger().warning("Battery reserve reached: returning to the entrance")
 
@@ -110,6 +447,8 @@ class FrontierExplorer(Node):
             state = "HALTED"
         elif self.stuck:
             state = "STUCK"
+        elif self.navigation_uncertain:
+            state = "NAVIGATION_UNCERTAIN"
         elif self.sortie.phase in {"RETURNING", "HOME", "RETURN_FAILED"}:
             state = self.sortie.phase
         elif not self.enabled:
@@ -121,6 +460,41 @@ class FrontierExplorer(Node):
             self.state_pub.publish(String(data=state))
             self.get_logger().info(f"Explorer state {state}")
 
+    def _publish_summary(self) -> None:
+        now = self._now_s()
+        payload = {
+            "phase": self.sortie.phase,
+            "reason": self.sortie.reason,
+            "reason_code": self.sortie.reason_code,
+            "explored_s": round(self.sortie.explored_s, 2),
+            "known_area_m2": round(self.known_area_m2, 3),
+            "counts": dict(sorted(self.counts.items())),
+            "frontier_policy": self.policy.summary(now),
+            "watchdog": self.watchdog.snapshot(now),
+            "active_goal": self.active_goal,
+            "navigation_uncertain": self.navigation_uncertain,
+            "navigation_uncertain_reason": self.navigation_uncertain_reason,
+            "pose_integrity": {
+                "required": getattr(self, "pose_integrity_required", False),
+                "reference_topic": str(self.get_parameter(
+                    "pose_integrity_reference_topic").value),
+                "reference_fresh_and_paired": self._pose_integrity_ready(now),
+                **self.pose_integrity.diagnostics(
+                    now, float(self.get_parameter(
+                        "pose_integrity_reference_max_age_s").value)),
+                "fault_latched": self.pose_integrity_fault,
+                "fault_reason": self.pose_integrity_fault_reason,
+                "recovery_ready_for_operator_ack": getattr(
+                    self, "pose_integrity", None) is not None
+                    and self.pose_integrity.recovery_ready,
+            },
+            "inputs_fresh": {
+                "scan": self.scan_is_fresh(now),
+                "pose": self.map_pose() is not None,
+            },
+        }
+        self.summary_pub.publish(String(data=json.dumps(payload, sort_keys=True)))
+
     def _now_s(self) -> float:
         return self.get_clock().now().nanoseconds / 1e9
 
@@ -128,15 +502,50 @@ class FrontierExplorer(Node):
         now = self._now_s()
         elapsed = 0.0 if self.last_tick_s is None else max(0.0, now - self.last_tick_s)
         self.last_tick_s = now
-        active = self.enabled and not self.failed and not self.stuck
+        active = (self.enabled and not self.failed and not self.stuck
+                  and not self.navigation_uncertain)
         if active and self.sortie.phase == "EXPLORING":
             self.sortie.spend(elapsed)
+        self.policy.refresh(now, self.known_area_m2)
         self._publish_state()
-        if not active or self.busy or self.map is None or not self.nav.server_is_ready():
+        if not active:
+            return
+        if self.busy:
+            self._update_watchdog(now)
+            return
+        if self.map is None or not self.nav.server_is_ready():
             return
 
         if self.sortie.phase == "EXPLORING" and self.sortie.budget_spent():
-            self.sortie.start_return("sortie budget spent; keeping the reserve to get home")
+            self.sortie.start_return(
+                "sortie budget spent; keeping the reserve to get home", "BUDGET")
+            self._publish_summary()
+            self.get_logger().warning("Exploration budget spent: returning to the entrance")
+        pose = self.map_pose()
+        scan_fresh = self.scan_is_fresh(now)
+        if pose is None or not scan_fresh:
+            self.counts["pose_unavailable"] += 1
+            if not scan_fresh:
+                self.counts["scan_unavailable"] += 1
+                if not self.stale_scan_reported:
+                    self.get_logger().warning(
+                        "No fresh Writer LiDAR scan; waiting before sending a navigation goal")
+                    self.stale_scan_reported = True
+            if (self.last_stale_pose_summary_s is None
+                    or now - self.last_stale_pose_summary_s >= 5.0):
+                self._publish_summary()
+                self.last_stale_pose_summary_s = now
+            return
+        if not self._pose_integrity_ready(now):
+            self.counts["pose_integrity_unavailable"] += 1
+            if (self.last_stale_pose_summary_s is None
+                    or now - self.last_stale_pose_summary_s >= 5.0):
+                self.get_logger().warning(
+                    "Waiting for fresh, paired independent pose-integrity reference; "
+                    "no navigation goal will be sent")
+                self._publish_summary()
+                self.last_stale_pose_summary_s = now
+            return
         if self.sortie.phase == "RETURNING":
             self._send_goal(float(self.get_parameter("home_x").value),
                             float(self.get_parameter("home_y").value), "home")
@@ -144,10 +553,29 @@ class FrontierExplorer(Node):
             return
         if self.sortie.phase != "EXPLORING":
             return
+        robot_x, robot_y = pose
+        visited = self.policy.visited_points(now, self.known_area_m2)
+        stats: dict = {}
+        candidate = self._choose(robot_x, robot_y, self.policy.blacklist(now),
+                                 visited, stats)
+        if candidate is None:
+            self._no_candidate(now, robot_x, robot_y, visited, stats)
+            return
+        self.sortie.frontier_found()
+        self.last_wait_log_key = None
+        _score, x, y, cell_count = candidate
+        self.counts["frontier_selected"] += 1
+        self.get_logger().info(
+            f"Frontier selected x={x:.2f} y={y:.2f} cells={cell_count} "
+            f"score={_score:.2f} raw={stats.get('raw_frontier_cells')} "
+            f"clusters={stats.get('clusters')} blocked_zones={len(self.policy.zones)}")
+        self._send_goal(x, y, "frontier")
 
-        robot_x, robot_y = self.map_pose()
+    def _choose(self, robot_x: float, robot_y: float, blacklist, visited,
+                stats: dict | None = None):
+        """Run the geometric selector with the Writer's safety filters."""
         info = self.map.info
-        candidate = choose_frontier(
+        return choose_frontier(
             self.map.data,
             info.width,
             info.height,
@@ -157,74 +585,385 @@ class FrontierExplorer(Node):
             robot_x,
             robot_y,
             int(self.get_parameter("min_cluster_cells").value),
-            blacklist=self.blacklist,
-            visited=self.visited,
+            # Leave room to turn the padded polygon, including occupied-cell
+            # area beyond its center. Nav2 remains the live collision authority.
+            goal_clearance=self.frontier_clearance + info.resolution / math.sqrt(2.0),
+            blacklist=blacklist,
+            blacklist_radius=self.policy.cfg.zone_radius_m,
+            visited=visited,
+            visited_radius=self.policy.cfg.visited_radius_m,
             min_x=float(self.get_parameter("entrance_x").value),
+            boundary_clearance=self.minimum_goal_x - float(self.get_parameter("entrance_x").value),
+            stats=stats,
         )
-        if candidate is None:
-            if self.sortie.no_frontier():
-                self.get_logger().info(f"Exploration complete: {self.sortie.reason}; returning to the entrance")
-                self._publish_state()
-            return
-        self.sortie.frontier_found()
-        _score, x, y, cell_count = candidate
-        self.get_logger().info(f"Frontier selected x={x:.2f} y={y:.2f} cells={cell_count}")
-        self._send_goal(x, y, "frontier")
+
+    def _no_candidate(self, now: float, robot_x: float, robot_y: float,
+                      visited, stats: dict) -> None:
+        # Was the failure memory the only reason nothing was selectable?
+        without_blacklist = self._choose(robot_x, robot_y, (), visited)
+        if without_blacklist is not None:
+            x, y = without_blacklist[1], without_blacklist[2]
+            covering = [zone for zone in self.policy.blocked_zones(now)
+                        if zone.distance(x, y) <= self.policy.cfg.zone_radius_m]
+            cooling = [zone for zone in covering if zone.cooling(now)]
+            if cooling:
+                # A cooling failure zone is not evidence that the mine is mapped.
+                self.sortie.wait_for_retry()
+                retry = self.policy.earliest_retry_s(now)
+                key = None if retry is None else round(retry, 1)
+                if key != self.last_wait_log_key:
+                    self.last_wait_log_key = key
+                    zone = min(cooling, key=lambda z: z.cooldown_until)
+                    wait_s = max(0.0, zone.cooldown_until - now)
+                    self.get_logger().info(
+                        f"Waiting {wait_s:.0f} s for frontier cooldown at "
+                        f"({zone.x:.2f},{zone.y:.2f}); attempt {zone.attempts}/"
+                        f"{self.policy.cfg.max_attempts}")
+                return
+            expiry = self.policy.earliest_expiry_s(now, covering)
+            if expiry is not None:
+                # Keep the sortie active while a bounded exhausted-zone
+                # re-arm is pending. Otherwise the empty-frontier threshold
+                # would send the Writer HOME long before the 120 s expiry.
+                self.sortie.wait_for_retry()
+                key = round(expiry, 1)
+                if key != self.last_wait_log_key:
+                    self.last_wait_log_key = key
+                    wait_s = max(0.0, expiry - now)
+                    self.get_logger().info(
+                        f"Waiting {wait_s:.0f} s for exhausted frontier memory "
+                        f"to expire; re-arm is bounded to "
+                        f"{self.policy.cfg.max_rearms} per zone")
+                return
+            code = "FRONTIERS_EXHAUSTED"
+        else:
+            without_memory = self._choose(robot_x, robot_y, (), ())
+            if without_memory is not None:
+                code = "NO_REACHABLE_FRONTIER"  # only already-visited cells remained
+            elif frontier_cells(self.map.data, self.map.info.width, self.map.info.height):
+                code = "NO_REACHABLE_FRONTIER"
+            else:
+                code = "EXPLORED"
+        self.last_wait_log_key = None
+        self.get_logger().info(
+            f"Frontier search: raw={stats.get('raw_frontier_cells')} "
+            f"clusters={stats.get('clusters')} too_small={stats.get('clusters_too_small')} "
+            f"no_eligible={stats.get('clusters_without_eligible_goal')} "
+            f"blocked_zones={len(self.policy.blocked_zones(now))} -> {code}")
+        if self.sortie.no_frontier(code):
+            self._publish_summary()
+            self.get_logger().info(
+                f"Exploration complete: {code} - {self.sortie.reason}; "
+                "returning to the entrance")
 
     def _send_goal(self, x: float, y: float, kind: str) -> None:
+        if x < self.minimum_goal_x:
+            self.get_logger().error(f"Rejected {kind} goal: footprint/tolerance crosses entrance")
+            self._goal_failed(x, y, kind, "entrance_rejected")
+            return
         goal = NavigateToPose.Goal()
+        goal.behavior_tree = self.behavior_tree
         goal.pose.header.frame_id = "map"
         goal.pose.header.stamp = self.get_clock().now().to_msg()
         goal.pose.pose.position.x = x
         goal.pose.pose.position.y = y
+        # The Writer LiDAR is 360 degrees; yaw 0 keeps the existing kinematics
+        # contract and does not reduce unknown-space visibility (Task 6 Phase 3).
         goal.pose.pose.orientation.w = 1.0
         self.busy = True
-        self.nav.send_goal_async(goal).add_done_callback(
+        self.active_goal = {"x": x, "y": y, "kind": kind,
+                            "watchdog_reason": None, "cancel_reason": None,
+                            "goal_response_started_at": time.monotonic(),
+                            "cancel_sent_at": None,
+                            "action_timeout_reported": False}
+        self.feedback_distance = None
+        self.feedback_recoveries = 0
+        self.watchdog.start(kind, x, y, self._now_s())
+        self.nav.send_goal_async(goal, feedback_callback=self._on_feedback).add_done_callback(
             lambda future: self._goal_sent(future, x, y, kind)
         )
+
+    def _on_feedback(self, message) -> None:
+        try:
+            feedback = message.feedback
+            distance = float(feedback.distance_remaining)
+            if math.isfinite(distance):
+                self.feedback_distance = distance
+            self.feedback_recoveries = int(feedback.number_of_recoveries)
+        except Exception:
+            pass
+
+    def _check_action_response_deadline(self, active) -> None:
+        timeout_s = float(self.get_parameter("action_response_timeout_s").value)
+        now = time.monotonic()
+        cancel_sent_at = active.get("cancel_sent_at")
+        if active.get("cancel_reason") is not None and cancel_sent_at is not None:
+            started = cancel_sent_at
+            timed_out = started is not None and now - started >= timeout_s
+            reason = (f"Nav2 did not return a terminal action result within {timeout_s:g} s "
+                      "after cancellation")
+        else:
+            started = active.get("goal_response_started_at")
+            timed_out = (getattr(self, "goal_handle", None) is None
+                         and started is not None and now - started >= timeout_s)
+            reason = f"Nav2 goal acceptance response timed out after {timeout_s:g} s"
+        if timed_out and not active.get("action_timeout_reported"):
+            active["action_timeout_reported"] = True
+            self._latch_navigation_uncertain(reason)
+
+    def _monitor_action_response_deadlines(self) -> None:
+        """Enforce acceptance/cancel deadlines against steady wall time."""
+        active = getattr(self, "active_goal", None)
+        if not self.busy or active is None:
+            return
+        if active.get("cancel_reason") is not None or self.goal_handle is None:
+            FrontierExplorer._check_action_response_deadline(self, active)
+
+    def _cancel_for_stale_inputs(self, now: float) -> bool:
+        pose = self.map_pose()
+        scan_fresh = self.scan_is_fresh(now)
+        if pose is not None and scan_fresh:
+            return False
+        self.counts["watchdog_pose_unavailable"] += pose is None
+        self.counts["watchdog_scan_unavailable"] += not scan_fresh
+        reason = "localization unavailable" if pose is None else "LiDAR data stale"
+        if not scan_fresh and not getattr(self, "stale_scan_reported", False):
+            self.get_logger().warning(
+                "No fresh Writer LiDAR scan; requesting active-goal cancellation")
+            self.stale_scan_reported = True
+        self._cancel(reason)
+        self._publish_summary()
+        return True
+
+    def _monitor_navigation_safety(self) -> None:
+        """Check action deadlines and sensor freshness outside frontier ticks."""
+        now = self._now_s()
+        # Pose integrity is a mission-level movement gate, not only an active
+        # action watchdog. A stale reference must latch the same lockout during
+        # the gap between goals, so the next goal cannot wait silently on bad
+        # localization without entering NAVIGATION_UNCERTAIN. During startup,
+        # wait for the first valid synchronized pair before treating absent
+        # inputs as a stale-stream fault; the goal gate remains closed then.
+        if (getattr(self, "pose_integrity_required", False)
+                and not getattr(self, "pose_integrity_fault", False)
+                and getattr(getattr(self, "pose_integrity", None),
+                            "last_pair_stamp_s", None) is not None
+                and not self._pose_integrity_ready(now)):
+            max_age = float(self.get_parameter(
+                "pose_integrity_reference_max_age_s").value)
+            reason = (self.pose_integrity.fault_reason
+                      or self.pose_integrity.freshness_reason(now, max_age)
+                      or "independent pose reference unavailable")
+            self._latch_pose_integrity_fault(reason)
+            return
+
+        active = getattr(self, "active_goal", None)
+        if not self.busy or active is None:
+            return
+        if active.get("cancel_reason") is not None or self.goal_handle is None:
+            FrontierExplorer._check_action_response_deadline(self, active)
+            if active.get("cancel_reason") is not None or self.navigation_uncertain:
+                return
+        if (self.navigation_uncertain or active.get("watchdog_reason") is not None
+                or active.get("cancel_reason") is not None):
+            return
+        if FrontierExplorer._cancel_for_stale_inputs(self, now):
+            return
+
+    def _update_watchdog(self, now: float) -> None:
+        active = getattr(self, "active_goal", None)
+        if active is None:
+            return
+        if active.get("cancel_reason") is not None:
+            FrontierExplorer._check_action_response_deadline(self, active)
+            return
+        if active.get("watchdog_reason") is not None:
+            return
+        if getattr(self, "goal_handle", None) is None:
+            FrontierExplorer._check_action_response_deadline(self, active)
+            return
+        if FrontierExplorer._cancel_for_stale_inputs(self, now):
+            return
+        pose = self.map_pose()
+        if pose is None:
+            return
+        active["last_watchdog_pose"] = pose
+        robot_x, robot_y = pose
+        rotating = abs(self.angular_z) >= 0.15
+        verdict = self.watchdog.update(
+            now, self.feedback_distance, self.feedback_recoveries,
+            robot_x, robot_y, rotating)
+        if verdict is None:
+            return
+        active["watchdog_reason"] = verdict
+        snapshot = self.watchdog.snapshot(now)
+        self.counts["watchdog_cancels"] += 1
+        self.get_logger().warning(
+            f"Navigation watchdog cancelling {active['kind']} goal at "
+            f"({active['x']:.2f},{active['y']:.2f}): {verdict} after "
+            f"{snapshot['elapsed_s']} s (source={snapshot['source']}, distance="
+            f"{snapshot['last_distance_m']} m, recoveries="
+            f"{snapshot['recoveries_seen']}, jumps={snapshot['distance_jumps']})")
+        self._cancel(f"navigation watchdog: {verdict}")
 
     def _goal_sent(self, future, x: float, y: float, kind: str) -> None:
         try:
             handle = future.result()
         except Exception as exc:
-            self.busy = False
-            self._goal_failed(x, y, kind)
-            self.get_logger().warning(f"{kind} goal send failed: {exc}")
+            self._latch_navigation_uncertain(
+                f"Nav2 goal acceptance response unavailable ({type(exc).__name__})")
             return
 
         self.goal_handle = handle
         if not handle.accepted:
             self.busy = False
-            self._goal_failed(x, y, kind)
+            self._goal_failed(x, y, kind, "rejected")
             return
-        if self.failed or self.stuck or not self.enabled:
-            handle.cancel_goal_async()
+        active = getattr(self, "active_goal", None)
+        pending_cancel_reason = (None if active is None
+                                 else active.get("cancel_reason"))
+        # A reserve request is the reason to go HOME; it must not cancel an
+        # already accepted HOME goal while its action response is in flight.
+        pending_cancel_required = not (
+            kind == "home"
+            and pending_cancel_reason == "battery reserve reached; heading home")
+        # A battery-return request may arrive while send_goal_async is pending,
+        # before _cancel has a handle. Also honor stale-sensor cancellation
+        # latched while goal acceptance was unresolved.
+        if (pending_cancel_reason is not None and pending_cancel_required
+                or self.failed or self.stuck or not self.enabled
+                or self.navigation_uncertain
+                or (kind == "frontier" and self.sortie.phase != "EXPLORING")):
+            if active is not None and active.get("cancel_reason") is None:
+                active["cancel_reason"] = "pending goal stopped"
+            self._cancel(pending_cancel_reason or "pending goal stopped")
         handle.get_result_async().add_done_callback(
             lambda result_future: self._done(result_future, x, y, kind)
         )
 
-    def _goal_failed(self, x: float, y: float, kind: str) -> None:
+    def _goal_failed(self, x: float, y: float, kind: str, reason: str = "aborted") -> None:
+        now = self._now_s()
+        self.active_goal = None
+        self.watchdog.reset()
         if kind == "home":
+            self.counts["home_failed"] += 1
             if self.sortie.return_failed():
-                self.get_logger().error("Return to the entrance failed repeatedly; Writer cannot get home")
-        elif not self.failed and not self.stuck and self.enabled:
-            self.blacklist.append((x, y))
+                self.get_logger().error(
+                    "Return to the entrance failed repeatedly; Writer cannot get home")
+                self._publish_summary()
+            else:
+                self.get_logger().warning(
+                    f"Return attempt failed ({self.sortie.return_attempts_failed}/"
+                    f"{self.sortie.max_return_attempts}); retrying HOME")
+            return
+        if self.failed or self.stuck or not self.enabled:
+            return
+        self.counts["frontier_failed"] += 1
+        zone = self.policy.note_failure(x, y, now, self.known_area_m2, reason)
+        if zone.exhausted:
+            state = (f"exhausted until {zone.exhausted_until - now:.0f} s "
+                     f"(or map growth); re-arms={zone.rearms}/{self.policy.cfg.max_rearms}")
+        else:
+            state = f"cooldown {max(0.0, zone.cooldown_until - now):.0f} s"
+        self.get_logger().warning(
+            f"Frontier goal failed at ({x:.2f},{y:.2f}) [{reason}]; zone attempt "
+            f"{zone.attempts}/{self.policy.cfg.max_attempts}, {state}")
+        self._publish_summary()
 
     def _done(self, future, x: float, y: float, kind: str) -> None:
-        self.busy = False
-        self.goal_handle = None
+        active = getattr(self, "active_goal", None) or {}
         try:
             status = future.result().status
-        except Exception:
-            status = -1
+            status = int(status)
+        except Exception as exc:
+            self._latch_navigation_uncertain(
+                f"Nav2 action result unavailable ({type(exc).__name__})")
+            return
+        # action_msgs GoalStatus terminal values: SUCCEEDED=4, CANCELED=5,
+        # ABORTED=6. ACCEPTED/EXECUTING/CANCELING are not proof of a stop.
+        if status not in (4, 5, 6):
+            self._latch_navigation_uncertain(
+                f"Nav2 returned nonterminal/unknown goal status {status}")
+            return
+
+        self.busy = False
+        self.goal_handle = None
+        self.cancel_future = None
+        watchdog_reason = active.get("watchdog_reason")
+        cancel_reason = active.get("cancel_reason")
+        self.active_goal = None
+        integrity_fault = getattr(self, "pose_integrity_fault", False)
+        if self.navigation_uncertain and not integrity_fault:
+            # A terminal result for this tracked goal resolves the uncertain
+            # Nav2 action state. It does not guarantee that the base stopped.
+            self.navigation_uncertain = False
+            self.navigation_uncertain_reason = None
+            self.counts["navigation_uncertainty_resolved"] += 1
+        if integrity_fault:
+            self.counts["pose_integrity_goal_cancelled"] += 1
+            self._publish_summary()
+            self._publish_state()
+            return
+        now = self._now_s()
         if status == 4:
             if kind == "home":
+                self.counts["home_succeeded"] += 1
                 self.sortie.arrived_home()
+                self._publish_summary()
                 self.get_logger().info("Writer is back at the entrance with the full map")
             else:
-                self.visited.append((x, y))
-        elif not self.failed and not self.stuck and self.enabled:
-            self._goal_failed(x, y, kind)
+                self.counts["frontier_succeeded"] += 1
+                record = self.policy.note_success(x, y, now, self.known_area_m2)
+                self.get_logger().info(
+                    f"Frontier goal reached at ({x:.2f},{y:.2f}); "
+                    f"visit {record.count}/{self.policy.cfg.max_visits}")
+        elif status == 5:
+            if watchdog_reason is not None:
+                self._goal_failed(x, y, kind, f"watchdog_{watchdog_reason}")
+            elif (kind == "home" and cancel_reason is None and self.enabled
+                  and not self.failed and not self.stuck):
+                # A HOME goal canceled without a recorded intentional reason
+                # did not complete the safety-critical return. Count it toward
+                # the bounded return-failure policy instead of retrying forever.
+                self._goal_failed(x, y, kind, "unexpected_cancel")
+            else:
+                if kind == "home":
+                    self.counts["home_cancelled"] += 1
+                else:
+                    self.counts["frontier_cancelled"] += 1
+                    # An unexplained external cancel is not evidence that the
+                    # frontier is unreachable, but immediate reselection can
+                    # churn on the same Nav2 action. Apply one base cooldown;
+                    # explicit policy cancels keep their existing semantics.
+                    retry_after = (self.policy.cfg.base_cooldown_s
+                                   if cancel_reason is None else 0.0)
+                    self.policy.note_cancel(x, y, now,
+                                            cancel_reason or "cancelled",
+                                            retry_after_s=retry_after)
+                self.get_logger().info(
+                    f"{kind} goal at ({x:.2f},{y:.2f}) cancelled externally "
+                    f"({cancel_reason or 'no reason'}); not counted as failure")
+                # Publish the cancellation-only cooldown and its retry deadline
+                # for operators and the bounded Gazebo validation observer.
+                self._publish_summary()
+        elif status == 6 and not self.failed and not self.stuck and self.enabled:
+            self._goal_failed(x, y, kind, "aborted")
+        self._publish_state()
+
+    def _latch_navigation_uncertain(self, reason: str, *,
+                                   count_unknown_result: bool = True) -> None:
+        """Latch a conservative goal lockout for action or pose-integrity faults."""
+        if self.navigation_uncertain:
+            return
+        self.navigation_uncertain = True
+        self.navigation_uncertain_reason = reason
+        if count_unknown_result:
+            self.counts["navigation_result_unknown"] += 1
+        self.counts["navigation_uncertain_latches"] += 1
+        self.get_logger().error(
+            f"Navigation locked out; no further goals will be sent: {reason}. "
+            "This does not prove the physical base has stopped.")
+        self._publish_summary()
         self._publish_state()
 
 

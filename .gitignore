@@ -20,3 +20,6 @@ runtime/*
 /docs/diagrams/*.png
 !/docs/diagrams/beacon_frame.png
 /scripts/run_navigation.sh
+
+# Local Gazebo runs include generated logs, bags, and raw simulation streams.
+/docs/results/evidence/team4-phase2-final-20261120/

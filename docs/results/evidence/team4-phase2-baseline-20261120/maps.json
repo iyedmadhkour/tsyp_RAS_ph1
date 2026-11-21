@@ -1,0 +1,101 @@
+{
+  "dataset": "Task 6 r4 expiry/reactivation Gazebo map snapshots; odometry linearly interpolated to map simulation timestamp and transformed with exact recorded map-to-odom",
+  "maps": [
+    {
+      "file": "maps/map-0002-periodic.npz",
+      "sha256": "cbd08b8bdef1e8d8c3abfa60787905990f17371d9f77c450dedccf18c3854577",
+      "source_run": "/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/r4-expiry-reactivation-pass",
+      "source_file": "map-0002-periodic.npz",
+      "sim_s": 31.832,
+      "map_stamp_tf_exact": true,
+      "width": 284,
+      "height": 194,
+      "resolution_m": 0.05000000074505806,
+      "origin_xy": [
+        -2.967785815072098,
+        -4.84896606611589
+      ],
+      "known_cells": 14670,
+      "free_cells": 14229,
+      "occupied_cells": 441,
+      "robot_pose_map_xy_interpolated": [
+        0.6078643431211798,
+        0.08239801262738106
+      ],
+      "odom_interpolation": [
+        29.872,
+        31.852,
+        0.9898989898989902
+      ],
+      "map_from_odom": [
+        9.637561170472585e-15,
+        5.3782330269153204e-15,
+        -1.3701839486717906e-14
+      ]
+    },
+    {
+      "file": "maps/map-0015-periodic.npz",
+      "sha256": "35aaecbad65aee019e045a6ed196f00fb3eb332c5597a687e1ffe125b8c4f86f",
+      "source_run": "/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/r4-expiry-reactivation-pass",
+      "source_file": "map-0015-periodic.npz",
+      "sim_s": 159.832,
+      "map_stamp_tf_exact": true,
+      "width": 371,
+      "height": 195,
+      "resolution_m": 0.05000000074505806,
+      "origin_xy": [
+        -3.0045794029064643,
+        -4.87350394353992
+      ],
+      "known_cells": 40779,
+      "free_cells": 39664,
+      "occupied_cells": 1115,
+      "robot_pose_map_xy_interpolated": [
+        4.275156749611202,
+        -1.7748235413841233
+      ],
+      "odom_interpolation": [
+        158.052,
+        160.022,
+        0.9035532994923868
+      ],
+      "map_from_odom": [
+        -0.010000000000000899,
+        -7.990764714431743e-16,
+        -5.706947757159717e-16
+      ]
+    },
+    {
+      "file": "maps/map-0030-periodic.npz",
+      "sha256": "35df3dc869d2a3e53773123b2fbfa08684c0a63e89bbff0ed0184af3b31361a3",
+      "source_run": "/home/iyed/livingmap-setup/writer-task6-k3m9/validation-2026-11-20/r4-expiry-reactivation-pass",
+      "source_file": "map-0030-periodic.npz",
+      "sim_s": 306.022,
+      "map_stamp_tf_exact": true,
+      "width": 477,
+      "height": 195,
+      "resolution_m": 0.05000000074505806,
+      "origin_xy": [
+        -3.0045794029064643,
+        -4.87350394353992
+      ],
+      "known_cells": 79974,
+      "free_cells": 77789,
+      "occupied_cells": 2185,
+      "robot_pose_map_xy_interpolated": [
+        13.89145598666828,
+        3.4723870936626087
+      ],
+      "odom_interpolation": [
+        304.432,
+        306.402,
+        0.807106598984771
+      ],
+      "map_from_odom": [
+        0.009999999999989658,
+        -6.785011206273755e-14,
+        4.926172411910298e-15
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1795195514.835753116] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1795195514.835762379] [rosbag2_recorder]: Event publisher thread: Started
+[INFO] [1795195514.839617036] [rosbag2_recorder]: Starting recording to '/tmp/team4-phase2-stuck-evidence/20261120-181917/cases/watchdog-immobility/bag'
+[INFO] [1795195514.840854532] [rosbag2_recorder]: Listening for topics...
+[INFO] [1795195514.840873990] [rosbag2_recorder]: Recording...
+[INFO] [1795195514.840952476] [rosbag2_recorder]: Topics discovery started.
+[INFO] [1795195515.013188847] [rosbag2_recorder]: Subscribed to topic '/clock'
+[INFO] [1795195516.049949336] [rosbag2_recorder]: Subscribed to topic '/writer/cmd_vel'
+[INFO] [1795195516.523119079] [rosbag2_recorder]: Subscribed to topic '/living_map/writer_explorer_state'
+[INFO] [1795195518.579769719] [rosbag2_recorder]: Subscribed to topic '/writer/odom'
+[INFO] [1795195518.592125279] [rosbag2_recorder]: Subscribed to topic '/living_map/writer_stuck'
+[INFO] [1795195518.592184195] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1795195518.592191389] [rosbag2_recorder]: Topics discovery stopped.
+[INFO] [1795195627.035021639] [rosbag2_recorder]: Pausing recording.
+[INFO] [1795195627.035161199] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1795195627.037896588] [rosbag2_recorder]: Recording stopped
+[INFO] [1795195627.053778026] [rosbag2_recorder]: Event publisher thread: Exited

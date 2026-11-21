@@ -1,0 +1,9 @@
+--- a/lib/karto_sdk/include/karto_sdk/Karto.h
++++ b/lib/karto_sdk/include/karto_sdk/Karto.h
+@@ -6111,2 +6111,4 @@
+-    rWidth = static_cast<kt_int32s>(math::Round(size.GetWidth() * scale));
+-    rHeight = static_cast<kt_int32s>(math::Round(size.GetHeight() * scale));
++    // WorldToGrid rounds the maximum endpoint to this index. Include that
++    // index in the allocation, as well as index zero at the minimum.
++    rWidth = static_cast<kt_int32s>(math::Round(size.GetWidth() * scale)) + 1;
++    rHeight = static_cast<kt_int32s>(math::Round(size.GetHeight() * scale)) + 1;

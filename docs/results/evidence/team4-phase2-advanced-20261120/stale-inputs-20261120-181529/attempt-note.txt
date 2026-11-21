@@ -1,0 +1,1 @@
+INCOMPLETE: controller accepted a frontier but the short Gazebo goal completed between the once-per-second state check and bridge pause. No active navigation remained to cancel. Script now pre-identifies the bridge PID and pauses it immediately at 20 Hz when the Writer controller receives the accepted goal.
