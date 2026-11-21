@@ -102,6 +102,23 @@ def test_small_delivery_skew_within_configured_pairing_allowance_is_valid():
     assert m.fault_reason is None
 
 
+def test_reference_ahead_of_current_clock_within_pairing_bound_is_fresh():
+    m = PoseIntegrityMonitor(max_stamp_skew_s=0.05)
+    for t in (1.00, 1.03):
+        m.observe_estimate(t, 0.0, 0.0, 0.0)
+    for t in (1.01, 1.04):
+        m.observe_reference(t, 10.0, 4.0, 0.0)
+    assert m.paired_fresh(1.03, 0.1)
+    assert m.fault_reason is None
+
+
+def test_reference_too_far_ahead_of_current_clock_is_not_fresh():
+    m = PoseIntegrityMonitor(max_stamp_skew_s=0.05)
+    m.observe_estimate(1.08, 0.0, 0.0, 0.0)
+    m.observe_reference(1.08, 10.0, 4.0, 0.0)
+    assert not m.paired_fresh(1.00, 0.1)
+
+
 def test_timestamp_skew_during_fast_rotation_is_compared_at_common_time():
     m = PoseIntegrityMonitor(max_stamp_skew_s=0.05)
     for t in (1.00, 1.03, 1.06):

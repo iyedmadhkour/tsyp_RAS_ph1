@@ -74,4 +74,8 @@ def main():
         rclpy.spin(node)
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        # Launch teardown can already have shut down the default context by
+        # the time this finally block runs (for example, when a test replaces
+        # this node with a fault-injection relay). Keep normal shutdown quiet
+        # and idempotent in that case.
+        rclpy.try_shutdown()

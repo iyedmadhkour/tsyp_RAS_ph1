@@ -207,10 +207,17 @@ class PoseIntegrityMonitor:
             return (f"latest pose/reference stamp skew {skew:.3f}s exceeds "
                     f"{self.max_stamp_skew_s:.3f}s")
         est_age, ref_age = now_s - est.stamp_s, now_s - ref.stamp_s
-        if not 0.0 <= est_age <= max_age_s:
-            return f"Writer pose age {est_age:.3f}s is outside 0..{max_age_s:.3f}s"
-        if not 0.0 <= ref_age <= max_age_s:
-            return f"independent reference age {ref_age:.3f}s is outside 0..{max_age_s:.3f}s"
+        # ROS callbacks can observe a just-published sample a few milliseconds
+        # ahead of the node's current clock reading. Treat that as clock/read
+        # scheduling skew only inside the same configured pairing allowance;
+        # larger future stamps still fail closed.
+        min_age_s = -self.max_stamp_skew_s
+        if not min_age_s <= est_age <= max_age_s:
+            return (f"Writer pose age {est_age:.3f}s is outside "
+                    f"{min_age_s:.3f}..{max_age_s:.3f}s")
+        if not min_age_s <= ref_age <= max_age_s:
+            return (f"independent reference age {ref_age:.3f}s is outside "
+                    f"{min_age_s:.3f}..{max_age_s:.3f}s")
         if self._synchronized_pair() is None:
             return "fresh pose streams could not be aligned at a common timestamp"
         return None

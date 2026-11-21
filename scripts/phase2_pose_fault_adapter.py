@@ -3,8 +3,8 @@
 
 This replaces living_map/scan_frames only in a validation run. It preserves
 the normal Writer scan and all three robot odometry/TF topics while allowing
-the Writer pose stream to be stale, delayed, missing, or frozen with fresh
-timestamps. It must never be used to drive a physical robot.
+the Writer pose stream to be stale, delayed, missing, translation-frozen, or
+rotation-frozen with fresh timestamps. It must never drive a physical robot.
 """
 from __future__ import annotations
 
@@ -27,7 +27,8 @@ SPAWNS = {
     "executor": (-13.0, -2.0),
     "firebot": (-13.0, 2.0),
 }
-MODES = {"pass", "stale", "delayed", "missing", "frozen"}
+MODES = {"pass", "stale", "delayed", "missing",
+         "frozen_translation", "frozen_rotation"}
 
 
 class PoseFaultAdapter(Node):
@@ -77,7 +78,7 @@ class PoseFaultAdapter(Node):
         self.mode = mode
         if mode == "stale" and self.last_writer is not None:
             self.stale_sample = deepcopy(self.last_writer)
-        elif mode == "frozen" and self.last_writer is not None:
+        elif mode in {"frozen_translation", "frozen_rotation"} and self.last_writer is not None:
             p = self.last_writer.pose.pose.position
             q = self.last_writer.pose.pose.orientation
             self.frozen_pose = (p.x, p.y, p.z, q.x, q.y, q.z, q.w)
@@ -107,12 +108,14 @@ class PoseFaultAdapter(Node):
         if self.mode == "delayed":
             self.delayed.append(msg)
             return
-        if self.mode == "frozen" and self.frozen_pose is not None:
+        if self.mode == "frozen_translation" and self.frozen_pose is not None:
             p = msg.pose.pose.position
-            q = msg.pose.pose.orientation
-            p.x, p.y, p.z, q.x, q.y, q.z, q.w = self.frozen_pose
+            p.x, p.y, p.z = self.frozen_pose[:3]
             msg.twist.twist.linear.x = 0.0
             msg.twist.twist.linear.y = 0.0
+        elif self.mode == "frozen_rotation" and self.frozen_pose is not None:
+            q = msg.pose.pose.orientation
+            q.x, q.y, q.z, q.w = self.frozen_pose[3:]
             msg.twist.twist.angular.z = 0.0
         self._publish_odom(robot, msg)
 
